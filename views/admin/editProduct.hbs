@@ -1,0 +1,386 @@
+{{>dashhead}}
+
+
+<style>
+    h1 {
+        margin-left: 0.5rem;
+        margin-top: 1.5rem;
+    }
+
+    #details {
+        display: flex;
+        flex-direction: row;
+        margin-top: 50px;
+    }
+
+    #images {
+        margin-left: 1.5rem;
+
+        margin-top: 50px;
+    }
+
+
+    #name,
+    #quantity,
+    #Price {
+        margin-bottom: 20px;
+        margin-left: 22px;
+
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 20rem;
+        max-width: 400px;
+    }
+
+    #description {
+        margin-bottom: 20px;
+        margin-left: 22px;
+
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 50rem;
+
+
+    }
+
+    input[type="file"] {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+        margin-left: 1.2rem;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+
+
+    .image-preview-container {
+        display: flex;
+
+        margin-bottom: 20px;
+
+        width: 100px;
+        max-width: 400px;
+    }
+
+    .image-preview {
+        height: 100px;
+        width: 150 px;
+        margin-bottom: 10px;
+        margin-left: 2rem;
+        border-radius: 5px;
+        object-fit: cover;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .container {
+        border-radius: 20px;
+        border: 1px solid black;
+        position: relative;
+        left: 2rem;
+        padding-bottom: 1.2rem;
+        margin-bottom: 5rem;
+        background-color: #2e92a9;
+        color: white;
+
+    }
+
+    .image-container {
+        display: flex;
+        margin-left: 20px;
+    }
+
+    .close-button {
+        position: relative;
+        left: 5px;
+        background: transparent;
+        border: none;
+        color: #000;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    select {
+
+        margin-left: 2rem;
+        margin-top: 8px;
+        height: 30px;
+        width: 50px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    #name-error,
+    #Price-error,
+    #Category-error,
+    #quantity-error {
+        font-size: 9pt;
+        margin: auto;
+        margin-left: 4px;
+        
+    }
+</style>
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ms-4" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto me-4">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">{{user}}</a>
+            </li>
+
+            <li class="nav-item">
+                <a id="logoutBtn" class="btn btn-sm btn-danger " href="/admin/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-12 adminpages">
+            <ul class="adminroutes">
+                <li>
+                    <h2><a href="/admin/dashboard">Dashboard</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/users">Users</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/orders">Orders</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/categories">Categories</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/products">Products</a></h2>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                    <div>
+                        <h1>Update Product Details</h1>
+                        <h5 style="color: red;">{{imageLength}}</h5>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <form action="/admin/updateProduct/{{productData._id}}" method="post" id="updateProductValidation" enctype="multipart/form-data">
+
+            <div id="details">
+
+                <input type="text" placeholder="Product Name" value="{{productData.name}}" id="name" name="name"
+                    required>
+                <input type="number" placeholder="Price" value="{{productData.price}}" id="Price" name="price" required>
+
+                <input type="number" placeholder="Quantity" value="{{productData.stock}}" id="quantity" name="quantity">
+
+
+                <select style="width:200px;" name="Category" required>
+                    <option value="" disabled selected>Select a category</option>
+                    {{#each categories}}
+                    <option value="{{this._id}}">{{this.category}}</option>
+                    {{/each}}
+                </select>
+
+            </div>
+
+            <input type="text" rows="3" placeholder="description" value="{{productData.description}}" id="description"
+                name="description" required>
+
+
+
+            <div id="images">
+
+
+
+                <input class="image" type="file" id="image1" name="image">
+                <input class="image" type="file" id="image2" name="image">
+                <br>
+                <input class="image" type="file" id="image3" name="image">
+                <input class="image" type="file" id="image4" name="image">
+
+
+            </div>
+
+
+
+            <input name="product-id" type="hidden" value="{{productData._id}}">
+
+
+            <div class="image-container">
+                {{#each productData.imageUrl}}
+                <p onclick="deleteProImg()" class="close-button" data-image-index="{{@index}}"
+                    style="text-decoration: none;">×</p>
+                <img src="/uploads/{{this}}" alt="images" style="width: 100px; height: 100px;" class="m-2 pro-image"
+                    data-image-index="{{@index}}">
+                {{/each}}
+            </div>
+
+
+
+            <div class="image-preview-container">
+                <img id="preview1" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+                <img id="preview2" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+                <img id="preview3" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+                <img id="preview4" class="image-preview" src="#" alt="Image Preview" style="display: none;">
+            </div>
+
+
+
+
+
+            <input type="submit" value="Update the Product">
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+    <script>
+
+
+        //For deleting Image
+
+        const deleteImage = async (productId, imageIndex) => {
+            try {
+                const response = await fetch(`/admin/product_img_delete?id=${productId}&?image=${imageIndex}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                console.log(data.message);
+
+                if (data) {
+                    const imageElem = document.querySelector(`.pro-image[data-image-index="${imageIndex}"]`);
+                    if (imageElem) {
+
+                        imageElem.remove(); // remove the image element completely
+                    }
+                }
+
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+
+        const deleteProImg = () => {
+
+            const deleteButtons = document.querySelectorAll('.close-button')
+            const productId = document.getElementsByName('product-id')[0].value
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const imageIndex = event.target.dataset.imageIndex;
+                    deleteImage(productId, imageIndex);
+                });
+            });
+
+        }
+
+
+
+        // Image preview code
+        function previewImage(event, imageNumber) {
+            var preview = document.getElementById(`preview${imageNumber}`);
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function () {
+                preview.src = reader.result;
+                preview.style.display = "block";
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "#";
+                preview.style.display = "none";
+            }
+        }
+
+        // Add event listeners for image previews
+        document.getElementById("image1").addEventListener("change", function (event) {
+            previewImage(event, 1);
+        });
+
+        document.getElementById("image2").addEventListener("change", function (event) {
+            previewImage(event, 2);
+        });
+
+        document.getElementById("image3").addEventListener("change", function (event) {
+            previewImage(event, 3);
+        });
+
+        document.getElementById("image4").addEventListener("change", function (event) {
+            previewImage(event, 4);
+        });
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+{{>dashfoot}}

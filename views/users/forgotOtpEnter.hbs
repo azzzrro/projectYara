@@ -1,0 +1,73 @@
+{{>signupheader}}
+
+<!-- Preloader -->
+<div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div> 
+<!-- end of preloader -->
+
+
+<div class="container-fluid">
+    <div class="container">
+        <div class="d-flex wrapper justify-content-center">
+
+            <div class="row w-100">
+                <div class="col-md-6 otpPageImage">
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="otpPage">
+                        <h1>Enter the OTP</h1>
+                        <p>Please enter the one-time password<br>sent to your registered email</p>
+                        <form action="/verifyForgotOtp" method="post" id="otpEnter">
+                            <input type="number" placeholder="Enter OTP here" id="otp" name="otp" />
+                            <div class="recover"  id="resend_link" style="display: none;">
+                                <a href="/resendForgotPasswordotp">Resend OTP</a>
+                            </div>
+                            <p id="fillout2">Please enter the OTP</p>
+
+                            <div class="logout_alert" role="alert">
+
+                            </div>
+                            <div class="invalid_alert" role="alert">
+                                {{invalidOtp}}
+                            </div>
+                            <button type="submit" id="auth_button">Verify</button>
+                        </form>
+                        <div id="countdown" class="text-center mt-3" style="color: grey;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ <script>
+    const countdownElem = document.getElementById("countdown");
+    let countdown = localStorage.getItem("countdown") || 60; // start countdown at 60 seconds if no value is found in local storage
+    countdownElem.textContent = `00:${countdown}`; // set initial countdown text
+    const countdownInterval = setInterval(() => {
+      countdown--; // decrement countdown by 1
+      countdownElem.textContent = `00:${countdown}`; // update countdown text
+      if (countdown === 0) {
+        clearInterval(countdownInterval); // clear the countdown interval
+        countdownElem.style.display = "none"; // hide the countdown element
+        const resendLink = document.getElementById("resend_link");
+        resendLink.style.display = "block";
+        localStorage.removeItem("countdown"); // remove countdown value from local storage
+      } else {
+        localStorage.setItem("countdown", countdown); // store countdown value in local storage
+      }
+    }, 1000); // update countdown every second (1000ms)
+  </script>
+
+
+
+{{>signupfooter}}

@@ -1,0 +1,110 @@
+{{>signupheader}}
+
+<style>
+    .show {
+        position: relative;
+        right: 24%;
+        top: 6px;
+        font-size: 9pt;
+        color: grey;
+    }
+
+    .row p {
+        position: relative;
+        right: 94%;
+        top: 14%;
+        font-size: 10pt;
+    }
+</style>
+
+<!-- Preloader -->
+<div class="spinner-wrapper">
+    <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- end of preloader -->
+
+
+<div class="container-fluid">
+    <div class="container">
+        <div class="d-flex wrapper justify-content-center">
+            <div class="row w-100">
+                <div class="col-md-6 loginBackImage">
+
+
+
+                </div>
+
+                <div class="col-md-6">
+
+
+                    <div class="loginPage">
+                        <h1>Welcome back!</h1>
+                        <form action="/login" method="post" id="login">
+                            <input type="email" placeholder="Enter your registered mail" id="email" name="email" />
+                            <input type="password" placeholder="Password" id="password" name="password" />
+                            
+                            {{!-- <div class="row">
+                                <div class="col-6 show">
+
+                                    <input type="checkbox" onclick="showPassword()">
+                                </div>
+                                <div class="col-6">
+
+                                    <p> Show Password </p>
+                                </div>
+                            </div> --}}
+
+                            <div class="recover">
+                                <a href="/forgotPassword">Forgot password?</a>
+                            </div>
+                            <p id="fillout2">Please fill out all the fields</p>
+                            {{#if logout}}
+                            <div class="logout_alert" role="alert">
+                                {{logout}}
+                            </div>
+                            {{else if success}}
+                            <div class="logout_alert" role="alert">
+                                {{success}}
+                            </div>
+                            {{else if blocked}}
+                            <div class="invalid_alert" role="alert">
+
+                                {{blocked}}
+                            </div>
+                            {{else if invalid}}
+                            <div class="invalid_alert" role="alert">
+
+                                {{invalid}}
+                            </div>
+                            {{/if}}
+                            <button type="submit" id="auth_button">Log in</button>
+                        </form>
+
+                        <div class="member">
+                            Note a member?
+                            <a href="/signup">Signup Now!!</a>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{{>signupfooter}}

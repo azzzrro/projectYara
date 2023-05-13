@@ -1,0 +1,72 @@
+{{>signupheader}}
+
+<!-- Preloader -->
+<div class="spinner-wrapper">
+    <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+</div>
+<!-- end of preloader -->
+
+<div class="container-fluid">
+    <div class="container">
+        <div class="d-flex wrapper justify-content-center">
+            <div class="row w-100">
+
+                <div class="col-md-6">
+
+
+
+                    <div class="signupPage">
+                        <h1>Sign up Now!</h1>
+                        <form action="/signup" method="post" id="signup">
+                            <input type="text" placeholder="Name" name="name" id="name">
+                            <input type="email" placeholder="Email" name="email" id="email">
+                            <input type="number" placeholder="Mobile Number" name="mobile" id="signupMobile">
+                            <input type="password" placeholder="Password" name="password_signup" id="password_signup">
+                            <input type="password" placeholder="Re-enter Password" name="re_password" id="re_password">
+                            {{!-- <input id="forgot" type="checkbox" onclick="showPassword()">
+                            <p id="show">Show Password </p> --}}
+                            <p id="notmatch">Password does not match</p>
+                            <p id="fillout">Fillout all the fields</p>
+
+
+                            {{#if alreadyUser}}
+                            <div class="invalid_alert" role="alert">
+                                {{alreadyUser}}
+                            </div>
+                            {{/if}}
+                            <div class="invalid_alert" id="invalid_mobile" role="alert">
+                            </div>
+
+                            <button type="submit" id="auth_button">Sign Up</button>
+                        </form>
+
+                        <div class="member">
+                            Already a member? <a href="/login">Login here</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6 signupBackImage">
+
+
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+{{>signupfooter}}

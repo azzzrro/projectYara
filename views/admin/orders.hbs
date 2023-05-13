@@ -1,0 +1,120 @@
+{{>dashhead}}
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ms-4" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto me-4">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">{{user}}</a>
+            </li>
+            <li class="nav-item">
+                <a id="logoutBtn" class="btn btn-sm btn-danger " href="/admin/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-12 adminpages">
+            <ul class="adminroutes">
+                <li>
+                    <h2><a href="/admin/dashboard">Dashboard</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/users">Users</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/orders">Orders</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/categories">Categories</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/products">Products</a></h2>
+                </li>
+            </ul>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12" id="user_search">
+
+
+                        <div class="col-6" id="catMsg">
+                            <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
+                            <h5 id="noResultsFound">no results found!!</h5>
+
+                        </div>
+
+                        <div class="col-6" id="search">
+                            <input type="search" placeholder="Search Orders" aria-label="Search" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-10 m-auto">
+
+
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">NO</th>
+                        <th scope="col">NAME</th>
+                        <th scope="col">PRODUCT</th>
+                        <th scope="col">ADDRESS</th>
+                        <th scope="col">QUANTITY</th>
+                        <th scope="col">PRICE</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col">ACTION</th>
+                    </tr>
+                </thead>
+                <tbody style="height: 5rem;">
+
+
+                    <tr>
+                        <td scope="row">1</td>
+                        <td id="coloumn1_{{@index}}">Name</td>
+                        <td id="coloumn2_{{@index}}">Product</td>
+                        <td style="width: 15rem;" id="coloumn3_{{@index}}">Address</td>
+                        <td scope="row">1 nos</td>
+                        <td scope="row">2,500</td>
+                        <td scope="row"><button class="btn btn-sm btn-success">Shipped</button></td>
+
+                        <td>
+                            <button id="orderUpdateBtn" class="btn btn-sm btn-primary">Update</button>
+                            <a href="/delete/{{this._id}}" class="btn btn-sm btn-danger">Delete</a>
+
+                        </td>
+                    </tr>
+
+
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{{>dashfoot}}

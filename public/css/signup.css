@@ -1,0 +1,299 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+body {
+    background-color: #30433D;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.wrapper h1,.wrapper2 h1{
+font-weight: 700;
+}
+.wrapper{
+    width: 50rem;
+    height: 35rem;
+    margin: 7% auto;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4); 
+    background-size: cover;
+}
+
+.wrapper2{
+    width: 370px;
+    height: 370px;
+    padding: 2rem 1rem;
+    margin: 6rem auto;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1); 
+    background-size: cover;
+}
+
+#forgot{
+    position: relative;
+    left: -8rem;
+    bottom: 0.3rem;
+    font-size: 9pt;
+}
+
+#show{
+    position: relative;
+    left: -70px;
+    bottom: 30.3px;
+    font-size: 9pt;
+}
+
+
+
+.loginBackImage{
+    background-image: url(/image/admin.png);
+    background-size: cover;
+    border-radius: 10px 0 0 10px;
+}
+
+.signupBackImage{ 
+    background-image: url(/image/how-to-choose-and-apply-the-best-foundation-for-you\ -\ More\ Beautiful\ Me\ 1.jpg);
+    background-size: cover;
+    border-radius: 0 10px 10px 0;
+}
+
+.adminBackImage{
+    background-image: url(/image/Antipodes\ New\ Zealand\ Design\ Concept.png);
+    background-size: cover;
+    border-radius: 0 10px 10px 0;
+}
+
+.loginPage{
+    margin-top: 13%;
+    padding-top: 25%;
+}
+
+.signupPage{
+    margin-top: 13%;
+}
+
+.otpPage{
+    margin-top: 45%;
+
+}
+
+.adminPage{
+    margin-top: 40%;   
+}
+
+.otpPageImage{
+    background-image: url(/image/otp.jpg);
+    background-size: cover;
+    border-radius: 10px 0 0 10px;
+}
+
+
+h1{
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 1.2rem;
+}
+
+form input{
+    width: 19rem;
+    outline: none;
+    border: 1px solid white;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background: #e4e4e4;
+}
+
+
+.logout button {
+    font-size: 1rem;
+    margin-top: 1.8rem;
+    
+    padding: 10px 0;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    width: 50%;
+    color: #e5e1ce;
+    background-color: #598683;
+    cursor: pointer;
+
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+    outline: 1px solid;
+    outline-color: rgba(255, 255, 255, 0);
+    outline-offset: 0px;
+    text-shadow: none;
+    -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+    /* outline-color: rgba(255, 255, 255, 0.5);
+    outline-offset: 0px; */
+}
+  
+.logout button:hover {
+    box-shadow: inset 0 0 5px rgb(224,225,205), 0 0 20px rgba(255, 255, 255, 0.2);
+    outline-offset: 15px;
+}
+
+#auth_button {
+    font-size: 1rem;
+    margin-top: 1.3rem;
+    
+    padding: 10px 0;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+    width: 11rem;
+    color: #e5e1ce;
+    background-color: #598683;
+    cursor: pointer;
+
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+    outline: 1px solid;
+    outline-color: rgba(255, 255, 255, 0);
+    outline-offset: 0px;
+    text-shadow: none;
+    -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+    /* outline-color: rgba(255, 255, 255, 0.5);
+    outline-offset: 0px; */
+}
+  
+#auth_button:hover {
+    box-shadow: inset 0 0 5px rgb(224,225,205), 0 0 20px rgba(255, 255, 255, 0.2);
+    outline-offset: 15px;
+}
+
+
+
+input:focus{
+    border: 1px solid #30433D;
+}
+
+.member{
+    font-size: 0.8rem;
+    margin-top: 1.4rem;
+    color: #636363;
+}
+
+.member a{
+    color: rgb(17, 107, 143);
+    text-decoration: none;
+}
+
+.recover{
+    text-align: right;
+    font-size: 0.7rem;
+    margin: 0.3rem 3rem 0 0;
+}
+
+.recover a{
+    text-decoration: none;
+    color: #636363;
+}
+
+.notadmin{
+    font-size: 0.8rem;
+    margin-top: 1.4rem;
+    color:black;
+}
+
+.notadmin a{
+    color: rgb(17, 107, 143);
+    text-decoration: none;
+}
+
+
+#email-error{
+    position: relative;
+    left: 5rem;
+    top: -13px;
+    
+    color: red;
+    font-size: 8pt;
+    
+}
+
+#password_signup-error{
+    position: relative;
+    left: 3rem;
+    top: -4px;
+
+    color: red;
+    font-size: 8pt;
+}
+
+#password-error, #new_password-error{
+    position: relative;
+    
+    top: -4px;
+
+    color: red;
+    font-size: 8pt;
+}
+
+
+#signupMobile-error{
+    position: relative;
+    left: 73px;
+    top: -5px;
+    
+    color: red;
+    font-size: 8pt;
+}
+
+#notmatch{
+    color: red;
+    font-size: 0.7rem;
+    display: none;
+    position: relative;
+    bottom: -8px;
+}
+
+#fillout{
+    color: red;
+    font-size: 0.7rem;
+    margin: 0;
+    display: none;
+}
+
+#fillout2{
+    color: red;
+    font-size: 0.7rem;
+    position: relative;
+    bottom: 18px;
+    left: -92px;
+    display: none;
+}
+
+.invalid_alert{
+    color: red;
+    font-size: 0.7rem;
+    position: relative;
+    top: 10px;
+}
+
+
+.logout_alert{
+    color: #028137;
+    font-size: 0.8rem;
+    position: relative;
+    top: 10px;
+}
+                 
+
+
+

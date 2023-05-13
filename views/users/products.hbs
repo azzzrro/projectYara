@@ -1,0 +1,486 @@
+{{>productheader}}
+
+
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Poppins:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800");
+
+
+.footer {
+    background-color: #222
+}
+
+.footer .footer-logo {
+    margin-top: 0
+}
+
+.footer .widget-about p {
+    max-width: 540px
+}
+
+.footer .widget-about-title {
+    color: #fff
+}
+
+.footer .widget-about-info a {
+    color: #eea287
+}
+
+.footer .widget-title {
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    color: #fff
+}
+
+.footer .footer-middle {
+    border: none;
+    padding-top: 6rem
+}
+
+.footer-bottom .container:before,
+.footer-bottom .container-fluid:before {
+    background-color: #444
+}
+
+.header .logo {
+    position: relative;
+    transform: translateX(0) translateY(0);
+    left: 0;
+    margin: 0
+}
+
+.header .header-left a {
+    display: flex;
+    align-items: center
+}
+
+.header .cart-dropdown,
+.header .compare-dropdown {
+    padding-left: 2.4rem
+}
+
+.header .cart-dropdown .cart-txt,
+.header .compare-dropdown .cart-txt {
+    transition: color .3s
+}
+
+.header .cart-dropdown:hover .cart-txt,
+.header .cart-dropdown:hover .dropdown-toggle,
+.header .cart-dropdown:focus .cart-txt,
+.header .cart-dropdown:focus .dropdown-toggle,
+.header .cart-dropdown.active .cart-txt,
+.header .cart-dropdown.active .dropdown-toggle,
+.header .compare-dropdown:hover .cart-txt,
+.header .compare-dropdown:hover .dropdown-toggle,
+.header .compare-dropdown:focus .cart-txt,
+.header .compare-dropdown:focus .dropdown-toggle,
+.header .compare-dropdown.active .cart-txt,
+.header .compare-dropdown.active .dropdown-toggle {
+    color: #eea287
+}
+
+.header .wishlist-link {
+    font-size: 2.8rem
+}
+
+.header .wishlist-link:hover .wishlist-txt,
+.header .wishlist-link:focus .wishlist-txt {
+    color: #eea287
+}
+
+.header .wishlist-link .wishlist-count,
+.header .cart-dropdown .cart-count {
+    min-width: 1.7rem;
+    height: 1.7rem;
+    margin-bottom: 1.5rem;
+    margin-left: -1.2rem;
+    background-color: #222;
+    color: #fff;
+    font-weight: 400;
+    font-size: 1rem
+}
+
+.header .cart-dropdown span {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: #222;
+    margin-left: .8rem
+}
+
+.header .header-bottom {
+    background-color: #fff
+}
+
+.header .header-bottom .menu>li>a {
+    letter-spacing: .01em;
+    color: #222;
+    padding-top: 2rem;
+    padding-bottom: 2rem
+}
+
+.header .header-bottom .menu>li>a:before {
+    top: unset;
+    bottom: 1.5rem;
+    background-color: #222
+}
+
+.header .header-bottom .menu>li+li {
+    margin-left: .4rem
+}
+
+.header .header-bottom .cart-dropdown:not(:hover):not(.show) .dropdown-toggle,
+.header .header-bottom .compare-dropdown:not(:hover):not(.show) .dropdown-toggle {
+    color: #666
+}
+
+
+
+.header .header-right {
+    margin-left: 0
+}
+</style>
+
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Shop products</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">{{productData.category.category}}</li>
+
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+
+
+    <div class="page-content">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-9">
+                    <div class="toolbox">
+
+                        <div class="toolbox-left">
+                            <div class="toolbox-info">
+                                {{!-- Showing <span>5</span> Products --}}
+                            </div><!-- End .toolbox-info -->
+                        </div><!-- End .toolbox-left -->
+
+                        <div class="toolbox-right">
+                            <div class="toolbox-sort">
+                                <label for="sortby">Sort by:</label>
+                                <div class="select-custom">
+                                    <select name="sortby" id="sortby" class="form-control">
+                                        <option value="popularity" selected="selected">Most Popular</option>
+                                        <option value="rating">Most Rated</option>
+                                        <option value="date">Date</option>
+                                    </select>
+                                </div>
+                            </div><!-- End .toolbox-sort -->
+                        </div><!-- End .toolbox-right -->
+                    </div><!-- End .toolbox -->
+
+
+
+
+                    {{!-- product --}}
+
+
+                    <div class="products mb-3">
+                        <div class="row justify-content-center">
+
+                            {{#each productData}}
+                            <div class="col-6 col-md-4 col-lg-4">
+                                <div class="product product-7 text-center">
+                                    <figure class="product-media">
+                                        {{#if this.stock}}
+
+                                        <a href="/productView?id={{this._id}}">
+
+                                            <img src="/uploads/{{this.imageUrl.[0]}}" alt="Product image"
+                                                class="product-image">
+                                        </a>
+
+
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                    to wishlist</span></a>
+                                            {{!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
+                                                title="Quick view"><span>Quick view</span></a>
+                                            <a href="#" class="btn-product-icon btn-compare"
+                                                title="Compare"><span>Compare</span></a> --}}
+                                        </div><!-- End .product-action-vertical -->
+
+                                        <div class="product-action">
+                                            <a href="#" class="btn-product btn-cart"><span>add to
+                                                    cart</span></a>
+                                        </div><!-- End .product-action -->
+                                    </figure><!-- End .product-media -->
+
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#"></a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a
+                                                href="/productView?id={{this._id}}">{{this.name}}</a></h3>
+                                        <!-- End .product-title -->
+                                        <div class="product-price">
+                                            ₹ {{this.price}}
+                                        </div><!-- End .product-price -->
+
+
+                                        {{else}}
+                                        <span class="product-label label-out">Out of Stock</span>
+
+                                        <a href="/productView?id={{this._id}}">
+
+                                            <img src="/uploads/{{this.imageUrl.[0]}}" alt="Product image"
+                                                class="product-image">
+
+                                        </a>
+
+
+                                        <div class="product-action-vertical">
+                                            <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
+                                                    to wishlist</span></a>
+                                            {{!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
+                                                title="Quick view"><span>Quick view</span></a>
+                                            <a href="#" class="btn-product-icon btn-compare"
+                                                title="Compare"><span>Compare</span></a> --}}
+                                        </div><!-- End .product-action-vertical -->
+
+                                        <div class="product-action">
+                                            <button style="border: none;" disabled="disabled"
+                                                class="btn-product btn-cart"><span>add to
+                                                    cart</span></button>
+                                        </div><!-- End .product-action -->
+                                        </figure><!-- End .product-media -->
+
+                                        <div class="product-body">
+                                            <div class="product-cat">
+
+                                            </div><!-- End .product-cat -->
+                                            <h3 class="product-title"><a
+                                                    href="/productView?id={{this._id}}">{{this.name}}</a></h3>
+                                            <!-- End .product-title -->
+                                            <div class="product-price">
+                                                ₹ {{this.price}}
+                                            </div><!-- End .product-price -->
+                                            {{/if}}
+
+
+                                            <div class="ratings-container">
+                                                <div class="ratings">
+                                                    <div class="ratings-val" style="width: 80%;"></div>
+                                                    <!-- End .ratings-val -->
+                                                </div><!-- End .ratings -->
+                                                <span class="ratings-text">( 6 Reviews )</span>
+                                            </div><!-- End .rating-container -->
+
+
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .product -->
+                                </div><!-- End .col-sm-6 col-lg-4 -->
+                                {{/each}}
+                            </div><!-- End .row -->
+                        </div><!-- End .products -->
+
+
+
+                        {{!-- product end --}}
+
+
+
+
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
+                                        aria-disabled="true">
+                                        <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                                    </a>
+                                </li>
+                                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item-total">of 6</li>
+                                <li class="page-item">
+                                    <a class="page-link page-link-next" href="#" aria-label="Next">
+                                        Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+
+                    </div><!-- End .col-lg-9 -->
+
+
+                    <aside class="col-lg-3 order-lg-first">
+                        <div class="sidebar sidebar-shop">
+                            <div class="widget widget-clean">
+                                <label>Filters:</label>
+                                <a href="#" class="sidebar-filter-clear">Clean All</a>
+                            </div><!-- End .widget widget-clean -->
+
+
+
+
+                            <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
+                                        aria-controls="widget-1">
+                                        Category
+                                    </a>
+                                </h3><!-- End .widget-title -->
+
+                                <div class="collapse show" id="widget-1">
+                                    <div class="widget-body">
+                                        <div class="filter-items filter-items-count">
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                    <label class="custom-control-label" for="cat-1">Face</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">2</span>
+                                            </div><!-- End .filter-item -->
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-2">
+                                                    <label class="custom-control-label" for="cat-2">Body</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">1</span>
+                                            </div><!-- End .filter-item -->
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-3">
+                                                    <label class="custom-control-label" for="cat-3">Hair</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">2</span>
+                                            </div><!-- End .filter-item -->
+
+                                        </div><!-- End .filter-items -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+
+
+
+
+
+
+                            <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
+                                        aria-controls="widget-1">
+                                        Brands
+                                    </a>
+                                </h3><!-- End .widget-title -->
+
+                                <div class="collapse show" id="widget-1">
+                                    <div class="widget-body">
+                                        <div class="filter-items filter-items-count">
+
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                    <label class="custom-control-label" for="cat-1">Brwn</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">2</span>
+                                            </div><!-- End .filter-item -->
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                    <label class="custom-control-label" for="cat-1">Ever Eden</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">1</span>
+                                            </div><!-- End .filter-item -->
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                    <label class="custom-control-label" for="cat-1">Kiehls</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">2</span>
+                                            </div><!-- End .filter-item -->
+
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                    <label class="custom-control-label" for="cat-1">The Tribe</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">2</span>
+                                            </div><!-- End .filter-item -->
+
+                                            <div class="filter-item">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
+                                                    <label class="custom-control-label" for="cat-1">82e</label>
+                                                </div><!-- End .custom-checkbox -->
+                                                <span class="item-count">1</span>
+                                            </div><!-- End .filter-item -->
+
+                                        </div><!-- End .filter-items -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+
+
+
+                            {{!-- <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true"
+                                        aria-controls="widget-5">
+                                        Price
+                                    </a>
+                                </h3> <!-- End .widget-title -->
+
+                                <div class="collapse show" id="widget-5">
+                                    <div class="widget-body">
+                                        <div class="filter-price">
+                                            <div class="filter-price-text">
+                                                Price Range:
+                                                <span id="filter-price-range">200</span>
+                                            </div><!-- End .filter-price-text -->
+
+                                            <div id="price-slider"></div><!-- End #price-slider -->
+                                        </div><!-- End .filter-price -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget --> --}}
+
+
+                        </div><!-- End .sidebar sidebar-shop -->
+                    </aside><!-- End .col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+
+
+
+<script src="homejs/wNumb.js"></script>
+<script src="homejs/bootstrap-input-spinner.js"></script>
+<script src="homejs/nouislider.min.js"></script>
+
+
+
+
+{{>productfooter}}

@@ -1,0 +1,166 @@
+{{>dashhead}}
+
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-left: 1rem;
+    }
+
+    input[type="text"], input[type="file"] {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    label{
+        margin-top: 1rem;
+
+        margin-bottom: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 2rem;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+    img {
+        max-width: 200px;
+        max-height: 200px;
+        margin-bottom: 20px;
+    }
+
+    .container{
+        border-radius: 20px;
+        border: 1px solid black;
+        margin-left: 7.9rem;
+        background-color: #2e92a9;
+        color: white;
+        width: 55%;
+        
+        margin-bottom: 2rem    
+    }
+
+
+</style>
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ms-4" href="#">Admin Panel</a>
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto me-4">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">{{user}}</a>
+            </li>
+             <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Settings</a>
+            </li> -->
+            <li class="nav-item">
+                <a id="logoutBtn" class="btn btn-sm btn-danger " href="/admin/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-12 adminpages">
+            <ul class="adminroutes">
+                <li><h2><a href="/admin/dashboard">Dashboard</a></h2></li>
+                <li><h2><a href="/admin/users">Users</a></h2></li>
+                <li><h2><a href="/admin/orders">Orders</a></h2></li>
+                <li><h2><a href="/admin/categories">Categories</a></h2></li>
+                <li><h2><a href="/admin/products">Products</a></h2></li>
+            </ul>
+            
+        </div>
+    </div>
+
+
+
+    <div class="container" id="addCategory">
+		<h1>Add New Category</h1>
+        <h5 style="margin-left: 1rem; color: #4CAF50;">{{catSave}}</h5>
+        <h5 style="margin-left: 1rem; color: red;">{{catExist}}</h5>
+		<form action="/admin/addCategory" method="post" id="categoryValidate" enctype="multipart/form-data">
+
+			<input type="text" placeholder="Enter the category name" id="name" name="name">
+
+            <input type="text" placeholder="Category description" id="categoryDescription" name="categoryDescription">
+
+
+			<label for="image">Category Image :</label>
+			<input type="file" id="image" name="image" accept="image/*" required>
+
+			<img id="preview" src="#" alt="Image Preview" style="display: none;">
+
+			<input type="submit" value="Add Category">
+		</form>
+	</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+<script>
+    const inputImage = document.getElementById('image');
+    const imgPreview = document.getElementById('preview');
+
+    inputImage.addEventListener('change', function() {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', function() {
+                imgPreview.setAttribute('src', this.result);
+                imgPreview.style.display = 'block';
+            });
+
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+
+
+{{>dashfoot}}

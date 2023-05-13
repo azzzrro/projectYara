@@ -1,0 +1,134 @@
+
+
+
+{{>dashhead}}
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ms-4" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto me-4">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">{{user}}</a>
+            </li>
+
+            <li class="nav-item">
+                <a id="logoutBtn" class="btn btn-sm btn-danger " href="/admin/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-12 adminpages">
+            <ul class="adminroutes">
+                <li>
+                    <h2><a href="/admin/dashboard">Dashboard</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/users">Users</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/orders">Orders</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/categories">Categories</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/products">Products</a></h2>
+                </li>
+            </ul>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12" id="user_search">
+
+
+                        <div class="col-6" id="catMsg">
+                            <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
+                            <h5 id="noResultsFound">no results found!!</h5>
+
+                        </div>
+
+                        <div class="col-6" id="search">
+                            <input type="search" placeholder="Search Products" aria-label="Search" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-10 m-auto">
+
+
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">NO</th>
+                        <th scope="col">IMAGE</th>
+                        <th scope="col">NAME</th>
+                        <th scope="col">CATEGORY</th>
+                        <th scope="col">PRICE</th>
+                        <th scope="col">QUANTITY</th>
+                        <th scope="col">DESCRIPTION</th>
+                        <th scope="col">ACTION</th>
+
+                    </tr>
+                </thead>
+                <tbody style="height: 5rem;">
+
+                    {{#each productData}}
+                    <tr>
+                        <td scope="row">{{@index}}</td>
+                        <td>
+                            <img style="width 80px; height: 80px;" src="/uploads/{{this.imageUrl.[0]}}"
+                                alt="Product Image">
+                        </td>
+                        <td class="name-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{this.name}}">{{this.name}}</td>
+                        <td>{{this.category.category}}</td>
+                        <td>₹ {{this.price}}</td>
+                        <td>{{this.stock}}</td>
+                        <td class="description-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{this.description}}">{{this.description}}</td>
+
+
+
+                        <td>
+                            <a href="/admin/updateProduct/{{this._id}}" class="btn btn-sm btn-primary">Update</a>
+                            <button value="{{this._id}}" class="productDeleteBtn btn btn-sm btn-danger">Delete</button>
+
+                        </td>
+                    </tr>
+
+
+                    {{/each}}
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4 mb-5">
+                <a href="/admin/addProduct"><button class="btn btn-primary add_user" id="addUser">Add
+                        Product</button></a>
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+{{>dashfoot}}

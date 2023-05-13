@@ -1,0 +1,140 @@
+{{>dashhead}}
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand ms-4" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto me-4">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">{{user}}</a>
+            </li>
+
+            <li class="nav-item">
+                <a id="logoutBtn" class="btn btn-sm btn-danger" href="/admin/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-12 adminpages">
+            <ul class="adminroutes">
+                <li>
+                    <h2><a href="/admin/dashboard">Dashboard</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/users">Users</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/orders">Orders</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/categories">Categories</a></h2>
+                </li>
+                <li>
+                    <h2><a href="/admin/products">Products</a></h2>
+                </li>
+            </ul>
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12" id="user_search">
+
+
+                        <div class="col-6" id="catMsg">
+                            <h5 style="color: #4CAF50;">{{userUpdated}}</h5>
+                            <h5 id="noResultsFound">no results found!!</h5>
+                        </div>
+
+                        
+                            
+                        
+
+                        <div class="col-6" id="search">
+                            <input type="search" placeholder="Search Users" aria-label="Search" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-10 m-auto">
+
+
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">NO</th>
+                        <th scope="col">NAME</th>
+                        <th scope="col">EMAIL</th>
+                        <th scope="col">MOBILE NUMBER</th>
+                        {{!-- <th scope="col">id</th> --}}
+                        {{!-- <th scope="col">Status</th> --}}
+
+                        <th scope="col">ACTION</th>
+                        <th style="display: none;" scope="col">Password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+
+
+                    <tr>
+                        <td scope="row">{{@index}}</td>
+                        <td id="coloumn1_{{@index}}">{{this.name}}</td>
+                        <td id="coloumn2_{{@index}}">{{this.email}}</td>
+                        <td id="coloumn2_{{@index}}">{{this.mobile}}</td>
+                        {{!-- <td style="width: 15rem;" id="coloumn3_{{@index}}">{{this._id}}</td> --}}
+
+
+                        {{!-- {{#if this.is_blocked}}
+                        <td><button class="btn btn-sm btn-danger">Blocked</button></td>
+
+                        {{else}}
+
+                        <td><button class="btn btn-sm btn-success">Active</button></td>
+
+                        {{/if}} --}}
+
+                        <td>
+                            {{#if this.is_blocked}}
+
+                            <a href="/admin/blockUser/{{this.id}}"><button
+                                    class="btn btn-sm btn-success">Unblock</button></a>
+                            {{else}}
+                            <a href="/admin/blockUser/{{this.id}}"><button
+                                    class="btn btn-sm btn-danger">Block</button></a>
+                            {{/if}}
+
+                        </td>
+                        <td style="display: none" id="coloumn4">password</td>
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{{>dashfoot}}

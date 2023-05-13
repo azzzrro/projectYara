@@ -1,0 +1,235 @@
+{{>userheader}}
+
+
+
+
+    
+
+    <main class="main">
+        <div class="intro-slider-container">
+            <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light mb-0" data-toggle="owl"
+                data-owl-options='{
+                    "dots": true,
+                    "nav": false, 
+                    "responsive": {
+                        "1200": {
+                            "nav": true,
+                            "dots": false
+                        }
+                    }
+                }'>
+                <div class="intro-slide" style="background-image: url(/assets/images/demos/demo-8/slider/slide-1.jpg);">
+                    <div class="container intro-content text-left">
+                        <h3 class="intro-subtitle">Limited time only *</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title">Summer<br><strong>sale</strong></h1><!-- End .intro-title -->
+                        <h3 class="intro-subtitle">Up to 50% off</h3><!-- End .h3 intro-subtitle -->
+
+                        <a href="category.html" class="btn">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                    <!-- <img class="position-right" src="/assets/images/demos/demo-8/slider/img-1.png"> -->
+                </div><!-- End .intro-slide -->
+
+                <div class="intro-slide" style="background-image: url(/assets/images/demos/demo-8/slider/slide-2.jpg);">
+                    <div class="container intro-content text-right">
+                        <h3 class="intro-subtitle">ORIGINAL QUALITY</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title">sunscreens <span class="highlight">&</span><br>haircreams</h1>
+                        <!-- End .intro-title -->
+
+                        <a href="category.html" class="btn">
+                            <span>SHOP NOW</span>
+                            <i class="icon-long-arrow-right"></i>
+                        </a>
+                    </div><!-- End .intro-content -->
+                    <!-- <img class="position-left" src="/assets/images/demos/demo-8/slider/img-2.png"> -->
+                </div><!-- End .intro-slide -->
+            </div><!-- End .intro-slider owl-carousel owl-simple -->
+
+            <span class="slider-loader"></span><!-- End .slider-loader -->
+        </div><!-- End .intro-slider-container -->
+
+        <div class="pt-2 pb-2">
+            <div class="container brands">
+                <div class="banner-group">
+                    <div class="row">
+                        
+                        {{#each (slice categoryData 0 3)}}
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="banner banner-overlay">
+                                <a href="#">
+                                    <img src="/uploads/{{this.imageUrl}}" alt="Banner">
+                                </a>
+
+                                <div class="banner-content">
+                                    <h3 class="banner-title"><a href="#"><strong>{{this.category}}</strong></a></h3>
+                                    
+                                    <!-- End .banner-title -->
+                                    <a href="/products?id={{this._id}}" class="btn btn-outline-white banner-link">Shop Now <i
+                                            class="icon-long-arrow-right"></i></a>
+                                    <h4 style="max-width: 70%;" class="banner-subtitle mt-2"><a href="#">{{this.description}}</a></h4><!-- End .banner-subtitle -->
+
+                                </div><!-- End .banner-content -->
+                            </div><!-- End .banner -->
+                        </div><!-- End .col-lg-4 -->
+                        {{/each}}
+
+                        
+                    </div><!-- End .row -->
+                </div><!-- End .banner-group -->
+
+                <div class="owl-carousel mt-3 mb-3 owl-simple" data-toggle="owl" data-owl-options='{
+                        "nav": false, 
+                        "dots": false,
+                        "margin": 30,
+                        "loop": false,
+                        "responsive": {
+                            "0": {
+                                "items":2
+                            },
+                            "420": {
+                                "items":3
+                            },
+                            "600": {
+                                "items":4
+                            },
+                            "900": {
+                                "items":5
+                            },
+                            "1024": {
+                                "items":6
+                            }
+                        }
+                    }'>
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/1.png" alt="Brand Name">
+                    </a>
+
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/2.png" alt="Brand Name">
+                    </a>
+
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/3.png" alt="Brand Name">
+                    </a>
+
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/4.png" alt="Brand Name">
+                    </a>
+
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/5.png" alt="Brand Name">
+                    </a>
+
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/6.png" alt="Brand Name">
+                    </a>
+
+                    <a href="#" class="brand">
+                        <img src="/assets/images/brands/7.png" alt="Brand Name">
+                    </a>
+                </div><!-- End .owl-carousel -->
+            </div><!-- End .container -->
+        </div><!-- End .bg-lighter -->
+
+        <div class="mb-3"></div><!-- End .mb-6 -->
+
+
+        <div class="mb-3 mb-xl-2"></div><!-- End .mb-3 -->
+
+        <div class="trending">
+            <a href="#">
+                <img src="/assets/images/demos/demo-8/banners/banner-4.jpg" alt="Banner">
+            </a>
+            <div class="banner banner-big d-md-block">
+                <div class="banner-content text-center">
+                    <h4 class="banner-subtitle text-white">quality assured</h4><!-- End .banner-subtitle -->
+                    <h3 class="banner-title text-white">Hot products</h3><!-- End .banner-title -->
+                    <p class="d-none d-lg-block text-white">Power of nature and science combined in our innovative 
+                        skincare products that harness the latest breakthroughs in skincare technology </p>
+
+                    <a href="category.html" class="btn btn-primary-white"><span>Shop Now</span><i
+                            class="icon-long-arrow-right"></i></a>
+                </div><!-- End .banner-content -->
+            </div><!-- End .banner -->
+        </div>
+        <div class="container new-arrivals">
+            <div class="row">
+
+                {{#each (slice categoryData 3 6)}}
+                <div class="col-md-6">
+                    <div class="banner banner-overlay">
+                        <a href="#">
+                            <img src="/uploads/{{this.imageUrl}}" alt="Banner">
+                        </a>
+
+                        <div class="banner-content">
+                            <h3 class="banner-title"><a href="#">{{this.category}}</a></h3><!-- End .banner-title -->
+                                <h4 style="max-width: 70%;" style="margin-bottom: 80px;" class="banner-subtitle d-none d-lg-block"><a href="#">{{this.description}}</a></h4><!--End .banner-subtitle -->
+
+                            <a href="/products?id={{this._id}}" class="btn btn-outline-white banner-link">Shop Now <i
+                                    class="icon-long-arrow-right"></i></a>
+
+                        </div><!-- End .banner-content -->
+                    </div><!-- End .banner -->
+                </div><!-- End .col-md-6 -->
+
+                {{/each}}
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+
+        <div class="mb-5"></div><!-- End .mb-5 -->
+
+
+
+        <div class="mb-7"></div><!-- End .mb-5 -->
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="icon-box icon-box-card text-center">
+                        <span class="icon-box-icon">
+                            <i class="icon-rocket"></i>
+                        </span>
+                        <div class="icon-box-content">
+                            <h3 class="icon-box-title">Payment & Delivery</h3><!-- End .icon-box-title -->
+                            <p>Free shipping for orders over $50</p>
+                        </div><!-- End .icon-box-content -->
+                    </div><!-- End .icon-box -->
+                </div><!-- End .col-lg-4 col-sm-6 -->
+
+                <div class="col-lg-4 col-sm-6">
+                    <div class="icon-box icon-box-card text-center">
+                        <span class="icon-box-icon">
+                            <i class="icon-rotate-left"></i>
+                        </span>
+                        <div class="icon-box-content">
+                            <h3 class="icon-box-title">Return & Refund</h3><!-- End .icon-box-title -->
+                            <p>Free 100% money back guarantee</p>
+                        </div><!-- End .icon-box-content -->
+                    </div><!-- End .icon-box -->
+                </div><!-- End .col-lg-4 col-sm-6 -->
+
+                <div class="col-lg-4 col-sm-6">
+                    <div class="icon-box icon-box-card text-center">
+                        <span class="icon-box-icon">
+                            <i class="icon-life-ring"></i>
+                        </span>
+                        <div class="icon-box-content">
+                            <h3 class="icon-box-title">Quality Support</h3><!-- End .icon-box-title -->
+                            <p>Alway online feedback 24/7</p>
+                        </div><!-- End .icon-box-content -->
+                    </div><!-- End .icon-box -->
+                </div><!-- End .col-lg-4 col-sm-6 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+
+
+    </main><!-- End .main -->
+
+    
+
+
+
+{{>userfooter}}
