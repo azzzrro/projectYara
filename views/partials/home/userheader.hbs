@@ -49,7 +49,7 @@
                         <i class="icon-bars"></i>
                     </button>
 
-                    <a href="index.html" class="logo">
+                    <a href="/home" class="logo">
                         <img src="/assets/images/demos/demo-8/logo.png" alt="Molla Logo" width="60" height="10">
                     </a>
                 </div>
@@ -57,7 +57,7 @@
                     <nav class="main-nav">
                         <ul class="menu sf-arrows">
                             <li class="megamenu-container active">
-                                <a href="index.html" class="">Home</a>
+                                <a href="/home" class="">Home</a>
                             </li>
                             {{#each_from_three categoryData}}
                             <li>
@@ -67,7 +67,7 @@
                             {{#if userData}}
                             <li>
                                 
-                                <a href="blog.html" class="sf-with-ul">{{userData.name}}</a>
+                                <a href="" class="sf-with-ul">{{userData.name}}</a>
 
                                 <ul>
                                     <li><a href="/profile">Profile</a></li>
@@ -78,7 +78,7 @@
                             {{else}}
                             <li>
                                 
-                                <a href="blog.html" class="sf-with-ul">Account</a>
+                                <a  href="" class="sf-with-ul">Account</a>
 
                                 <ul>
                                     <li><a href="/login">Login</a></li>
@@ -104,18 +104,48 @@
                         </form>
                     </div><!-- End .header-search -->
 
-                    <a href="wishlist.html" class="wishlist-link">
+                    
+                    {{#if userData}}
+
+                    <a href="/wishlist" class="wishlist-link">
+                        <i class="icon-heart-o"></i>
+                        <span class="wishlist-count">{{userData.wishlist.length}}</span>
+                    </a>
+
+                    <a href="/cart?id={{userData._id}}" class="wishlist-link">
+                        <i class="icon-shopping-cart"></i>
+                        <span class="wishlist-count">{{userData.cart.length}}</span>
+                    </a>
+
+                    {{else}}
+
+                    <a href="/login" class="wishlist-link">
                         <i class="icon-heart-o"></i>
                         <!-- <span class="wishlist-count"> </span> -->
                     </a>
 
-                    <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    <a href="/login" class="wishlist-link">
+                        <i class="icon-shopping-cart"></i>
+                        {{!-- <span class="wishlist-count">0</span> --}}
+                    </a>
+                    {{/if}}
+
+                    {{!-- <div class="dropdown cart-dropdown">
+                        {{#if userData}}
+                        <a href="/cart" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false" data-display="static">
                             <i class="icon-shopping-cart"></i>
                             <!-- <span class="cart-count">2</span>
                             <span class="cart-txt">$ 164,00</span> -->
                         </a>
+                        {{else}}
+                        <a href="/login" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" data-display="static">
+                            <i href="/login" class="icon-shopping-cart"></i>
+                            <!-- <span class="cart-count">2</span>
+                            <span class="cart-txt">$ 164,00</span> -->
+                        </a>
+                        {{/if}}
 
                         <!-- <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-cart-products">
@@ -187,7 +217,9 @@
                         <!-- </div> -->
 
                         <!-- End .dropdown-menu -->
-                    </div><!-- End .cart-dropdown -->
+                    </div><!-- End .cart-dropdown --> --}}
+
+
                 </div><!-- End .header-right -->
             </div><!-- End .container -->
         </div><!-- End .header-bottom -->

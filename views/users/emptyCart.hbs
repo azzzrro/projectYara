@@ -32,7 +32,7 @@
 
 
 .footer {
-    background-color: #222
+    background-color: white
 }
 
 .footer .footer-logo {
@@ -54,7 +54,7 @@
 .footer .widget-title {
     text-transform: uppercase;
     letter-spacing: .01em;
-    color: #fff
+    color: black
 }
 
 .footer .footer-middle {
@@ -159,6 +159,15 @@
     color: #666
 }
 
+.btn-outline-primary-2 {
+  border-color: white;
+  color: white;
+}
+
+.btn-outline-primary-2:hover {
+  color: #c96;
+  background-color: white;
+}
 
 
 .header .header-right {
@@ -252,9 +261,9 @@
                         <span class="wishlist-count">{{userData.wishlist.length}}</span>
                     </a>
 
-                    <a href="/cart?id={{userData._id}}" class="wishlist-link">
+                    <a href="/cart" class="wishlist-link">
                         <i class="icon-shopping-cart"></i>
-                        <span class="wishlist-count">{{userData.cart.length}}</span>
+                        <span class="wishlist-count">0</span>
                     </a>
 
                     {{else}}
@@ -266,7 +275,7 @@
 
                     <a href="/login" class="wishlist-link">
                         <i class="icon-shopping-cart"></i>
-                        <span class="wishlist-count">0</span>
+                        {{!-- <span class="wishlist-count">0</span> --}}
                     </a>
                     {{/if}}
 
@@ -363,18 +372,19 @@
                 <div class="container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">404</li>
+                        <li class="breadcrumb-item active" aria-current="page">Shopping cart</li>
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
 
             <div class="error-content text-center"
-                style="background-image: url(assets/images/backgrounds/error-bg.jpg)">
+                style="background-image: url(/image/9ba09080924795.5cef394f1046e-COPY.jpg);
+                background-size: cover;">
                 <div class="container">
-                    <h1 class="error-title">Error 404</h1><!-- End .error-title -->
-                    <p>We are sorry, the page you've requested is not available.</p>
+                    <h1 class="error-title" style="color: white;">Cart is empty!</h1><!-- End .error-title -->
+                    <p style="color: white;">Please add some products to the cart</p>
                     <a href="/home" class="btn btn-outline-primary-2 btn-minwidth-lg">
-                        <span>BACK TO HOMEPAGE</span>
+                        <span>BACK TO SHOPPING</span>
                         <i class="icon-long-arrow-right"></i>
                     </a>
                 </div><!-- End .container -->

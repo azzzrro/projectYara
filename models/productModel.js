@@ -33,8 +33,13 @@ const produtSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    
+
     isOnCart:{
+        type:Boolean,
+        default:false
+    },
+
+    isWishlisted:{
         type:Boolean,
         default:false
     }

@@ -1,0 +1,81 @@
+{{>dashhead}}
+
+
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12" id="user_search">
+
+
+
+                        <div class="col-6" id="catMsg">
+                            <h5 id="noResultsFound">no results found!!</h5>
+                        </div>
+
+                        <div class="col-6" id="search">
+                            <input type="search" placeholder="Search Coupons" aria-label="Search" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-10 m-auto">
+
+
+            <table class="table table-hover mt-4">
+                <thead>
+                    <tr>
+                        <th scope="col">NO</th>
+                        <th scope="col">COUPON CODE</th>
+                        <th scope="col">DISCOUNT PERCENT</th>
+                        <th scope="col">EXPIRY DATE</th>
+                        <th scope="col">ACTION</th>
+
+                    </tr>
+                </thead>
+                <tbody style="height: 5rem; ">
+                    {{#each couponData}}
+
+                    <tr id="couponRow{{this._doc._id}}">
+                        <td scope="row">{{@index}}</td>
+                        <td>{{this._doc.code}}</td>
+                        <td>{{this._doc.discount}}%</td>
+                        <td>{{this.expiryDate}}</td>
+
+
+
+                        <td>
+                            <button onclick="deleteCoupon('{{this._doc._id}}')"
+                                class="btn btn-sm btn-danger">DELETE</button>
+                        </td>
+                    </tr>
+
+
+                    {{/each}}
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4 mb-5">
+                <a href="/admin/loadAddCoupon"><button class="btn btn-primary add_user">Add
+                        Coupon</button></a>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+    {{>dashfoot}}

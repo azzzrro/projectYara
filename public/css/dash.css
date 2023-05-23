@@ -7,6 +7,10 @@
     font-family: 'Poppins',sans-serif;
 }
 
+.swal2-popup {
+  font-size: 0.8rem !important;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

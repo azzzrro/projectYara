@@ -1,0 +1,87 @@
+{{>dashhead}}
+
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-left: 1rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"]{
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 2rem;
+    }
+
+    button:hover {
+        background-color: #3e8e41;
+    }
+
+   
+
+    .container {
+        border-radius: 20px;
+        border: 1px solid black;
+        margin-left: 7.9rem;
+        background-color: #2e92a9;
+        color: white;
+        width: 55%;
+
+        margin-bottom: 2rem
+    }
+</style>
+
+
+
+
+    <input type="search" style="display: none;" placeholder="Search Categories" aria-label="Search" />
+
+
+    <div class="container" id="addCategory">
+        <h1>Add New Coupon</h1>
+        <h5 style="margin-left: 1rem; color: #4CAF50;">{{couponSave}}</h5>
+        <h5 style="margin-left: 1rem; color: red;">{{couponExist}}</h5>
+        <form id="addCoupon">
+
+            <input type="text" placeholder="Enter Coupon Code" id="couponCode" name="couponCode">
+
+            <input type="number" placeholder="Discount %" id="couponDiscount" name="couponDiscount">
+
+
+            <input type="date" placeholder="Expiry Date" id="couponDate" name="couponDate">
+
+            <button type="submit">ADD COUPON</button>
+        </form>
+    </div>
+
+   </div>
+  </div>
+
+
+</div>
+
+{{>dashfoot}}

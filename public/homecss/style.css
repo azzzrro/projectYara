@@ -12896,7 +12896,9 @@ button:focus {
     padding: 1rem 1.5rem;
     max-width: 198px;
     color: #c96;
-    border: 0.1rem solid #c96
+    border: 0.1rem solid #c96;
+    background-color: white;
+    
 }
 
 .product-details-action .btn-cart span {
@@ -16564,7 +16566,7 @@ button:focus {
 }
 
 .card-dashboard .card-body {
-    padding: 4rem 2.8rem 2rem
+    padding: 2rem 2.8rem 2rem
 }
 
 .error-content {

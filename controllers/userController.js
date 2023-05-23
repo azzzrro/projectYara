@@ -1,7 +1,6 @@
 const User = require("../models/userModel");
 const Category = require("../models/categoryModel");
-const Product = require("../models/productModel");
-
+const Address = require("../models/addressModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 
@@ -246,7 +245,7 @@ const showForgotOtp = async (req, res) => {
             res.render("forgotOtpEnter", { invalidOtp: "Otp does not match" });
             req.session.wrongOtp = false;
         } else {
-            res.render("forgotOtpEnter");
+            res.render("forgotOtpEnter", { countdown: true });
         }
     } catch (error) {
         console.log(error.message);
@@ -288,7 +287,7 @@ const updatePassword = async (req, res) => {
 
 const homeload = async (req, res) => {
     try {
-        const categoryData = await Category.find(); 
+        const categoryData = await Category.find({ is_blocked: false });
 
         if (req.session.user) {
             res.render("home", { userData, categoryData });
@@ -297,7 +296,105 @@ const homeload = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
+    }
+};
 
+const loadProfile = async (req, res) => {
+    try {
+        const userData = req.session.user;
+        const userId = userData._id;
+        const categoryData = await Category.find({ is_blocked: false });
+        const addressData = await Address.find({ userId: userId });
+
+        res.render("account", { userData, categoryData, addressData });
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const addNewAddress = async (req, res) => {
+    try {
+        const userData = req.session.user;
+        const userId = userData._id;
+
+        const address = new Address({
+            userId: userId,
+            name: req.body.name,
+            mobile: req.body.mobileNumber,
+            addressLine: req.body.addressLine,
+            city: req.body.city,
+            email: req.body.email,
+            state: req.body.state,
+            pincode: req.body.pincode,
+            is_default: false,
+        });
+
+        await address.save();
+        res.status(200).send();
+    } catch (error) {
+        res.status(500).send();
+        console.log(error.message);
+    }
+};
+
+const getAddressdata = async (req, res) => {
+    try {
+        const addressId = req.query.addressId;
+        const addressData = await Address.findById(addressId);
+
+        if (addressData) {
+            res.json(addressData); // Return the addressData as JSON response
+        } else {
+            res.json({ message: "Address not found" }); // Handle address not found case
+        }
+    } catch {
+        console.log(error.message);
+    }
+};
+
+const updateAddress = async (req, res) => {
+    try {
+        const addressId = req.query.addressId;
+
+        console.log(addressId);
+
+        const updatedAddress = await Address.findByIdAndUpdate(
+            addressId,
+            {
+                name: req.body.name,
+                mobile: req.body.mobile,
+                addressLine: req.body.addressLine,
+                email: req.body.email,
+                city: req.body.city,
+                state: req.body.state,
+                pincode: req.body.pincode,
+            },
+            { new: true }
+        );
+
+        if (updatedAddress) {
+            res.status(200).send();
+        } else {
+            res.status(500).send();
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const deleteAddress = async (req, res) => {
+    try {
+        const addressId = req.query.addressId;
+
+        const success = await Address.findByIdAndDelete(addressId);
+
+        if (success) {
+            res.status(200).send();
+        } else {
+            res.status(500).send();
+        }
+    } catch (error) {
+        console.log(error.message);
     }
 };
 
@@ -305,30 +402,13 @@ const doLogout = async (req, res) => {
     try {
         req.session.destroy();
         userData = null;
-        res.redirect("/landing");
+        res.redirect("/login");
     } catch (error) {
         console.log(error.message);
     }
 };
 
-
-
-
-
-const loadCart=async(req,res)=>{
-  try{
-    const categoryData = await Category.find()
-
-    res.render('cart',{userData,categoryData})
-
-  }catch(error){
-    console.log(error.message);
-  }
-}
-
-
 module.exports = {
-    
     signup,
     login,
 
@@ -345,7 +425,11 @@ module.exports = {
     resendForgotOtp,
     updatePassword,
 
-    doLogout,
+    loadProfile,
+    addNewAddress,
+    getAddressdata,
+    updateAddress,
+    deleteAddress,
 
-    loadCart
+    doLogout,
 };

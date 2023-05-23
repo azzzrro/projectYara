@@ -49,24 +49,38 @@
 </div>
 
 
- <script>
-    const countdownElem = document.getElementById("countdown");
-    let countdown = localStorage.getItem("countdown") || 60; // start countdown at 60 seconds if no value is found in local storage
-    countdownElem.textContent = `00:${countdown}`; // set initial countdown text
-    const countdownInterval = setInterval(() => {
-      countdown--; // decrement countdown by 1
-      countdownElem.textContent = `00:${countdown}`; // update countdown text
+<script>
+  const countdownElem = document.getElementById("countdown");
+  let countdown;
+  let countdownInterval;
+
+  function startTimer() {
+    countdown = localStorage.getItem("countdown") || 60;
+    countdownElem.textContent = `00:${countdown}`;
+
+    countdownInterval = setInterval(() => {
+      countdown--;
+      countdownElem.textContent = `00:${countdown}`;
       if (countdown === 0) {
-        clearInterval(countdownInterval); // clear the countdown interval
-        countdownElem.style.display = "none"; // hide the countdown element
+        clearInterval(countdownInterval);
+        countdownElem.style.display = "none";
         const resendLink = document.getElementById("resend_link");
         resendLink.style.display = "block";
-        localStorage.removeItem("countdown"); // remove countdown value from local storage
+        localStorage.removeItem("countdown");
       } else {
-        localStorage.setItem("countdown", countdown); // store countdown value in local storage
+        localStorage.setItem("countdown", countdown);
       }
-    }, 1000); // update countdown every second (1000ms)
-  </script>
+    }, 1000);
+  }
+
+  // Check if countdown should be started
+  const startCountdown = {{ countdown }}; // Access the countdown value passed from the controller
+
+  if (startCountdown) {
+    window.addEventListener("load", startTimer); // Start the timer when the page is loaded
+  }
+</script>
+
 
 
 

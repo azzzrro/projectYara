@@ -1,12 +1,16 @@
 const User = require("../models/userModel");
 const Category = require("../models/categoryModel");
 const Product = require("../models/productModel");
+const Coupon = require('../models/couponModel')
+const moment = require('moment')
+require('dotenv').config();
+
 
 ////////////////////Admin credentials/////////////////////////////
 
 const credentials = {
-    email: "admin@gmail.com",
-    password: "admin1234",
+    email: process.env.ADMINEMAIL,
+    password: process.env.ADMINPASS,
 };
 
 ////////////////////ADMIN CONTROLLERS/////////////////////////////
@@ -213,11 +217,14 @@ const updateCategory = async (req, res) => {
     }
 };
 
-const deleteCategory = async (req, res) => {
-    const categoryId = req.params.id;
-
+const unlistCategory = async (req, res) => {
     try {
-        await Category.findByIdAndDelete(categoryId);
+        const categoryId = req.params.id;
+
+        const unlistCategory = await Category.findById(categoryId);
+
+        await Category.findByIdAndUpdate(categoryId, { $set: { is_blocked: !unlistCategory.is_blocked } }, { new: true });
+
         res.status(200).send();
     } catch (error) {
         console.log(error.message);
@@ -376,6 +383,87 @@ const deleteProduct = async (req, res) => {
     }
 };
 
+
+const loadCoupons = async(req,res)=>{
+    try {
+
+        const coupon = await Coupon.find()
+        const now = moment()
+
+        const couponData = coupon.map((element)=>{
+            const formattedDate = moment(element.expiryDate).format("MMMM D, YYYY")
+
+            return {
+                ...element,
+                expiryDate: formattedDate
+            }
+        })
+
+        res.render('coupons', { couponData })
+        
+    } catch (error) {
+        console.log(error.messaage);
+    }
+}
+
+
+
+const loadAddCoupon = async (req,res)=>{
+    try{
+
+        res.render('addCoupon',{ user: req.session.admin })
+
+    }catch(error){
+        console.log(error.messaage);
+    }
+}
+
+
+
+const addCoupon = async(req,res)=>{
+    try {
+
+        const { couponCode, couponDiscount, couponDate } = req.body
+
+        const couponCodeUpperCase = couponCode.toUpperCase();
+
+        const couponExist = await Coupon.findOne({ code: couponCodeUpperCase })
+
+        if(!couponExist){
+            const coupon = new Coupon({
+                code: couponCodeUpperCase,
+                discount: couponDiscount,
+                expiryDate: couponDate
+            })
+
+            await coupon.save()
+            res.json({message: "coupon addedd"})
+        }else{
+            res.json({messaage: "coupon exists"})
+        }
+        
+    } catch (error) {
+        console.log(error.messaage);
+    }
+}
+
+
+const deleteCoupon = async (req,res)=>{
+    try {
+
+        const couponId = req.query.couponId
+
+        await Coupon.findByIdAndDelete(couponId)
+
+        res.json({message: "success"})
+       
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
 module.exports = {
     loadLogin,
     verifyLogin,
@@ -392,7 +480,7 @@ module.exports = {
     addNewCategory,
     editCategory,
     updateCategory,
-    deleteCategory,
+    unlistCategory,
 
     loadProducts,
     addProduct,
@@ -401,4 +489,10 @@ module.exports = {
     updateNewProduct,
     deleteProductImage,
     deleteProduct,
+
+    loadCoupons,
+    loadAddCoupon,
+    addCoupon,
+    deleteCoupon
+    
 };

@@ -29,7 +29,7 @@ admin_route.get('/addCategory', adminAuth.isLogin, adminController.addCategory)
 admin_route.post('/addCategory', adminAuth.isLogin, store.single('image') , adminController.addNewCategory)
 admin_route.get('/editCategory/:id', adminAuth.isLogin, adminController.editCategory)
 admin_route.post('/updateCategory/:id', adminAuth.isLogin, store.single('image') , adminController.updateCategory)
-admin_route.get('/deleteCategory/:id', adminAuth.isLogin, adminController.deleteCategory)
+admin_route.get('/unlistCategory/:id', adminAuth.isLogin, adminController.unlistCategory)
 
 
 admin_route.get("/products", adminAuth.isLogin, adminController.loadProducts)
@@ -39,6 +39,12 @@ admin_route.delete('/product_img_delete', adminController.deleteProductImage)
 admin_route.get('/updateProduct/:id', store.array('image', 4) , adminAuth.isLogin, adminController.updateProduct)
 admin_route.post('/updateProduct/:id', store.array('image', 5) , adminAuth.isLogin, adminController.updateNewProduct)
 admin_route.get('/deleteProduct/:id', adminAuth.isLogin, adminController.deleteProduct)
+
+
+admin_route.get('/coupons', adminAuth.isLogin, adminController.loadCoupons)
+admin_route.get('/loadAddCoupon', adminAuth.isLogin, adminController.loadAddCoupon)
+admin_route.post('/addCoupon', adminController.addCoupon)
+admin_route.post('/deleteCoupon', adminController.deleteCoupon)
 
 
 

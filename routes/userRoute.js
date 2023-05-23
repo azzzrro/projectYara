@@ -1,9 +1,10 @@
 const userController = require("../controllers/userController");
-const products = require('../controllers/products')
+const productController = require('../controllers/productController')
+const cartController = require('../controllers/cartController')
 const auth = require("../middleware/userAuth")
 const express = require("express");
 const user_route = express();
-const { isLogout, isLogin } = auth
+const { isLogout, isLogin, blockCheck } = auth
 user_route.set("views", "./views/users");
 
 
@@ -34,14 +35,34 @@ user_route.post('/verifyForgotOtp',isLogout,userController.verifyForgotOtp)
 user_route.get('/resendForgotPasswordotp', isLogout ,userController.resendForgotOtp)
 user_route.post('/newPassword',isLogout, userController.updatePassword)
 
-user_route.get("/home", isLogin,  userController.homeload);
+user_route.get("/home", isLogin, blockCheck,  userController.homeload);
+user_route.get('/profile', isLogin, blockCheck, userController.loadProfile)
 user_route.get('/logout',  userController.doLogout)
 
+user_route.get('/allProducts', blockCheck, productController.loadAllProducts)
+user_route.get("/products", blockCheck, productController.loadProducts)
+user_route.get("/productView", blockCheck, productController.productView)
 
-user_route.get("/products", products.loadProducts)
-user_route.get("/productView", products.productView)
+user_route.get('/cart', isLogin, blockCheck, cartController.loadCart)
+user_route.get('/addToCart',cartController.addToCart)
+user_route.post('/cartUpdation',cartController.updateCart)
+user_route.get('/removeCart',cartController.removeCart)
 
-user_route.get('/cart',userController.loadCart)
+user_route.get('/checkStock', cartController.checkStock)
+user_route.get('/checkout', isLogin, blockCheck, cartController.loadCheckout)
+user_route.post('/addNewAddress', userController.addNewAddress)
+user_route.get('/addressData', userController.getAddressdata)
+user_route.post('/updateAddress', userController.updateAddress)
+user_route.get('/deleteAddress', userController.deleteAddress)
+
+
+
+
+user_route.get('/wishlist', isLogin, blockCheck, cartController.loadWishlist)
+user_route.get('/addToWishlist', cartController.addToWishlist)
+user_route.get('/removeWishlist', cartController.removeWishlist)
+user_route.get('/addToCartFromWishlist', cartController.addToCartFromWishlist)
+
 
 
 

@@ -1,0 +1,383 @@
+{{>cartheader}}
+
+<style>
+    .btnCoupon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0.85rem 1.5rem;
+        font-weight: 400;
+        font-size: 1.4rem;
+        line-height: 1.5;
+        letter-spacing: -.01em;
+        min-width: 56px;
+        border-radius: 0;
+        white-space: normal;
+        transition: all 0.3s;
+        margin-bottom: 11px;
+    }
+
+    .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background-color: #f9f9f9;
+    min-width: max-content;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    border: 1px solid #ddd;
+    list-style-type: none;
+}
+
+.dropdown-menu li {
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: small;
+    color: #c96;
+    font-weight: 500;
+    
+    
+}
+
+.dropdown-menu li:hover{
+    background-color: #c96;
+    color: white;
+    
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+</style>
+
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Checkout<span>Shop</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+                <div class="checkout-discount">
+
+                </div><!-- End .checkout-discount -->
+
+                <h3 class="card-title mt-3 mb-2">Choose Billing Address</h3><!-- End .card-title -->
+
+                {{!-- <form action="/test" method="get"> --}}
+
+                    <div class="row">
+
+                        <div class="col-lg-9">
+
+                            <div class="row">
+
+
+
+
+                                {{#each addressData}}
+
+                                <div class="col-lg-5 p-0 ml-3">
+
+                                    <div class="card card-dashboard">
+
+                                        <div class="card-body">
+
+                                            <label>
+
+
+                                                <input type="radio" name="selectedAddress" value="{{this.id}}"><br>
+                                                <strong>Name:</strong> {{this.name}}<br>
+                                                <strong>Mobile number:</strong> {{this.mobile}}<br>
+                                                <strong>Email:</strong> {{this.email}}<br>
+                                                <strong>Address:</strong> {{this.addressLine}}<br>
+                                                <strong>City:</strong> {{this.city}}<br>
+                                                <strong>State:</strong> {{this.state}}<br>
+                                                <strong>Pincode:</strong> {{this.pincode}}<br>
+                                                <a href="/profile">Edit <i class="icon-edit"></i></a>
+
+
+                                            </label>
+
+                                        </div><!-- End .card-body -->
+                                    </div><!-- End .card-dashboard -->
+                                </div><!-- End .col-lg-6 -->
+
+
+                                {{/each}}
+
+                            </div>
+
+
+                            {{!-- <a href="/profile" class="btn btn-outline-primary-2 mt-1">
+                                <span>ADD NEW ADDRESS</span>
+
+                            </a> --}}
+
+
+
+                            {{!-- new address form --}}
+
+                            <div>
+                                <h2 class="checkout-title">Add New Address</h2><!-- End .checkout-title -->
+
+                                <form id="addAddressCheckout">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+
+                                            <label>Full Name *</label>
+                                            <input type="text" name="name" class="form-control">
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Mobile Number *</label>
+                                            <input type="text" name="mobileNumber" class="form-control">
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+
+                                    <label>Address Line *</label>
+                                    <input type="text" name="addressLine" class="form-control">
+
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <label>Email *</label>
+                                            <input type="tel" name="email" class="form-control">
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Town / City *</label>
+                                            <input type="text" name="city" class="form-control">
+
+
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>State *</label>
+                                            <input type="text" name="state" class="form-control">
+
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Pincode *</label>
+                                            <input type="text" name="pincode" class="form-control">
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+
+
+
+                                    <button type="submit" class="btn btn-outline-primary-2 mt-1">
+                                        <span>SAVE ADDRESS</span>
+                                        <i class="icon-long-arrow-right"></i>
+                                    </button>
+
+                                </form>
+                            </div>
+
+
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary">
+                                <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                <table class="table table-summary">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        {{#each cart}}
+                                        <tr>
+                                            <td><a href="#">{{this.product.name}}</a></td>
+                                            <td>₹ {{this.total}}</td>
+                                        </tr>
+                                        {{/each}}
+
+
+                                        <tr class="summary-subtotal">
+                                            <td>Subtotal:</td>
+                                            <td>₹ {{subTotal}}</td>
+                                        </tr><!-- End .summary-subtotal -->
+                                        <tr>
+                                            <td>Shipping:</td>
+                                            <td>Free shipping</td>
+                                        </tr>
+                                        <tr>
+                                            {{!-- <div class="cart-bottom">
+                                                <div class="cart-discount">
+                                                    <form action="#">
+                                                        <div class="input-group"> --}}
+
+                                                            <td>
+                                                                <div class="dropdown">
+                                                                    <input style="width: 110%;" type="text"
+                                                                        class="form-control"                        
+                                                                        id="checkout-discount-input"
+                                                                        placeholder="Coupon code">
+                                                                    <ul id="coupon-dropdown" class="dropdown-menu">
+                                                                        {{#if availableCoupons}}
+                                                                        {{#each availableCoupons}}
+                                                                        <li>{{this.code}} get {{this.discount}}% discount</li>
+                                                                        {{/each}}
+                                                                        {{else}}
+                                                                        <li>No coupons available</li>
+                                                                        {{/if}}
+                                                                    </ul>
+                                                                </div>
+
+                                                            </td>
+
+                                                            {{!-- <div class="input-group-append"> --}}
+                                                                <td>
+
+                                                                    <button class="btn btnCoupon btn-outline-primary-2"
+                                                                        type="submit"><i
+                                                                            class="icon-long-arrow-right"></i></button>
+
+                                                                </td>
+
+                                                                {{!--
+                                                            </div><!-- .End .input-group-append -->
+                                                        </div><!-- End .input-group -->
+                                                    </form>
+                                                </div><!-- End .cart-discount --> --}}
+                                        </tr>
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>₹ {{subTotal}}</td>
+                                        </tr><!-- End .summary-total -->
+                                    </tbody>
+                                </table><!-- End .table table-summary -->
+
+
+                                <div class="accordion-summary" id="accordion-payment">
+
+                                    {{!-- <div class="card">
+                                        <div class="card-header" id="heading-1">
+                                            <h2 class="card-title">
+                                                <a role="button" data-toggle="collapse" href="#collapse-1"
+                                                    aria-expanded="true" aria-controls="collapse-1">
+                                                    Direct bank transfer
+                                                </a>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1"
+                                            data-parent="#accordion-payment">
+                                            <div class="card-body">
+                                                Make your payment directly into our bank account. Please use your Order
+                                                ID as the payment reference. Your order will not be shipped until the
+                                                funds have cleared in our account.
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .card --> --}}
+
+
+
+                                    <div class="card">
+                                        <div class="card-header" id="heading-3">
+                                            <h2 class="card-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse"
+                                                    href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                                    Cash on delivery
+                                                </a>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
+                                            data-parent="#accordion-payment">
+                                            <div class="card-body">Secure and Hassle-Free.
+                                                Pay when your order arrives at your doorstep!
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .card -->
+
+                                    <div class="card">
+                                        <div class="card-header" id="heading-4">
+                                            <h2 class="card-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse"
+                                                    href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+                                                    PayPal
+                                                </a>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        <div id="collapse-4" class="collapse" aria-labelledby="heading-4"
+                                            data-parent="#accordion-payment">
+                                            <div class="card-body">
+                                                Enjoy secure payments with PayPal, the globaly trusted payment platform.
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .card -->
+
+                                    <div class="card">
+                                        <div class="card-header" id="heading-2">
+                                            <h2 class="card-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse"
+                                                    href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                                                    Razorpay
+                                                </a>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
+                                            data-parent="#accordion-payment">
+                                            <div class="card-body">
+                                                Experience hassle-free and seamless Payments with Razorpay!
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .card -->
+
+                                    <div class="card ml-5 mt-2">
+                                        <div class="card-header" id="heading-5">
+
+
+                                            <img src="assets/images/payments-summary.png" alt="payments cards">
+
+
+                                        </div><!-- End .card-header -->
+
+                                    </div><!-- End .card -->
+                                </div><!-- End .accordion -->
+
+                                <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                    Place Order
+
+                                </button>
+                            </div><!-- End .summary -->
+                        </aside><!-- End .col-lg-3 -->
+                    </div><!-- End .row -->
+
+                {{!-- </form> --}}
+
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+
+{{>cartfooter}}

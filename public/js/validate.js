@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    
     //login form validate
 
     $("#login").validate({
@@ -14,7 +15,7 @@ $(document).ready(function () {
         messages: {
             email: {
                 required: "",
-                email: "enter valid email address",
+                email: "Enter valid email address",
             },
             password: {
                 required: "",
@@ -58,11 +59,11 @@ $(document).ready(function () {
             },
             email: {
                 required: "",
-                email: "enter valid email address",
+                email: "Enter valid email address",
             },
             mobile: {
                 required: "",
-                mbcheck: "enter valid mobile number",
+                mbcheck: "Enter valid mobile number",
             },
             re_password: {
                 required: "",
@@ -165,6 +166,68 @@ $(document).ready(function () {
                 minlength:"Atleast 8 characters"
             }
         }
+    })
+
+
+    $('#userProfile').validate({
+        rules:{
+            userName:{
+                required:true,               
+            },
+            userMobileNumber:{
+                required:true,
+                mbcheck:true
+            },
+            userEmail:{
+                required:true,
+                email:true
+            },
+            userCurrentPassword:{
+                required:true,
+                pwcheck:true,
+                minlength:8
+            }
+            // ,
+            // userNewPassword:{
+                
+            //     pwcheck:true,
+            //     minlength:8
+            // },
+            // userConfirmNewPassword:{
+                
+            //     pwcheck:true,
+            //     minlength:8
+            // }
+        },
+        messages:{
+            userName:{
+                required:"please enter your name"                
+            },
+            userMobileNumber:{
+                required:"please enter your mobile number",
+                mbcheck:"please enter valid mobile number"
+            },
+            userEmail:{
+                required:"please enter your email",
+                email:"enter valid email address"
+            },
+            userCurrentPassword:{
+                required:"Please enter your password",
+                pwcheck:"Please enter valid password",
+                minlength:""
+            }
+            // ,
+            // userNewPassword:{
+            //     pwcheck:"One lower-case character & one digit",
+            //     minlength:"Atleast 8 characters"
+            // },
+            // userConfirmNewPassword:{
+            //     pwcheck:"One lower-case character & one digit",
+            //     minlength:"Atleast 8 characters"
+            // }
+        }
+        
+        
     })
 
 
@@ -340,95 +403,5 @@ $(document).ready(function () {
         },
     });
 
-
-
-
-    //category delete confirmation
-
-    $(".catehoryDeleteBtn").click(async function (e) {
-        e.preventDefault();
-        var id = $(this).val();
-    
-        const result = await Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33", 
-            confirmButtonText: "Yes, delete it!",
-        });
-    
-        if (result.value) {
-            try {
-                const response = await fetch("/admin/deleteCategory/"+id, {
-                    method: "GET",
-                });
-                
-                if (response.ok) {
-                    const result2= await Swal.fire({
-                        icon: "success",
-                        title: "Category has been deleted successfully",
-                        showConfirmButton: true,
-                        confirmButtonText: "OK",
-                        confirmButtonColor: "#4CAF50"
-                        
-                    });
-
-                    if(result2){
-                        location.reload()
-                    }
-
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    });
-
-
-
-    //product delete confirmation
-
-    $(".productDeleteBtn").click(async function (e) {
-        e.preventDefault();
-        var id = $(this).val();
-    
-        const result = await Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33", 
-            confirmButtonText: "Yes, delete it!",
-        });
-    
-        if (result.value) {
-            try {
-                const response = await fetch("/admin/deleteProduct/"+id, {
-                    method: "GET",
-                });
-                
-                if (response.ok) {
-                    const result2= await Swal.fire({
-                        icon: "success",
-                        title: "Product has been deleted successfully",
-                        showConfirmButton: true,
-                        confirmButtonText: "OK",
-                        confirmButtonColor: "#4CAF50"
-                        
-                    });
-
-                    if(result2){
-                        location.reload()
-                    }
-
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    });
     
 });

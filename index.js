@@ -1,4 +1,3 @@
-
 const express = require("express")
 const path = require("path");
 const app=express()
@@ -14,7 +13,7 @@ const adminRoute = require("./routes/adminRoute");
 require('dotenv').config();
 
 
-const port=process.env.PORT||3000
+const port=process.env.PORT
 
 
 app.set('view engine','hbs')
@@ -65,6 +64,13 @@ hbs.registerHelper('eq', function (a, b) {
     return a === b;
 });
 
+hbs.registerHelper('checkStock', function(stock, options) {
+    if (stock <= 5) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+});
 
 /////////////////for routes///////////////
 
@@ -74,12 +80,13 @@ app.use("/admin", adminRoute);
 
 
 app.use(function(req, res, next) {
-    res.status(404).render('users/404');
+    const userData=req.session.user
+    res.status(404).render('users/404',{userData});
 });
 
 
 
 app.listen(port,()=>{
-    console.log("server running on http://localhost:3000/ ")
+    console.log(`server running on http://localhost:${port}/`)
 })
 
