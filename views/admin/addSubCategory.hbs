@@ -1,0 +1,127 @@
+{{>dashhead}}
+
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-left: 1rem;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    label {
+        margin-top: 1rem;
+
+        margin-bottom: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 2rem;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+    img {
+        max-width: 200px;
+        max-height: 200px;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        border-radius: 20px;
+        border: 1px solid black;
+        margin-left: 7.9rem;
+        background-color: #2e92a9;
+        color: white;
+        width: 50%;
+
+        margin-bottom: 2rem
+    }
+</style>
+
+
+</div>
+</div>
+
+
+
+            
+
+                <div class="container" id="addCategory">
+                    <h1>Add New Sub-Category</h1>
+                    <h5 style="margin-left: 1rem; color: #4CAF50;">{{catSave}}</h5>
+                    <h5 style="margin-left: 1rem; color: red;">{{catExist}}</h5>
+                    <form action="/admin/addSubCategory" method="post" id="subCategoryValidate" enctype="multipart/form-data">
+                
+                        <input type="text" placeholder="Enter the Sub-category name" id="name" name="name">
+                
+                        <input type="text" placeholder="SubCategory description" id="subCategoryDescription" name="subCategoryDescription">
+                
+                
+                        <label for="image">Category Image :</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                
+                        <img id="preview" src="#" alt="Image Preview" style="display: none;">
+                
+                        <input type="submit" value="Add Category">
+                    </form>
+                </div>
+    
+
+
+
+
+
+
+
+
+</div>
+
+
+<script>
+    const inputImage = document.getElementById('image');
+    const imgPreview = document.getElementById('preview');
+
+    inputImage.addEventListener('change', function () {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', function () {
+                imgPreview.setAttribute('src', this.result);
+                imgPreview.style.display = 'block';
+            });
+
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+
+
+{{>dashfoot}}

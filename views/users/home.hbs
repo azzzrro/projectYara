@@ -55,7 +55,7 @@
                 <div class="banner-group">
                     <div class="row">
                         
-                        {{#each (slice categoryData 0 3)}}
+                        {{#each categoryData}}
                         <div class="col-sm-6 col-lg-4">
                             <div class="banner banner-overlay">
                                 <a href="#">
@@ -154,19 +154,19 @@
                 </div><!-- End .banner-content -->
             </div><!-- End .banner -->
         </div>
-        <div class="container new-arrivals">
+        <div class="container new-arrivals mt-5">
             <div class="row">
 
-                {{#each (slice categoryData 3 6)}}
-                <div class="col-md-6">
+                {{#each subCategoryData}}
+                <div class="col-md-4">
                     <div class="banner banner-overlay">
                         <a href="#">
                             <img src="/uploads/{{this.imageUrl}}" alt="Banner">
                         </a>
 
                         <div class="banner-content">
-                            <h3 class="banner-title"><a href="#">{{this.category}}</a></h3><!-- End .banner-title -->
-                                <h4 style="max-width: 70%;" style="margin-bottom: 80px;" class="banner-subtitle d-none d-lg-block"><a href="#">{{this.description}}</a></h4><!--End .banner-subtitle -->
+                            <h3 class="banner-title"><a href="#">{{this.subCategory}}</a></h3><!-- End .banner-title -->
+                                <h4  class="banner-subtitle d-none d-lg-block"><a href="#">{{this.description}}</a></h4><!--End .banner-subtitle -->
 
                             <a href="/products?id={{this._id}}" class="btn btn-outline-white banner-link">Shop Now <i
                                     class="icon-long-arrow-right"></i></a>

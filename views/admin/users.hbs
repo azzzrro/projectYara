@@ -1,7 +1,11 @@
 {{>dashhead}}
 
 
-
+<style>
+    .nav-2 h2 a{
+        color: black;
+    }
+</style>
 
 
 
@@ -9,22 +13,32 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12" id="user_search">
-
-
-                        <div class="col-6" id="catMsg">
-                            <h5 style="color: #4CAF50;">{{userUpdated}}</h5>
-                            <h5 id="noResultsFound">no results found!!</h5>
+                    <div id="user_search">
+            
+                        <div class="col-lg-6">
+            
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{userUpdated}}</h5>
+                                <h5 id="noResultsFound">no results found!!</h5>
+                            </div>
+            
                         </div>
-
-                        
-                            
-                        
-
-                        <div class="col-6" id="search">
-                            <input type="search" placeholder="Search Users" aria-label="Search" />
+            
+            
+                        <div class="col-lg-6">
+            
+                            <div id="search">
+                                <input type="search" placeholder="Search Users" aria-label="Search" />
+                            </div>
+            
                         </div>
-
+            
+            
+            
+            
+            
+            
+            
                     </div>
                 </div>
             </div>
@@ -34,64 +48,41 @@
 
     <div class="row">
         <div class="col-lg-10 m-auto">
-
-
-            <table class="table table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th scope="col">NO</th>
-                        <th scope="col">NAME</th>
-                        <th scope="col">EMAIL</th>
-                        <th scope="col">MOBILE NUMBER</th>
-                        {{!-- <th scope="col">id</th> --}}
-                        {{!-- <th scope="col">Status</th> --}}
-
-                        <th scope="col">ACTION</th>
-                        <th style="display: none;" scope="col">Password</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each users}}
-
-
-                    <tr>
-                        <td scope="row">{{@index}}</td>
-                        <td id="coloumn1_{{@index}}">{{this.name}}</td>
-                        <td id="coloumn2_{{@index}}">{{this.email}}</td>
-                        <td id="coloumn2_{{@index}}">{{this.mobile}}</td>
-                        {{!-- <td style="width: 15rem;" id="coloumn3_{{@index}}">{{this._id}}</td> --}}
-
-
-                        {{!-- {{#if this.is_blocked}}
-                        <td><button class="btn btn-sm btn-danger">Blocked</button></td>
-
-                        {{else}}
-
-                        <td><button class="btn btn-sm btn-success">Active</button></td>
-
-                        {{/if}} --}}
-
-                        <td>
-                            {{#if this.is_blocked}}
-
-                            <a href="/admin/blockUser/{{this.id}}"><button
-                                    class="btn btn-sm btn-success">Unblock</button></a>
-                            {{else}}
-                            <a href="/admin/blockUser/{{this.id}}"><button
-                                    class="btn btn-sm btn-danger">Block</button></a>
-                            {{/if}}
-
-                        </td>
-                        <td style="display: none" id="coloumn4">password</td>
-                    </tr>
-
-                    {{/each}}
-
-                </tbody>
-            </table>
-
-
+            <div class="table-container">
+                <table class="table table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">NO</th>
+                            <th scope="col">NAME</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col">MOBILE NUMBER</th>
+                            <th scope="col">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each users}}
+                        <tr>
+                            <td scope="row">{{@index}}</td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.email}}</td>
+                            <td>{{this.mobile}}</td>
+                            <td>
+                                {{#if this.is_blocked}}
+                                <a href="/admin/blockUser/{{this.id}}"><button
+                                        class="btn btn-sm btn-success">Unblock</button></a>
+                                {{else}}
+                                <a href="/admin/blockUser/{{this.id}}"><button
+                                        class="btn btn-sm btn-danger">Block</button></a>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
+
 
     </div>
 </div>

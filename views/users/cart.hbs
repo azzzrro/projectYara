@@ -120,7 +120,8 @@
                             </tbody>
                         </table><!-- End .table table-wishlist -->
 
-                        <div class="cart-bottom">
+                        
+                        {{!-- <div class="cart-bottom">
                             <div class="cart-discount">
                                 <form action="#">
                                     <div class="input-group">
@@ -135,7 +136,9 @@
 
                             <a href="/cart?id={{userData._id}}" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i
                                     class="icon-refresh"></i></a>
-                        </div><!-- End .cart-bottom -->
+                        </div><!-- End .cart-bottom --> --}}
+
+
                     </div><!-- End .col-lg-9 -->
                     <aside class="col-lg-3">
                         <div class="summary summary-cart">
@@ -156,7 +159,7 @@
                                         <td>
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="free-shipping" name="shipping"
-                                                    class="custom-control-input">
+                                                    class="custom-control-input" onchange="handleShippingSelection(this)">
                                                 <label class="custom-control-label" for="free-shipping">Free
                                                     Shipping</label>
                                             </div><!-- End .custom-control -->
@@ -181,7 +184,7 @@
                                 </tbody>
                             </table><!-- End .table table-summary -->
 
-                            <button onclick="proceedToCheckout()" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
+                            <button disabled onclick="proceedToCheckout()" id="checkout-btn" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO
                                 CHECKOUT</button>
                         </div><!-- End .summary -->
 

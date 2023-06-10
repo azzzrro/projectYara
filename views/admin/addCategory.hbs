@@ -57,34 +57,40 @@
         margin-left: 7.9rem;
         background-color: #2e92a9;
         color: white;
-        width: 55%;
+        width: 50%;
 
         margin-bottom: 2rem
     }
 </style>
 
 
+</div>
+</div>
 
 
-    <div class="container" id="addCategory">
-        <h1>Add New Category</h1>
-        <h5 style="margin-left: 1rem; color: #4CAF50;">{{catSave}}</h5>
-        <h5 style="margin-left: 1rem; color: red;">{{catExist}}</h5>
-        <form action="/admin/addCategory" method="post" id="categoryValidate" enctype="multipart/form-data">
 
-            <input type="text" placeholder="Enter the category name" id="name" name="name">
+            
 
-            <input type="text" placeholder="Category description" id="categoryDescription" name="categoryDescription">
-
-
-            <label for="image">Category Image :</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
-
-            <img id="preview" src="#" alt="Image Preview" style="display: none;">
-
-            <input type="submit" value="Add Category">
-        </form>
-    </div>
+                <div class="container" id="addCategory">
+                    <h1>Add New Category</h1>
+                    <h5 style="margin-left: 1rem; color: #4CAF50;">{{catSave}}</h5>
+                    <h5 style="margin-left: 1rem; color: red;">{{catExist}}</h5>
+                    <form action="/admin/addCategory" method="post" id="categoryValidate" enctype="multipart/form-data">
+                
+                        <input type="text" placeholder="Enter the category name" id="name" name="name">
+                
+                        <input type="text" placeholder="Category description" id="categoryDescription" name="categoryDescription">
+                
+                
+                        <label for="image">Category Image :</label>
+                        <input type="file" id="image" name="image" accept="image/*" required>
+                
+                        <img id="preview" src="#" alt="Image Preview" style="display: none;">
+                
+                        <input type="submit" value="Add Category">
+                    </form>
+                </div>
+    
 
 
 

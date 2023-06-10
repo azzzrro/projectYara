@@ -2,25 +2,46 @@
 
 
 
+<style>
+    select{
+        background-color: transparent;
+        border: none;
+    }
+    select:hover{
+        cursor: pointer;
+    }
 
+    
+    .nav-4 h2 a{
+        color: black;
+    }
+
+</style>
 
 
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12" id="user_search">
-
-
-                        <div class="col-6" id="catMsg">
-                            <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
-                            <h5 id="noResultsFound">no results found!!</h5>
-
+                    <div id="user_search">
+            
+                        <div class="col-lg-6">
+            
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
+                                <h5 id="noResultsFound">no results found!!</h5>
+            
+                            </div>
+            
                         </div>
-
-                        <div class="col-6" id="search">
-                            <input type="search" placeholder="Search Orders" aria-label="Search" />
+            
+                        <div class="col-lg-6">
+            
+                            <div id="search">
+                                <input type="search" placeholder="Search Orders" aria-label="Search" />
+                            </div>
+            
                         </div>
-
+            
                     </div>
                 </div>
             </div>
@@ -30,49 +51,121 @@
 
     <div class="row">
         <div class="col-lg-10 m-auto">
+            <div class="table-container">
+                <table class="table table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">NO</th>
+                            <th scope="col">DATE</th>
+                            <th scope="col">ORDER-ID</th>
+                            <th scope="col">PAYMENT METHOD</th>
+                            <th scope="col">ORDER STATUS</th>
+                            <th scope="col"></th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each orderData}}
+                        <tr>
+                            <td>{{@index}}</td>
+                            <td scope="row">{{this.date}}</td>
+                            <td >{{this.orderId}}</td>
+                            <td >{{this.paymentMethod}}</td>
+                            
+                            
+                            {{#if (eq this.status "Pending")}}
+                            
+                            
+                            <td>
+
+                                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                                    <option value="" disabled selected>{{this.status}}</option>
+                                    <option value="Shipped">Shipped</option>
+                                    <option value="Delivered">Delivered</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                    
+                                </select>
+
+                            </td>
+
+                            {{else if (eq this.status "Shipped")}}
+
+                            <td>
+
+                                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                                    <option value="" disabled selected>{{this.status}}</option>
+                                    <option value="Delivered">Delivered</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+
+                            </td>
+
+                            {{else if (eq this.status "Cancelled")}}
+
+                            <td style="color: red; font-weight: 600;">
+                                Cancelled
+                            </td>
+
+                            {{else if (eq this.status "Returned")}}
+
+                            <td style="color: rgb(246, 136, 1); font-weight: 600;">
+                                Returned
+                            </td>
+
+                            {{else}}
+
+                            <td>
+
+                                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                                    <option value="" disabled selected>{{this.status}}</option>
+                                    <option value="Returned">Returned</option>
+                                </select>
+
+                            </td>
+
+                            {{/if}}
 
 
-            <table class="table table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th scope="col">NO</th>
-                        <th scope="col">NAME</th>
-                        <th scope="col">PRODUCT</th>
-                        <th scope="col">ADDRESS</th>
-                        <th scope="col">QUANTITY</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">STATUS</th>
-                        <th scope="col">ACTION</th>
-                    </tr>
-                </thead>
-                <tbody style="height: 5rem;">
-
-
-                    <tr>
-                        <td scope="row">1</td>
-                        <td id="coloumn1_{{@index}}">Name</td>
-                        <td id="coloumn2_{{@index}}">Product</td>
-                        <td style="width: 15rem;" id="coloumn3_{{@index}}">Address</td>
-                        <td scope="row">1 nos</td>
-                        <td scope="row">2,500</td>
-                        <td scope="row"><button class="btn btn-sm btn-success">Shipped</button></td>
-
-                        <td>
-                            <button id="orderUpdateBtn" class="btn btn-sm btn-primary">Update</button>
-                            <a href="/delete/{{this._id}}" class="btn btn-sm btn-danger">Delete</a>
-
-                        </td>
-                    </tr>
-
-
-
-                </tbody>
-            </table>
-
-
+                            <td scope="row">
+                                <a class="btn btn-sm btn-primary" href="/admin/orderDetails?orderId={{this._id}}">
+                                order details</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
     </div>
+
+
+    <div class="pagination justify-content-center mt-2">
+    <nav aria-label="...">
+        <ul class="pagination pagination-sm">
+            {{#gt totalPages 1}}
+                {{#each (range 1 totalPages)}}
+                    {{#if (eq this ../currentPage)}}
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{this}}</span>
+                        </li>
+                    {{else}}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{this}}">{{this}}</a>
+                        </li>
+                    {{/if}}
+                {{/each}}
+            {{/gt}}
+        </ul>
+    </nav>
+</div>
+
+
+
+
+
+
+
+
 </div>
 
 

@@ -202,18 +202,14 @@
                     <div class="header-center">
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="index.html" class="">Home</a>
-                                </li>
-                                <li>
-                                    <a href="category.html" class="">Men</a>
-                                </li>
-                                <li>
-                                    <a href="product.html" class="">Women</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="">Kids</a>
-                                </li>
+                                 <li class="megamenu-container active">
+                                <a href="/home" class="">Home</a>
+                            </li>
+                            {{#each categoryData}}
+                            <li>
+                                <a href="/products?id={{this._id}}" class="">{{this.category}}</a>
+                            </li>
+                            {{/each}}
                                 {{#if userData}}
                                 <li>
 

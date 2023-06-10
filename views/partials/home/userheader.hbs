@@ -22,6 +22,7 @@
     <meta name="msapplication-config" content="images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="homecss/bootstrap.min.css">
     <link rel="stylesheet" href="homecss/plugins/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="homecss/plugins/magnific-popup/magnific-popup.css">
@@ -35,6 +36,21 @@
 
 
 </head>
+
+<style>
+    
+    
+    .compare-dropdown .dropdown-menu {
+        padding: 2.2rem 2rem 2.5rem;
+    }
+    .addFund a{      
+    border: 1px solid;
+    padding: 8px 15px 8px 15px;
+    }
+    .dropdown-toggle:hover .fa-regular.fa-credit-card {
+    color: #eea287;
+}
+</style>
 
 <body>
 
@@ -59,11 +75,11 @@
                             <li class="megamenu-container active">
                                 <a href="/home" class="">Home</a>
                             </li>
-                            {{#each_from_three categoryData}}
+                            {{#each categoryData}}
                             <li>
                                 <a href="/products?id={{this._id}}" class="">{{this.category}}</a>
                             </li>
-                            {{/each_from_three}}
+                            {{/each}}
                             {{#if userData}}
                             <li>
                                 
@@ -71,7 +87,7 @@
 
                                 <ul>
                                     <li><a href="/profile">Profile</a></li>
-                                    <li><a href="/about">About</a></li>
+                                    <li><a href="/myOrders">My Orders</a></li>
                                     <li><a href="/logout">Logout</a></li>
                                 </ul>
                             </li>
@@ -95,11 +111,12 @@
                 <div class="header-right">
                     <div class="header-search">
                         <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                        <form action="#" method="get">
+                        <form action="/allProducts" method="get">
                             <div class="header-search-wrapper">
                                 <label for="q" class="sr-only">Search</label>
-                                <input type="search" class="form-control" name="q" id="q" placeholder="Search in..."
+                                <input type="search" class="form-control" name="search" id="q" placeholder="Search in..."
                                     required>
+                                    
                             </div><!-- End .header-search-wrapper -->
                         </form>
                     </div><!-- End .header-search -->
@@ -116,6 +133,47 @@
                         <i class="icon-shopping-cart"></i>
                         <span class="wishlist-count">{{userData.cart.length}}</span>
                     </a>
+
+                    <div class="dropdown compare-dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            data-display="static" title="Compare Products" aria-label="Compare Products">
+                            <i class="fa-regular fa-credit-card fa-sm"  ></i>
+                        </a>
+                    
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <ul class="compare-products">
+                                
+                                <li class="compare-product text-center">
+                                    <h5>Available Wallet Balance</h5>
+                                </li>
+                            </ul>
+
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    
+                            
+                                        <div class="col-lg-6 d-flex justify-content-center">
+                                            <p style="font-size: 2.4rem">₹ {{userData.wallet}}</p>
+                                        </div>
+                                        <div class="col-lg-6 d-flex justify-content-start align-items-center p-0">
+                                            <div class="addFund">
+                                            <a href="#"  class=" btn-outline-primary-2"><span>Add Fund</span><i
+                                                class="icon-long-arrow-right"></i></a>
+
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                    
+                            
+                                
+                                
+                            
+                        </div><!-- End .dropdown-menu -->
+                    </div><!-- End .compare-dropdown -->
+
+
 
                     {{else}}
 

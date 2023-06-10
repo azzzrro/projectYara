@@ -1,0 +1,65 @@
+{{>cartheader}}
+
+<style>
+    .success-message {
+  display: flex;
+  
+  justify-content: center;
+}
+
+.success-message i {
+  margin-right: 5px;
+  margin-top: 1px;
+  font-size: 2rem; 
+}
+
+.success-content{
+    color: #777;
+    font-weight: 400;
+    font-size: 1.8rem;
+    line-height: 1.5;
+    letter-spacing: -.025em;
+    padding-top: 16rem;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    min-height: 480px;
+    background-color: #fdfdfd
+}
+
+
+</style>
+
+<main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order success</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="error-content success-content text-center"
+                style="background-image: url(assets/images/backgrounds/16264008_rm191-nu-08.jpg)">
+                <div class="container">
+                    
+                    
+                        <h1 class="error-title">THANK YOU!</h1>
+                    
+                    <div class="success-message">
+                        <i class="fa-solid fa-circle-check" style="color: #2fad01;"></i>
+                        <h1 class="error-title" style="font-size: 2rem;">YOUR ORDER IS CONFIRMED</h1>
+                    </div>
+                    <!-- End .error-title -->
+                    <p>We are getting started on your order right away<br>and you will recieve confirmation email shortly to <strong>{{userData.email}}</strong>.</p>
+                    
+                    <a href="/myOrders" class="btn btn-outline-primary-2 btn-minwidth-md">
+                        <span>VIEW ORDER DETAILS</span>
+                        <i class="icon-long-arrow-right"></i>
+                    </a>
+                </div><!-- End .container -->
+            </div><!-- End .error-content text-center -->
+        </main><!-- End .main -->
+
+{{>cartfooter}}

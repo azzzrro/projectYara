@@ -1,6 +1,12 @@
 {{>productheader}}
 
-
+<style>
+    .filterName{
+        font-weight: 400;
+        color: #333;
+        cursor: pointer;
+    }
+</style>
 
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
@@ -39,10 +45,10 @@
                             <div class="toolbox-sort">
                                 <label for="sortby">Sort by:</label>
                                 <div class="select-custom">
-                                    <select name="sortby" id="sortby" class="form-control">
-                                        <option value="popularity" selected="selected">Most Popular</option>
-                                        <option value="rating">Most Rated</option>
-                                        <option value="date">Date</option>
+                                    <select name="sortby" id="sortOptions" onchange="sortProducts()" class="form-control">
+                                        <option value="relevent" selected="selected">Most Relevent</option>
+                                        <option value="asc">Price: Low to High</option>
+                                        <option value="desc">Price: High to Low</option>
                                     </select>
                                 </div>
                             </div><!-- End .toolbox-sort -->
@@ -54,8 +60,14 @@
 
                     {{!-- product --}}
 
+                    {{#if id}}
+                    <input type="hidden" id="productId" value="{{id}}">
+                    {{/if}}
 
-                    <div class="products mb-3">
+
+                    <span id="productContainer">
+
+                    <div class="products mb-3" id="productList">
                         <div class="row justify-content-center">
 
                             {{#each productData}}
@@ -74,11 +86,7 @@
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
                                                     to wishlist</span></a>
-                                            {{!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
-                                                title="Quick view"><span>Quick view</span></a>
-                                            <a href="#" class="btn-product-icon btn-compare"
-                                                title="Compare"><span>Compare</span></a> --}}
-                                        </div><!-- End .product-action-vertical -->
+                                            </div><!-- End .product-action-vertical -->
 
                                         
 
@@ -114,11 +122,7 @@
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
                                                     to wishlist</span></a>
-                                            {{!-- <a href="popup/quickView.html" class="btn-product-icon btn-quickview"
-                                                title="Quick view"><span>Quick view</span></a>
-                                            <a href="#" class="btn-product-icon btn-compare"
-                                                title="Compare"><span>Compare</span></a> --}}
-                                        </div><!-- End .product-action-vertical -->
+                                            </div><!-- End .product-action-vertical -->
 
                                         <div class="product-action">
                                             <button style="border: none;" disabled="disabled"
@@ -165,19 +169,16 @@
 
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1"
-                                        aria-disabled="true">
+                                <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
+                                    <a class="page-link page-link-prev" href="?page={{subtract currentPage 1}}" aria-label="Previous"
+                                        tabindex="-1" aria-disabled="{{eq currentPage 1}}">
                                         <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                                     </a>
                                 </li>
-                                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item-total">of 6</li>
-                                <li class="page-item">
-                                    <a class="page-link page-link-next" href="#" aria-label="Next">
+                                <li class="page-item-total">Page {{currentPage}} of {{totalPages}}</li>
+                                <li class="page-item {{#if (eq currentPage totalPages)}}disabled{{/if}}">
+                                    <a class="page-link page-link-next" href="?page={{add currentPage 1}}" aria-label="Next"
+                                        aria-disabled="{{eq currentPage totalPages}}">
                                         Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                                     </a>
                                 </li>
@@ -186,18 +187,25 @@
 
 
 
+
+
+
                     </div><!-- End .col-lg-9 -->
+                    </span>
 
 
                     <aside class="col-lg-3 order-lg-first">
                         <div class="sidebar sidebar-shop">
+                            
                             <div class="widget widget-clean">
                                 <label>Filters:</label>
-                                <a href="#" class="sidebar-filter-clear">Clean All</a>
+                                <a href="" class="sidebar-filter-clear"><a href="">Clean All</a></a>
                             </div><!-- End .widget widget-clean -->
 
 
 
+
+                            {{#if categoryFilterData}}
 
                             <div class="widget widget-collapsible">
                                 <h3 class="widget-title">
@@ -207,33 +215,55 @@
                                     </a>
                                 </h3><!-- End .widget-title -->
 
+                                
+
                                 <div class="collapse show" id="widget-1">
                                     <div class="widget-body">
                                         <div class="filter-items filter-items-count">
+                                            
+                                            {{#each categoryFilterData}}
                                             <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">Face</label>
+                                                <div>
+                                                    <input type="checkbox" onclick="categoryFilter('{{this._id}}')"  id="cat-1">
+                                                    <label class="filterName">{{this.category}}</label>
                                                 </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">2</span>
+                                                <span class="item-count">{{this.productCount}}</span>
                                             </div><!-- End .filter-item -->
+                                            {{/each}}
 
+                                         
+                                        </div><!-- End .filter-items -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+
+                            {{/if}}
+
+
+
+                            <div class="widget widget-collapsible">
+                                <h3 class="widget-title">
+                                    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true"
+                                        aria-controls="widget-1">
+                                        Sub-Category
+                                    </a>
+                                </h3><!-- End .widget-title -->
+
+                                <div class="collapse show" id="widget-1">
+                                    <div class="widget-body">
+                                        <div class="filter-items filter-items-count">
+                                            
+                                            {{#each subCategoryData}}
                                             <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-2">
-                                                    <label class="custom-control-label" for="cat-2">Body</label>
+                                                <div>
+                                                    <input type="checkbox" onclick="subCategoryFilter('{{this._id}}')" id="cat-1">
+                                                    <label class="filterName">{{this.subCategory}}</label>
                                                 </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">1</span>
+                                                <span class="item-count">{{this.productCount}}</span>
                                             </div><!-- End .filter-item -->
+                                            {{/each}}
 
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-3">
-                                                    <label class="custom-control-label" for="cat-3">Hair</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">2</span>
-                                            </div><!-- End .filter-item -->
-
+                                         
                                         </div><!-- End .filter-items -->
                                     </div><!-- End .widget-body -->
                                 </div><!-- End .collapse -->
@@ -257,46 +287,16 @@
                                         <div class="filter-items filter-items-count">
 
 
+                                            {{#each brandData}}
                                             <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">Brwn</label>
+                                                <div>
+                                                    <input type="checkbox" onclick="brandFilter('{{this._id}}')"  id="cat-1">
+                                                    <label  class="filterName" >{{this.name}}</label>
                                                 </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">2</span>
+                                                <span class="item-count">{{this.productCount}}</span>
                                             </div><!-- End .filter-item -->
-
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">Ever Eden</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">1</span>
-                                            </div><!-- End .filter-item -->
-
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">Kiehls</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">2</span>
-                                            </div><!-- End .filter-item -->
-
-
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">The Tribe</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">2</span>
-                                            </div><!-- End .filter-item -->
-
-                                            <div class="filter-item">
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="cat-1">
-                                                    <label class="custom-control-label" for="cat-1">82e</label>
-                                                </div><!-- End .custom-checkbox -->
-                                                <span class="item-count">1</span>
-                                            </div><!-- End .filter-item -->
+                                            {{/each}}
+                                            
 
                                         </div><!-- End .filter-items -->
                                     </div><!-- End .widget-body -->

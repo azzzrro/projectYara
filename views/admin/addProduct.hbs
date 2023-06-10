@@ -22,7 +22,8 @@
 
     #name,
     #quantity,
-    #Price {
+    #Price,
+    #new-brand-input {
         margin-bottom: 20px;
         margin-left: 22px;
 
@@ -34,17 +35,16 @@
         max-width: 400px;
     }
 
-    #description {
-        margin-bottom: 20px;
-        margin-left: 22px;
+   
 
+    textarea{
         padding: 10px;
         border: none;
         border-radius: 5px;
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-        width: 50rem;
-
-
+        margin-top: 40px;
+        margin-left: 22px;
+        width: 80%;
     }
 
     input[type="file"] {
@@ -111,7 +111,7 @@
 
     select {
 
-        margin-left: 2rem;
+        margin-left: 22px;
         margin-top: 8px;
         height: 30px;
         width: 50px;
@@ -120,30 +120,35 @@
         box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    #description-error {
-        position: relative;
-        top: 7px;
-        right: 800px;
-        font-size: 11pt;
 
-
+     #new-brand-input{
+        margin-top: 15px;
     }
+
+    
 
     #image1-error {
         position: absolute;
-        top: 82%;
-        right: 87.5%;
-        font-size: 9pt;
+        top: 86%;
+        right: 86%;
+        font-size: 10pt;
     }
 
     #name-error,
     #Price-error,
     #category-error,
-    #quantity-error {
-        font-size: 9pt;
+    #quantity-error ,
+    #subCategory-error{
+        font-size: 10pt;
         margin: auto;
         margin-left: 4px;
         
+    }
+
+    #description-error{
+        font-size: 10pt;
+        margin: auto;
+        margin-left: 1.8rem;
     }
 </style>
 
@@ -159,20 +164,60 @@
 
         <form action="/admin/addProduct" method="post" id="addProductValidation" enctype="multipart/form-data">
 
-            <div id="details">
 
-                <input type="text" placeholder="Product Name" id="name" name="name">
-                <input type="number" placeholder="Price" id="Price" name="price">
-                <input type="number" placeholder="Quantity" id="quantity" name="quantity">
+        <div class="container-fluid">
+            <div class="row mt-4">
+                <div class="col-lg-12 col-md-6 p-0">
+        
+                    
+        
+                        <input type="text" placeholder="Product Name" id="name" name="name">
+                        <input type="number" placeholder="Price" id="Price" name="price">
+                        <input type="number" placeholder="Quantity" id="quantity" name="quantity">
 
-                <select style="width:200px;" name="category" required>
-                    <option value="" disabled selected>Select a category</option>
-                    {{#each categoryData}}
-                    <option value="{{this._id}}">{{this.category}}</option>
-                    {{/each}}
-                </select>
+                
+                </div>
 
             </div>
+
+            <div class="row mt-4">
+
+                <div class="col-lg-12 col-md-6 p-0">
+        
+                        <select style="width:180px;" name="category" required>
+                            <option value="" disabled selected>Select category</option>
+                            {{#each categoryData}}
+                            <option value="{{this._id}}">{{this.category}}</option>
+                            {{/each}}
+                        </select>
+        
+                        <select style="width:200px;" name="subCategory" required>
+                            <option value="" disabled selected>Select Sub-Category</option>
+                            {{#each subCategoryData}}
+                            <option value="{{this._id}}">{{this.subCategory}}</option>
+                            {{/each}}
+                        </select>
+
+                        <select style="width: 200px;" name="brand" id="brand-select" required>
+                            <option value="" disabled selected>Select Brand</option>
+                            {{#each brands}}
+                            <option value="{{this._id}}">{{this.name}}</option>
+                            {{/each}}
+                            <option class="new-brand" value="new">Enter New Brand</option>
+                        </select>
+                        
+                        <input type="text" id="new-brand-input" class="d-none" name="newBrand" placeholder="Enter brand" required >
+
+
+        
+                    
+        
+                </div>
+            </div>
+
+            
+        </div>
+            
 
             <textarea type="text" placeholder="Description" id="description" name="description" required></textarea>
 

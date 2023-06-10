@@ -2,7 +2,6 @@
 
   /////////////// SEARCHING ////////////////////
 
-
 // Get the search input and table rows
 const searchInput = document.querySelector('input[type="search"]');
 const tableRows = document.querySelectorAll("tbody tr");
@@ -52,10 +51,34 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   /////////////// CATEGORY AND PRODUCT ////////////////////
 
 
+// Get the select element and input field
+const brandSelect = document.getElementById("brand-select");
+const newBrandInput = document.getElementById("new-brand-input");
+
+// Add event listener to the select element
+if (brandSelect) {
+  brandSelect.addEventListener("change", function () {
+    const selectedOption = brandSelect.value;
+
+    // Check if the selected option is "new"
+    if (selectedOption === "new") {
+      newBrandInput.classList.remove("d-none"); // Remove the d-none class
+    } else {
+      newBrandInput.classList.add("d-none"); // Add the d-none class
+    }
+  });
+}
+
+
+
+
+
+
+
 $(document).ready(function () {
 
 
-  //category delete confirmation
+  //category unlist confirmation
 
     $(".categoryUnlistBtn").click(async function (e) {
         e.preventDefault();
@@ -95,6 +118,49 @@ $(document).ready(function () {
             }
         }
     });
+
+
+
+    //category unlist confirmation
+
+    $(".subCategoryUnlistBtn").click(async function (e) {
+      e.preventDefault();
+      var id = $(this).val();
+
+      const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "Do you really want to unlist this Sub-Category?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Unlist it!",
+      });
+
+      if (result.value) {
+          try {
+              const response = await fetch("/admin/unlistSubCategory/" + id, {
+                  method: "GET",
+              });
+
+              if (response.ok) {
+                  const result2 = await Swal.fire({
+                      icon: "success",
+                      title: "Sub-Category has been unlisted successfully",
+                      showConfirmButton: true,
+                      confirmButtonText: "OK",
+                      confirmButtonColor: "#4CAF50",
+                  });
+
+                  if (result2) {
+                      location.reload();
+                  }
+              }
+          } catch (error) {
+              console.error(error);
+          }
+      }
+  });
 
 
 
@@ -255,7 +321,126 @@ $(document).ready(function () {
     }
   }
   
+
+  const blockCoupon = async(couponId)=>{
+    try{
   
+      const result = await Swal.fire({
+        title: 'Block Coupon',
+        text: 'Do you want to block this coupon?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33", 
+        confirmButtonText: 'Yes, Block',
+        cancelButtonText: 'DISMISS'
+        
+    });
+  
+    if(result.value){
+  
+      const response = await fetch(`/admin/blockCoupon?couponId=${couponId}`,{
+        method: 'POST'
+      })
+  
+      const data = await response.json()
+  
+      if(data.message = "success"){
+        const result = await Swal.fire({
+          icon: "success",
+          title: "Coupon has been blocked successfully",
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+          confirmButtonColor: "#4CAF50",
+      });
+
+      if(result.value){
+        location.reload()
+      }
+      
+      }else{
+  
+        Swal.fire({
+          icon: "error",
+          title: "Somthing error!!",
+          showConfirmButton: true,
+          confirmButtonText: "DISMISS",
+          confirmButtonColor: "#D22B2B"
+          
+      });
+  
+      }
+  
+    }
+  
+    }catch(error){
+      console.log(error.message);
+    }
+  }
+  
+
+  /////////////// ORDER UPDATE ////////////////////
+
+
+
+  const orderUpdateSelects = document.querySelectorAll('[name="orderUpdate"]')
+
+  if(orderUpdateSelects){
+    orderUpdateSelects.forEach((orderUpdateSelect) => {
+    orderUpdateSelect.addEventListener('change', async ()=>{
+      console.log("helloo");
+      const selectedOption = orderUpdateSelect.value
+      const orderId = orderUpdateSelect.id.split('-')[1]
+
+      try {
+
+        const result = await Swal.fire({
+          title: `Confirm Change Order Status to "${selectedOption}"?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33", 
+          confirmButtonText: 'Yes, Change',
+          cancelButtonText: 'DISMISS'
+          
+      });
+
+      if(result.value){
+        const response = await fetch(`/admin/updateOrder?orderId=${orderId}`,{
+          method: 'POST',
+          headers:{
+            'Content-Type' : "application/json"
+          },
+          body: JSON.stringify({
+            status: selectedOption
+          })
+        })
+      
+        const data = await response.json()
+  
+        if(data.message = "Success"){
+          const result = await Swal.fire({
+            icon: "success",
+            title: "Order staus has been changed successfully!!",
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#4CAF50",
+        });
+      }
+      
+      if(result.value){
+        location.reload()
+      } 
+      
+      }
+
+        
+      } catch (error) {
+        console.log(error.message);
+      }
+    })
+  })
+  }
 
 
 

@@ -1,6 +1,8 @@
 const User = require("../models/userModel");
 const Category = require("../models/categoryModel");
+const SubCategory = require("../models/subCategoryModel")
 const Address = require("../models/addressModel");
+const Coupon = require("../models/couponModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 
@@ -288,11 +290,12 @@ const updatePassword = async (req, res) => {
 const homeload = async (req, res) => {
     try {
         const categoryData = await Category.find({ is_blocked: false });
+        const subCategoryData = await SubCategory.find({ is_blocked: false });
 
         if (req.session.user) {
-            res.render("home", { userData, categoryData });
+            res.render("home", { userData, categoryData, subCategoryData });
         } else {
-            res.render("home", { categoryData });
+            res.render("home", { categoryData , subCategoryData});
         }
     } catch (error) {
         console.log(error.message);
@@ -397,6 +400,7 @@ const deleteAddress = async (req, res) => {
         console.log(error.message);
     }
 };
+
 
 const doLogout = async (req, res) => {
     try {

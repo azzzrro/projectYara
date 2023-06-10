@@ -1,13 +1,10 @@
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
-const Address = require('../models/addressModel')
-const Coupon = require("../models/couponModel")
-
-
+const Address = require("../models/addressModel");
+const Coupon = require("../models/couponModel");
 
 ////////////////////CART CONTROLLERS/////////////////////////////
-
 
 const loadCart = async (req, res) => {
     try {
@@ -33,9 +30,11 @@ const loadCart = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
+        const userData = req.session.user;
+        const categoryData = await Category.find({ is_blocked: false });
+        res.render("404", { userData, categoryData });
     }
 };
-
 
 const addToCart = async (req, res) => {
     try {
@@ -74,6 +73,8 @@ const addToCart = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
+        const userData = req.session.user;
+        res.render("404", { userData });
     }
 };
 
@@ -110,216 +111,222 @@ const removeCart = async (req, res) => {
     }
 };
 
+const loadWishlist = async (req, res) => {
+    try {
+        const userData = req.session.user;
+        const userId = userData._id;
+        const categoryData = await Category.find({ is_blocked: false });
 
-const loadWishlist = async (req,res)=>{
-    try{
-
-        const userData = req.session.user
-        const userId = userData._id
-        const categoryData = await Category.find({ is_blocked:false })
-
-        const user = await User.findById(userId).populate('wishlist')
-        const wishlistItems = user.wishlist
+        const user = await User.findById(userId).populate("wishlist");
+        const wishlistItems = user.wishlist;
 
         const userCart = await User.findOne({ _id: userId }).populate("cart.product").lean();
         const cart = userCart.cart;
 
-        if(wishlistItems.length === 0){
-
-            res.render('emptyWishlist',{ userData, categoryData})
-
-        }else{
-
-            res.render('wishlist',{ userData, categoryData, cart, wishlistItems})
-
+        if (wishlistItems.length === 0) {
+            res.render("emptyWishlist", { userData, categoryData });
+        } else {
+            res.render("wishlist", { userData, categoryData, cart, wishlistItems });
         }
-
-        
-    }catch(error){
+    } catch (error) {
         console.log(error.message);
     }
-}
-
+};
 
 const addToWishlist = async (req, res) => {
     try {
-        const userData = req.session.user
-        const userId = userData._id
-        const productId = req.query.productId
+        const userData = req.session.user;
+        const userId = userData._id;
+        const productId = req.query.productId;
         const cartId = req.query.cartId;
 
         const existItem = await User.findOne({ _id: userId, wishlist: { $in: [productId] } });
 
         if (!existItem) {
-
-            await User.updateOne({ _id: userId }, { $push: { wishlist: productId }})
-            await Product.updateOne({ _id: productId }, { isWishlisted: true })
+            await User.updateOne({ _id: userId }, { $push: { wishlist: productId } });
+            await Product.updateOne({ _id: productId }, { isWishlisted: true });
 
             await Product.findOneAndUpdate({ _id: productId }, { $set: { isOnCart: false } }, { new: true });
             await User.updateOne({ _id: userId }, { $pull: { cart: { _id: cartId } } });
 
             res.json({
-                message: "Added to wishlist"
-            })
-            
-        }else{
+                message: "Added to wishlist",
+            });
+        } else {
             res.json({
-                message: "Already Exists in the wishlist"
-            })
+                message: "Already Exists in the wishlist",
+            });
         }
-
     } catch (error) {
         console.log(error.message);
     }
+};
 
-}
-
-
-const addToCartFromWishlist = async (req,res)=>{
+const addToCartFromWishlist = async (req, res) => {
     try {
+        const userData = req.session.user;
+        const userId = userData._id;
+        const productId = req.query.productId;
 
-        const userData = req.session.user
-        const userId = userData._id
-        const productId = req.query.productId
-        
-        const user = await User.findById(userId)
-        const product = await Product.findById(productId)
-        const existed = await User.findOne({ _id: userId, "cart.product": productId })
+        const user = await User.findById(userId);
+        const product = await Product.findById(productId);
+        const existed = await User.findOne({ _id: userId, "cart.product": productId });
 
-        if(existed){
-
+        if (existed) {
             res.json({ message: "Product is already in cart!!" });
-        
-        }else{
-
-            await Product.findOneAndUpdate(productId, { isOnCart: true })
+        } else {
+            await Product.findOneAndUpdate(productId, { isOnCart: true });
             await User.findByIdAndUpdate(
                 userId,
                 {
-                    $push:{
-                        cart:{
+                    $push: {
+                        cart: {
                             product: product._id,
-                            quantity: 1
-                        }
-                    }
+                            quantity: 1,
+                        },
+                    },
                 },
                 { new: true }
-            )
-            const itemIndex = user.wishlist.indexOf(productId)
-                
-            if(itemIndex>=0){
-                await User.updateOne({ _id: userId }, { $pull: { wishlist: productId }})
-                await Product.updateOne({ _id: productId }, { isWishlisted: false })
-    
-            }else{
+            );
+            const itemIndex = user.wishlist.indexOf(productId);
+
+            if (itemIndex >= 0) {
+                await User.updateOne({ _id: userId }, { $pull: { wishlist: productId } });
+                await Product.updateOne({ _id: productId }, { isWishlisted: false });
+            } else {
                 res.json({
-                    message: "Error Occured!"
-                })
+                    message: "Error Occured!",
+                });
             }
 
-            res.json({ message: "Moved to cart from wishlist" })
+            res.json({ message: "Moved to cart from wishlist" });
         }
-        
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
+const removeWishlist = async (req, res) => {
+    try {
+        const userData = req.session.user;
+        const userId = userData._id;
+        const productId = req.query.productId;
 
-const removeWishlist = async (req,res) =>{
-    try{
+        const user = await User.findById(userId);
+        const itemIndex = user.wishlist.indexOf(productId);
 
-        const userData = req.session.user
-        const userId = userData._id
-        const productId = req.query.productId
-
-        const user = await User.findById(userId)
-        const itemIndex = user.wishlist.indexOf(productId)
-
-        if(itemIndex>=0){
-            await User.updateOne({ _id: userId }, { $pull: { wishlist: productId }})
-            await Product.updateOne({ _id: productId }, { isWishlisted: false })
+        if (itemIndex >= 0) {
+            await User.updateOne({ _id: userId }, { $pull: { wishlist: productId } });
+            await Product.updateOne({ _id: productId }, { isWishlisted: false });
 
             res.status(200).send();
-        }else{
+        } else {
             res.json({
-                message: "Error Occured!"
-            })
+                message: "Error Occured!",
+            });
         }
-
-    }catch(error){
-        console.log(error.message);
-    }
-}
-
-
-const checkStock = async (req,res)=>{
-    try {
-
-        const userData = req.session.user
-        const userId = userData._id
-
-        const userCart = await User.findOne({ _id: userId }).populate('cart.product').lean()
-        const cart = userCart.cart
-
-        let stock = []
-
-        cart.forEach((element)=>{
-            if((element.product.stock)-(element.quantity) <=0 ){
-                stock.push(element.product)
-            }
-        })
-
-        if(stock.length > 0){
-            res.json(stock)
-        }else{
-            res.json({message: "In stock"})
-        }
-        
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
-
-const loadCheckout = async (req,res)=>{
+const checkStock = async (req, res) => {
     try {
+        const userData = req.session.user;
+        const userId = userData._id;
 
-        const userData = req.session.user
-        const userId = userData._id
-        const categoryData = await Category.find({ is_blocked:false })
-        const addressData = await Address.find({ userId: userId })
+        const userCart = await User.findOne({ _id: userId }).populate("cart.product").lean();
+        const cart = userCart.cart;
 
-        const userCart = await User.findOne({ _id: userId }).populate("cart.product").lean()
-        const cart = userCart.cart
+        let stock = [];
 
-        let subTotal = 0
-        
-        cart.forEach((element)=>{
-            element.total = element.product.price * element.quantity
-            subTotal += element.total
-        })
+        cart.forEach((element) => {
+            if (element.product.stock - element.quantity <= 0) {
+                stock.push(element.product);
+            }
+        });
 
-        const now = new Date()
+        if (stock.length > 0) {
+            res.json(stock);
+        } else {
+            res.json({ message: "In stock" });
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const loadCheckout = async (req, res) => {
+    try {
+        const userData = req.session.user;
+        const userId = userData._id;
+        const categoryData = await Category.find({ is_blocked: false });
+        const addressData = await Address.find({ userId: userId });
+
+        const userCart = await User.findOne({ _id: userId }).populate("cart.product").lean();
+        const cart = userCart.cart;
+
+        let subTotal = 0;
+
+        cart.forEach((element) => {
+            element.total = element.product.price * element.quantity;
+            subTotal += element.total;
+        });
+
+        const now = new Date();
         const availableCoupons = await Coupon.find({
             expiryDate: { $gte: now },
-            usedBy: { $nin: [userId] }
-        })
+            usedBy: { $nin: [userId] },
+            status: true,
+        });
 
-        
-        res.render('checkout', {userData, categoryData, addressData, subTotal, cart, availableCoupons})
-
-
-        
+        res.render("checkout", { userData, categoryData, addressData, subTotal, cart, availableCoupons });
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
 
+const validateCoupon = async (req, res) => {
+    try {
+        const { coupon, subTotal } = req.body;
+        const couponData = await Coupon.findOne({ code: coupon });
 
+        if (!couponData) {
+            res.json("invalid");
+        } else if (couponData.expiryDate < new Date()) {
+            res.json("expired");
+        } else {
+            const couponId = couponData._id;
+            const discount = couponData.discount;
+            const userId = req.session.user._id;
 
+            const couponUsed = await Coupon.findOne({ _id: couponId, usedBy: { $in: [userId] } });
 
+            if (couponUsed) {
+                res.json("already used");
+            } else {
+                await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
+
+                const discountValue = Number(discount);
+
+                const discountAmount = (subTotal * discountValue) / 100;
+
+                const newTotal = subTotal - discountAmount;
+
+                const couponName = coupon
+
+                res.json({
+                    couponName,
+                    discountAmount,
+                    newTotal,
+                });
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
 
 
 
@@ -336,5 +343,6 @@ module.exports = {
 
     checkStock,
     loadCheckout,
-    
+    validateCoupon,
+
 };

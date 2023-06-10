@@ -1,31 +1,48 @@
 {{>dashhead}}
 
 
+<style>
+    .nav-5 h2 a{
+        color: black;
+    }
+</style>
 
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12" id="user_search">
-
-
-
-                        <div class="col-6" id="catMsg">
-                            <h5 id="noResultsFound">no results found!!</h5>
+                    <div id="user_search">
+                    
+                    
+                        <div class="col-lg-6">
+                    
+                    
+                    
+                            <div id="catMsg">
+                                <h5 id="noResultsFound">no results found!!</h5>
+                            </div>
+                            {{#if catUpdated}}
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{catUpdated}}</h5>
+                            </div>
+                            {{else if catNoUpdation}}
+                            <div id="catMsg">
+                                <h5 style="color: red;">{{catNoUpdation}}</h5>
+                            </div>
+                            {{/if}}
+                    
                         </div>
-                        {{#if catUpdated}}
-                        <div class="col-6" id="catMsg">
-                            <h5 style="color: #4CAF50;">{{catUpdated}}</h5>
+                    
+                        <div class="col-lg-6">
+                    
+                            
+                            <div  id="search">
+                                <input type="search" placeholder="Search Categories" aria-label="Search" />
+                            </div>
+                    
                         </div>
-                        {{else if catNoUpdation }}
-                        <div class="col-6" id="catMsg">
-                            <h5 style="color: red;">{{catNoUpdation}}</h5>
-                        </div>
-                        {{/if}}
-                        <div class="col-6" id="search">
-                            <input type="search" placeholder="Search Categories" aria-label="Search" />
-                        </div>
-
+                    
                     </div>
+                    
                 </div>
             </div>
 
@@ -34,62 +51,63 @@
     </div>
 
 
+    
+    
+        <ul class="nav nav-tabs" style="margin-left: 8.5%;margin-right: 9.3%; margin-top: 1.5%;">
+            <li class="nav-item">
+                <a class="nav-link active" style="color: #505050; font-weight: 600;" aria-current="page" href="">Categories</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="color: rgb(162, 162, 162); font-weight: 600;" href="/admin/subCategories">Sub-Categories</a>
+            </li>
+        </ul>
+    
+   
+    
+
+
     <div class="row">
         <div class="col-lg-10 m-auto">
+            <div class="table-container">
+                <table class="table table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">NO</th>
+                            <th scope="col">IMAGE</th>
+                            <th scope="col">CATEGORY NAME</th>
+                            <th scope="col">DESCRIPTION</th>
+                            <th scope="col">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each categoryData}}
+                        <tr>
+                            <td scope="row">{{@index}}</td>
+                            <td><img style="width: 60px; height: 70px;" src="/uploads/{{this.imageUrl}}"
+                                    alt="Category Image"></td>
+                            <td style="width: 20%;">{{this.category}}</td>
+                            <td style="width: 40%;" class="description-Cell" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="{{this.description}}">{{this.description}}</td>
+                            <td style="width: 200px;">
+                                <a href="/admin/editCategory/{{this.id}}" class="btn btn-sm btn-primary">Update</a>
+                                {{#if this.is_blocked}}
+                                <button value="{{this._id}}" class="categoryUnlistBtn btn btn-sm btn-success">List</button>
+                                {{else}}
+                                <button value="{{this._id}}" class="categoryUnlistBtn btn btn-sm btn-danger">Unlist</button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 
-            <table class="table table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th scope="col">NO</th>
-                        <th scope="col">IMAGE</th>
-                        <th scope="col">CATEGORY NAME</th>
-                        <th scope="col">DESCRIPTION</th>
-                        <th scope="col">ACTION</th>
-
-                    </tr>
-                </thead>
-                <tbody style="height: 5rem; ">
-                    {{#each categoryData}}
-
-                    <tr>
-                        <td scope="row">{{@index}}</td>
-                        <td><img style="width 70px; height: 70px;"
-                                src="/uploads/{{this.imageUrl}}" alt="Category Image"></td>
-                        <td style="width: 20%;">{{this.category}}</td>
-                        <td style="width: 40%;" class="description-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom"  title="{{this.description}}">{{this.description}}</td>
-
-
-
-                        <td style="width: 200px;">
-                            <a href="/admin/editCategory/{{this.id}}" class="btn btn-sm btn-primary">Update</a>
-
-                            {{#if this.is_blocked}}
-
-                            <button value="{{this._id}}" class="categoryUnlistBtn btn btn-sm btn-success">List</button>
-
-                            {{else}}
-
-                            <button value="{{this._id}}" class="categoryUnlistBtn btn btn-sm btn-danger">Unlist</button>
-
-                            {{/if}}
-
-                        </td>
-                    </tr>
-
-
-                    {{/each}}
-                </tbody>
-            </table>
-
-            <div class="text-center mt-4 mb-5">
+    <div class="text-center mt-4 mb-5">
                 <a href="/admin/addCategory"><button class="btn btn-primary add_user" id="addUser">Add
                         Category</button></a>
-            </div>
-
-
-        </div>
-
     </div>
 </div>
 

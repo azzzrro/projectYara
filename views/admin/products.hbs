@@ -3,7 +3,11 @@
 
 {{>dashhead}}
 
-
+<style>
+    .nav-6 h2 a{
+        color: black;
+    }
+</style>
 
 
 
@@ -11,19 +15,24 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12" id="user_search">
-
-
-                        <div class="col-6" id="catMsg">
-                            <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
-                            <h5 id="noResultsFound">no results found!!</h5>
-
+                    <div id="user_search">
+                        <div class="col-lg-6">
+            
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
+                                <h5 id="noResultsFound">no results found!!</h5>
+            
+                            </div>
                         </div>
-
-                        <div class="col-6" id="search">
-                            <input type="search" placeholder="Search Products" aria-label="Search" />
+            
+                        <div class="col-lg-6">
+            
+                            <div id="search">
+                                <input type="search" placeholder="Search Products" aria-label="Search" />
+                            </div>
+            
                         </div>
-
+            
                     </div>
                 </div>
             </div>
@@ -33,62 +42,97 @@
 
     <div class="row">
         <div class="col-lg-10 m-auto">
-
-
-            <table class="table table-hover mt-4">
-                <thead>
-                    <tr>
-                        <th scope="col">NO</th>
-                        <th scope="col">IMAGE</th>
-                        <th scope="col">NAME</th>
-                        <th scope="col">CATEGORY</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">QUANTITY</th>
-                        <th scope="col">DESCRIPTION</th>
-                        <th scope="col">ACTION</th>
-
-                    </tr>
-                </thead>
-                <tbody style="height: 5rem;">
-
-                    {{#each productData}}
-                    <tr>
-                        <td scope="row">{{@index}}</td>
-                        <td>
-                            <img style="width 80px; height: 80px;" src="/uploads/{{this.imageUrl.[0]}}"
-                                alt="Product Image">
-                        </td>
-                        <td class="name-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{this.name}}">{{this.name}}</td>
-                        <td>{{this.category.category}}</td>
-                        <td>₹ {{this.price}}</td>
-                        <td>{{this.stock}}</td>
-                        <td class="description-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{this.description}}">{{this.description}}</td>
-
-
-
-                        <td>
-                            <a href="/admin/updateProduct/{{this._id}}" class="btn btn-sm btn-primary">Update</a>
-                            <button value="{{this._id}}" class="productDeleteBtn btn btn-sm btn-danger">Delete</button>
-
-                        </td>
-                    </tr>
-
-
-                    {{/each}}
-                </tbody>
-            </table>
-
-            <div class="text-center mt-4 mb-5">
-                <a href="/admin/addProduct"><button class="btn btn-primary add_user" id="addUser">Add
-                        Product</button></a>
+            <div class="table-container">
+                <table class="table table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">NO</th>
+                            <th scope="col">IMAGE</th>
+                            <th scope="col">NAME</th>
+                            <th scope="col">BRAND</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">SUB-CATEGORY</th>
+                            <th scope="col">PRICE</th>
+                            <th scope="col">QUANTITY</th>
+                            <th scope="col">DESCRIPTION</th>
+                            <th scope="col">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each productData}}
+                        <tr>
+                            <td scope="row">{{@index}}</td>
+                            <td>
+                                <img style="width: 80px; height: 80px;" src="/uploads/{{this.imageUrl.[0]}}"
+                                    alt="Product Image">
+                            </td>
+                            <td class="name-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{this.name}}">
+                                {{this.name}}
+                            </td>
+                            <td>{{this.brand.name}}</td>
+                            <td>{{this.category.category}}</td>
+                            <td>{{this.subCategory.subCategory}}</td>
+                            <td>₹ {{this.price}}</td>
+                            <td>{{this.stock}}</td>
+                            <td class="description-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="{{this.description}}">{{this.description}}</td>
+                            <td>
+                                <a href="/admin/updateProduct/{{this._id}}" class="btn btn-sm btn-primary">Update</a>
+                                <button value="{{this._id}}" class="productDeleteBtn btn btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
 
-
+            <div class="row mt-2">
+                <div class="col-lg-7 ">
+            
+            
+                    <div class="d-flex justify-content-end">
+                        <a href="/admin/addProduct"><button class="btn btn-primary add_user" id="addUser">Add
+                                Product</button></a>
+                    </div>
+                </div>
+            
+                <div class="col-lg-5">
+            
+                    <div class="d-flex justify-content-end">
+                        <nav aria-label="...">
+                            <ul class="pagination pagination-sm">
+                                {{#gt totalPages 1}}
+                                {{#each (range 1 totalPages)}}
+                                {{#if (eq this ../currentPage)}}
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{{this}}</span>
+                                </li>
+                                {{else}}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{this}}">{{this}}</a>
+                                </li>
+                                {{/if}}
+                                {{/each}}
+                                {{/gt}}
+                            </ul>
+                        </nav>
+                    </div>
+            
+                </div>
+            
+            </div>
         </div>
-
-
     </div>
+
+    
+    
+    
 </div>
+
+
+
+    
+
 
 
 

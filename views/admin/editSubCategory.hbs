@@ -1,0 +1,106 @@
+{{>dashhead}}
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 30px;
+        margin-left: 1rem;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 2rem;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+
+    label {
+        font-size: 18px;
+        font-weight: 400;
+        margin-bottom: 10px;
+        text-align: left;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    img {
+        max-width: 200px;
+        max-height: 200px;
+        margin-bottom: 20px;
+    }
+
+    .container {
+        border-radius: 20px;
+        border: 1px solid black;
+        margin-left: 7.9rem;
+        background-color: #2e92a9;
+        color: white;
+        width: 55%;
+        margin-bottom: 2rem
+    }
+</style>
+
+
+
+
+        </div>
+    </div>
+
+
+
+    <div class="container" id="addCategory">
+        <h1>Update Sub-Category</h1>
+        <h5 style="margin-left: 1rem; color: #4CAF50;">{{catUpdated}}</h5>
+
+        <form action="/admin/updateSubCategory/{{SubCategoryData._id}}" method="post" id="updateSubCategoryValidate" enctype="multipart/form-data">
+            <label for="name">Sub-Category Name:</label>
+            <input type="text" id="name" name="name" value={{SubCategoryData.subCategory}} required>
+
+            <input type="text" placeholder="subCategory description" value={{SubCategoryData.description}} id="subCategoryDescription" name="subCategoryDescription">
+
+
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <img id="preview" src="/uploads/{{SubCategoryData.imageUrl}}" alt="Category image">
+
+            <input type="submit" value="Update Sub-Category">
+        </form>
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+{{>dashfoot}}

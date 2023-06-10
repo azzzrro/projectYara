@@ -16583,6 +16583,8 @@ button:focus {
     background-color: #fdfdfd
 }
 
+
+
 .error-content p {
     margin-bottom: 2.5rem
 }
@@ -16840,7 +16842,7 @@ button:focus {
 }
 
 .mb-5 {
-    margin-bottom: 5rem !important
+    margin-bottom: 3rem !important
 }
 
 .pt-5 {
@@ -16872,7 +16874,7 @@ button:focus {
 }
 
 .mb-7 {
-    margin-bottom: 7rem !important
+    margin-bottom: 4rem !important
 }
 
 .pt-7 {

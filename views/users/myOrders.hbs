@@ -1,0 +1,149 @@
+{{>cartheader}}
+
+
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">My Orders</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/allProducts">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">My Orders</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+
+<div class="page-content">
+        <div class="container">
+            
+            
+            <div class="row">
+                <div class="col-lg-12">
+                	<div class="toolbox">
+
+                        <div class="toolbox-right">
+                            <div class="toolbox-sort">
+                                <label for="sortby">Filter by:</label>
+                                <div class="select-custom">
+                                    <select name="sortby" id="sortby" class="form-control">
+                                        <option value="Most Recent" selected="selected">Most Recent</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Delivered">Delivered</option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Returned">Returned</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div><!-- End .toolbox-sort -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <table class="table table-wishlist table-mobile">
+
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Order-Id</th>
+                                <th>Payment Method</th>
+                                <th>Total</th>
+                                <th>Order Status</th>
+                                <th></th>
+                                
+                            </tr>
+                        </thead>
+            
+            <tbody id="ordersTable">
+                    
+
+                   
+                   
+                    
+                    
+                    {{#each myOrders}}
+
+                    <tr>
+                        <td>{{this.date}}</td>
+                        <td>{{this.orderId}}</td>
+                        <td>{{this.paymentMethod}}</td>
+                        <td class="price-col">₹{{this.total}}</td>
+                        
+                        
+
+                        
+                        {{#if (eq this.status "Pending")}}
+                        <td style="color: orange; font-weight: 600;">{{this.status}}</td>
+                        {{else if (eq this.status "Shipped")}}
+                        <td style="color: green; font-weight: 600;">{{this.status}}</td>
+                        {{else if (eq this.status "Delivered")}}
+                        <td style="color: teal; font-weight: 600;">{{this.status}}</td>
+                        {{else if (eq this.status "Cancelled")}}
+                        <td style="color: red; font-weight: 600;">{{this.status}}</td>
+                        {{else if (eq this.status "Returned")}}
+                        <td style="color: purple; font-weight: 600;">{{this.status}}</td>
+                        {{/if}}
+
+                       
+
+                 
+                        <td>
+                            
+                            <a style="font-weight: 500;" href="/orderDetails?orderId={{this._id}}" class="btn btn-link"><span>More Details</span><i class="icon-long-arrow-right"></i></a>
+
+                            <input type="hidden" name="orderId" value="{{this._id}}">
+                            
+
+                                
+                        </td>
+                    </tr>
+                    {{/each}}
+
+                    
+            
+
+                </tbody>
+            </table><!-- End .table table-wishlist -->
+
+
+
+            
+            <div id="myOrdersPagination" >
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
+                        <a class="page-link page-link-prev" href="?page={{subtract currentPage 1}}" aria-label="Previous"
+                            tabindex="-1" aria-disabled="{{eq currentPage 1}}">
+                            <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
+                        </a>
+                    </li>
+                    <li class="page-item-total">Page {{currentPage}} of {{totalPages}}</li>
+                    <li class="page-item {{#if (eq currentPage totalPages)}}disabled{{/if}}">
+                        <a class="page-link page-link-next" href="?page={{add currentPage 1}}" aria-label="Next"
+                            aria-disabled="{{eq currentPage totalPages}}">
+                            Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            </div>
+            
+
+
+            
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+{{>cartfooter}}

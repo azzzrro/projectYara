@@ -495,12 +495,15 @@ hr {
 .new-arrivals .banner-title {
     letter-spacing: .01em;
     font-weight: 700;
-    margin-bottom: 2rem
+    margin-bottom: 2rem;
+    font-size: 3rem;
 }
 
 .new-arrivals .banner-subtitle {
-    font-size: 1.4rem;
-    margin-bottom: 2rem
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    text-transform: none;
+    max-width: 23rem;
 }
 
 .new-arrivals .btn.banner-link {

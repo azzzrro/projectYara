@@ -1,0 +1,479 @@
+//////////////// CHECKOUT MANAGEMENT ////////////////
+
+
+/////////// Coupon Management ///////////
+
+let coupon
+let couponData
+
+const inputField = document.getElementById("checkout-discount-input");
+
+if (inputField) {
+    inputField.addEventListener("input", function () {
+        this.value = this.value.toUpperCase();
+    });
+}
+
+function selectCoupon(code) {
+    const inputField = document.getElementById("checkout-discount-input");
+    inputField.value = code;
+    inputField.style.backgroundColor = code ? "white" : "";
+    // You can also perform additional actions with the discount value if needed
+}
+
+const validateCoupon = async () => {
+    coupon = document.getElementById("checkout-discount-input").value;
+    const subTotal = Number(document.getElementById("subTotalValue").value);
+
+    const response = await fetch("/validateCoupon", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+            coupon: coupon,
+            subTotal: subTotal,
+        }),
+    });
+
+    couponData = await response.json();
+    console.log(couponData);
+
+    const couponModel = document.getElementById("couponModel");
+    const couponDiscount = document.getElementById("couponDiscount");
+
+    const subTotalElement = document.getElementById("subTotal");
+    const subTotalText = document.getElementById("subTotalText");
+
+
+    if (couponData === "invalid") {
+        Swal.fire({
+            icon: "error",
+            title: "INVALID COUPON CODE",
+            showConfirmButton: true,
+            confirmButtonText: "DISMISS",
+            confirmButtonColor: "#4CAF50",
+        });
+    } else if (couponData === "expired") {
+        Swal.fire({
+            icon: "warning",
+            title: "COUPON IS EXPIRED",
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#4CAF50",
+        });
+    } else if (couponData === "already used") {
+        Swal.fire({
+            icon: "warning",
+            title: "ALREADY USED",
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#4CAF50",
+        });
+    } else {
+        Swal.fire({
+            icon: "success",
+            title: `"${coupon}" APPLIED SUCCESSFULLY!!\n SAVED ₹ ${couponData.discountAmount}`,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#4CAF50",
+        });
+
+        couponModel.style.display = "table-row";
+        couponDiscount.innerHTML = `₹ ${couponData.discountAmount}`;
+
+        subTotalElement.innerHTML = `₹ ${couponData.newTotal}`;
+        subTotalText.innerHTML = "Total After Discount:";
+        document.getElementById('subTotalValue').value = couponData.newTotal
+
+    }
+};
+
+
+
+/////////// Shipping selection ///////////
+
+window.addEventListener("DOMContentLoaded", () => {
+    const radio = document.getElementById("free-shipping");
+    const checkoutBtn = document.getElementById("checkout-btn");
+    const selectedShipping = localStorage.getItem("selectedShipping");
+
+    if (radio) {
+        if (selectedShipping === "free-shipping") {
+            radio.checked = true;
+            checkoutBtn.disabled = false;
+        } else {
+            radio.checked = false;
+            checkoutBtn.disabled = true;
+        }
+    }
+});
+
+function handleShippingSelection(radio) {
+    const checkoutBtn = document.getElementById("checkout-btn");
+    if (radio.checked) {
+        checkoutBtn.disabled = false;
+        localStorage.setItem("selectedShipping", "free-shipping");
+    } else {
+        checkoutBtn.disabled = true;
+        localStorage.removeItem("selectedShipping");
+    }
+}
+
+/////////// Address selection ///////////
+
+const addressRadios = document.querySelectorAll('input[name="selectedAddress"]');
+const paymentRadios = document.querySelectorAll(".payment-radio");
+const placeOrderBtn = document.getElementById("place-order-btn");
+
+
+addressRadios.forEach((radio) => {
+    radio.addEventListener("change", handleAddressSelection);
+});
+
+paymentRadios.forEach((radio) => {
+    radio.addEventListener("change", handleAddressSelection);
+});
+
+
+
+function handleAddressSelection() {
+    
+    const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked');
+    const selectedPayment = document.querySelector(".payment-radio:checked");
+    
+
+    if (selectedAddress && selectedPayment) {
+        placeOrderBtn.disabled = false;
+    } else {
+        placeOrderBtn.disabled = true;
+    }
+
+}
+
+
+/////////// Order Management ///////////
+
+const placeOrder = async()=>{
+    try {
+
+        const selectedPayment = document.querySelector(".payment-radio:checked").value;
+        
+        if(selectedPayment === "Cash On Delivery"){
+            cashOnDelivery(selectedPayment)
+        }
+        else if(selectedPayment === "Razorpay"){
+            razorpay(selectedPayment)
+        }
+        else if(selectedPayment === 'Wallet'){
+            wallet(selectedPayment)
+        }
+
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const cashOnDelivery = async(selectedPayment, updatedBalance)=>{
+    try {
+
+        const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
+        const subTotal = Number(document.getElementById('subTotalValue').value)
+        
+        const response = await fetch('/placeOrder',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+
+                selectedAddress: selectedAddress,
+                selectedPayment: selectedPayment,
+                amount: subTotal,
+                walletBalance: updatedBalance,
+                couponData: couponData,
+                
+              })
+        })
+
+        
+
+        const orderConfirmData = await response.json()
+
+        if(orderConfirmData.order ===  "Success"){
+
+            window.location.href = '/orderSuccess'
+            
+
+        }       
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const razorpay = async (selectedPayment)=>{
+    try {
+
+        const subTotal = Number(document.getElementById('subTotalValue').value)
+
+        var options = {
+            "key": "rzp_test_SvgHIkg1FQqxqX", // Enter the Key ID generated from the Dashboard
+            "amount": subTotal * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Yara SkinCare",
+            "description": "Order payment",
+            "image": "/assets/images/demos/demo-8/logo.png",
+            "order_id": undefined, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response){
+                cashOnDelivery(selectedPayment)
+                console.log(response);
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        }
+
+        var rzp1 = new Razorpay(options);
+        
+        rzp1.open();
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const wallet = async(selectedPayment)=>{
+    try {
+
+        const balance = document.getElementById('userWallet').value
+        const subTotal = Number(document.getElementById('subTotalValue').value)
+        const insufficientBalanceAlert = document.getElementById('insufficientBalanceAlert');
+
+
+        if(balance > subTotal){
+            const updatedBalance = balance - subTotal
+            cashOnDelivery(selectedPayment, updatedBalance )
+        }else{
+            insufficientBalanceAlert.classList.remove('d-none');
+            insufficientBalanceAlert.classList.add('d-flex');
+        }
+
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+window.addEventListener("load", function () {
+    const insufficientBalanceAlert = document.getElementById("insufficientBalanceAlert");
+    if (insufficientBalanceAlert) {
+        insufficientBalanceAlert.classList.remove("d-flex");
+        insufficientBalanceAlert.classList.add("d-none");
+    }
+});
+
+const closeButton = document.querySelector(".btn-close");
+if(closeButton){
+    closeButton.addEventListener("click", function () {
+        const insufficientBalanceAlert = document.getElementById("insufficientBalanceAlert");
+        insufficientBalanceAlert.classList.remove("d-flex");
+        insufficientBalanceAlert.classList.add("d-none");
+    });
+}
+
+
+/////////// Order Filter ///////////
+
+const orderFilterSelect = document.getElementById('sortby')
+
+if (orderFilterSelect) {
+    orderFilterSelect.addEventListener("change", async () => {
+        const selectedOption = orderFilterSelect.value;
+        if (selectedOption === "Most Recent") {
+            location.reload();
+        } else {
+            try {
+                const response = await fetch(`/orderFilter?status=${selectedOption}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                const data = await response.json();
+
+                const paginationNav = document.getElementById("myOrdersPagination");
+                paginationNav.innerHTML = "";
+
+                const ordersTable = document.getElementById("ordersTable");
+                ordersTable.innerHTML = "";
+
+                data.forEach((order) => {
+                    const row = document.createElement("tr");
+
+                    const dateCell = document.createElement("td");
+                    dateCell.textContent = order.date;
+                    row.appendChild(dateCell);
+
+                    const orderIdCell = document.createElement("td");
+                    orderIdCell.textContent = order.orderId;
+                    row.appendChild(orderIdCell);
+
+                    const paymentMethodCell = document.createElement("td");
+                    paymentMethodCell.textContent = order.paymentMethod;
+                    row.appendChild(paymentMethodCell);
+
+                    const totalCell = document.createElement("td");
+                    totalCell.classList.add("price-col");
+                    totalCell.textContent = `₹${order.total}`;
+                    row.appendChild(totalCell);
+
+                    const statusCell = document.createElement("td");
+                    statusCell.style.color = getStatusColor(order.status);
+                    statusCell.style.fontWeight = "600";
+                    statusCell.textContent = order.status;
+                    row.appendChild(statusCell);
+
+                    const detailsCell = document.createElement("td");
+                    const detailsLink = document.createElement("a");
+                    detailsLink.style.fontWeight = "500";
+                    detailsLink.href = `/orderDetails?orderId=${order._id}`;
+                    detailsLink.classList.add("btn", "btn-link");
+                    detailsLink.innerHTML = '<span>More Details</span><i class="icon-long-arrow-right"></i>';
+                    detailsCell.appendChild(detailsLink);
+                    row.appendChild(detailsCell);
+
+                    ordersTable.appendChild(row);
+                });
+            } catch (error) {
+                console.log(error.message);
+            }
+        }
+    });
+}
+
+function getStatusColor(status) {
+    switch (status) {
+        case 'Pending':
+            return 'orange';
+        case 'Shipped':
+            return 'green';
+        case 'Delivered':
+            return 'teal';
+        case 'Cancelled':
+            return 'red';
+        case 'Returned':
+            return 'purple';
+        default:
+            return 'black';
+    }
+}
+
+
+/////////// Order cancel and Return ///////////
+
+const returnOrder = async()=>{
+
+    const orderId = document.getElementById('orderId').value
+
+    const result = await Swal.fire({
+        title: `Do you want to return this order?`,
+        text: "For further assistance,\n contact our customer support team.\n We're here to help!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33", 
+        confirmButtonText: 'Yes, Return',
+        cancelButtonText: 'DISMISS'
+        
+    });
+
+    if(result.value){
+        updateOrder(orderId, "Returned")
+    }
+}
+
+
+const cancelOrder = async()=>{
+
+    const orderId = document.getElementById('orderId').value
+
+    const result = await Swal.fire({
+        title: `Do you want to cancel this order?`,
+        text: "For further assistance,\n contact our customer support team.\n We're here to help!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33", 
+        confirmButtonText: 'Yes, Cancel',
+        cancelButtonText: 'DISMISS'
+        
+    });
+
+    if(result.value){
+        updateOrder(orderId, "Cancelled")
+    }
+}
+
+const updateOrder = async (orderId, orderStatus)=>{
+    try {
+
+        const paymentMethod = document.getElementById('paymentMethod').innerHTML
+        const response = await fetch(`/updateOrder?orderId=${orderId}`,{
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                orderStatus: orderStatus
+            })
+        })
+
+        const data = await response.json()
+
+        const orderStatusBtn = document.getElementById('orderStatusBtn')
+
+        if(data.message === "Cancelled"){
+            const result = await Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your order has been successfully cancelled",
+                text: "For further assistance,\n contact our customer support team.\n We're here to help!",
+                showConfirmButton: true,
+                confirmButtonColor: "#00A300",
+            });
+
+            if(result.value){
+
+                orderStatusBtn.innerHTML= `<p class="disabled btn-product btn-cart icon-info-circle"><span>Order Cancelled</span></p>`
+            }
+
+        }else if(data.message === "Returned"){
+            const result = await Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Successfully placed return request",
+                text: "For further assistance,\n contact our customer support team.\n We're here to help!",
+                showConfirmButton: true,
+                confirmButtonColor: "#00A300",
+            });
+
+            if(result.value){
+
+                orderStatusBtn.innerHTML=`<p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Returned</span></p>`
+            }
+
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}

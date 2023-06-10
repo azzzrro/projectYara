@@ -1,0 +1,338 @@
+{{>productheader}}
+
+<style>
+    .product.product-list .product-list-action {
+    padding: 0
+    
+    
+}
+
+.widget-clean {
+    
+    padding-bottom: 1rem;
+}
+
+.order-one{
+    font-size: 12pt;
+    font-weight: 500;
+    color: rgb(90, 90, 90);
+}
+
+.order-two{
+    font-size: 12pt;
+    font-weight: 500;
+    color: #c96;
+}
+
+.product-cat a{
+    font-size: 13pt;
+}
+
+.product-title{
+    font-size: 20pt;
+    font-weight: 400;
+    margin-top: 1rem;
+}
+
+
+.product-info {
+    display: flex;
+    align-items: center;
+}
+
+.product-info p{
+    font-size: 13pt;
+    font-weight: 400;
+}
+
+.product-info span p{
+    color: #c96;
+    margin-left: 1rem;
+    font-weight: 500;
+}
+
+.product.product-list .ratings-container {
+     margin-bottom: 0rem;
+}
+
+.mt-1 {
+    margin-top: 0rem !important;
+}
+
+.ratings-container {
+    
+    margin-bottom: 0rem;
+    
+}
+
+.product.product-list .product-content {
+    
+    margin-bottom: 1.5rem;
+    padding-top: 0.5rem;
+}
+
+.summary {
+    padding: 2.5rem 1.2rem 3rem;
+}
+.product p:hover {
+    cursor: pointer;
+}
+
+
+
+</style>
+
+<main class="main">
+        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        		<div class="container">
+        			<h1 class="page-title">Order Details</h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/profile">My Orders</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+                	<div class="row">
+                		<div class="col-lg-9">
+                			
+
+                            <div class="products mb-3">
+                                <div class="product product-list">
+                                    <div class="row mb-2">
+                                        {{#each orderProductData}}
+                                        <div class="col-6 col-lg-3">
+                                            <figure class="product-media">
+                                                
+                                                <a href="product.html">
+                                                    <img src="/uploads/{{this.image}}" alt="Product image" class="product-image">
+                                                </a>
+                                            </figure><!-- End .product-media -->
+                                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                        
+
+                                        
+                                        <div class="col-lg-7">
+                                            <div class="product-body product-action-inner pt-3">
+                                                <div class="product-cat">
+                                                    <a href="#">{{this.category.category}}</a><span> - <a href="#">{{this.subCategory.subCategory}}</a></span>
+                                                </div><!-- End .product-cat -->
+                                                <h3 class="product-title mb-1"><a href="product.html">{{this.name}}</a></h3><!-- End .product-title -->
+
+                                                <div class="ratings-container mt-1">
+                                                                <div class="ratings">
+                                                                    <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                                                </div><!-- End .ratings -->
+                                                                <span class="ratings-text">( 6 Reviews )</span>
+                                                </div><!-- End .rating-container -->
+
+                                                
+
+                                                <div class="product-content pt-1">
+                                                    <div class="product-info" style="margin-bottom: 5px;">
+                                                        <p>Price :</p> <span>
+                                                            <p>₹ {{this.price}}</p>
+                                                        </span>
+                                                
+                                                    </div>
+                                                
+                                                    <div class="product-info" >
+                                                
+                                                        <p>Quantity :</p> <span>
+                                                            <p>{{this.quantity}} nos</p>
+                                                        </span>
+                                                    </div>
+
+                                        
+                                                </div>
+                                                <!-- End .product-content -->
+
+                                                
+                                                
+                                                
+                                            </div><!-- End .product-body -->
+                                        </div><!-- End .col-lg-6 -->
+                                        {{/each}}
+                                        
+                                    </div><!-- End .row -->
+                                    
+                                </div><!-- End .product -->
+                                
+
+                                
+
+                                
+                            </div><!-- End .products -->
+                            <div class="row">
+                            
+                                <div class="col-lg-12 product product-list pb-0">
+                                    <div class="product-desc-content">
+                                        <h3>Delivery & returns</h3>
+                                        <p>
+                                            We hope you’ll love every purchase, but if you ever need to return an item you can do so
+                                            within <strong>7 days </strong>of receipt. For further assistance, contact our customer support team. We're here to
+                                            help!"</p>
+                                    </div>
+                                    <div class="col-lg-3 p-0 mt-2">
+                                
+                                        <div class="product">
+                                            {{#if (eq orderDetails.status "Delivered")}}
+
+                                            <div id="orderStatusBtn">
+
+                                            <p onclick="returnOrder()" class="btn-product btn-cart icon-info-circle"><span id="updateOrder">Return Order</span></p>
+                                            </div>
+                                
+
+                                            {{else if (eq orderDetails.status "Cancelled")}}
+
+                                            <div id="orderStatusBtn">
+                                            <p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Cancelled</span></p>
+
+                                            </div>
+
+                                            {{else if (eq orderDetails.status "Returned")}}
+
+                                            <div id="orderStatusBtn">
+                                            <p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Returned</span></p>
+
+                                            </div>
+                                
+                                            
+                                            {{else}}
+
+                                            <div id="orderStatusBtn">
+
+                                            <p onclick="cancelOrder()" class="btn-product btn-cart icon-info-circle"><span id="updateOrder">Cancel Order</span></p>
+                                            </div>
+
+
+                                            {{/if}}
+                                            <input type="hidden" id="orderId" value="{{orderDetails._id}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            
+                            
+                            </div>
+                            
+                            
+
+                			
+                		</div><!-- End .col-lg-9 -->
+
+                        
+
+                        <aside class="col-lg-3">
+                            <div class="summary">
+                                <div class="sidebar sidebar-shop ">
+                                    <div class="widget widget-clean">
+                                        <p style="font-size: 16pt; font-weight: 600; color: #c96;">Order Summary</p>
+                        
+                                    </div><!-- End .widget widget-clean -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                    <div class="product-list-action ">
+                                        <table class="table table-summary">
+                        
+                                            <tr>
+                                                <td class="order-one">Grand Total :</td>
+                                                <td class="order-two" >₹ {{orderDetails.total}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="order-one">Payment method :</td>
+                                                <td class="order-two" id="paymentMethod">{{orderDetails.paymentMethod}}</td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="order-one">Coupon used :</td>
+
+                                            {{#if orderDetails.couponName}}
+                                            
+                                                <td class="order-two">{{orderDetails.couponName}}</td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="order-one">Amount saved:</td>
+                                                <td class="order-two" style="color: green;">₹ {{orderDetails.discountAmount}}</td>
+                                            </tr>
+
+                                            
+                                            {{else}}
+                                            <td class="order-two">No coupons used</td>
+                                            </tr>
+                                            {{/if}}
+
+                                        </table>
+                        
+                                        <table class="table table-summary">
+                                            <h6 class="mt-2" style="color: #c96;">Delivery Address :</h6>
+                                            <div class="address-data">
+
+                                            <tr>
+                        
+                                                <td >Name: <br>Mobile: <br>Email:  <br> Home: <br>City: <br>State: <br>Pincode: </td>
+                                                <td>{{address.name}}<br>{{address.mobile}} <br> {{address.email}} <br>{{address.addressLine}}<br>{{address.city}} <br>{{address.state}} <br>{{address.pincode}}</td>
+                                            </tr>
+                                            </div>
+                        
+                        
+                        
+                        
+                                        </table>
+                        
+                        
+                        
+                                    </div><!-- End .product-list-action -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                </div><!-- End .sidebar sidebar-shop -->
+                                    
+
+                            </div>
+                            
+
+                        </aside><!-- End .col-lg-3 -->
+                	</div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+
+
+{{>productfooter}}

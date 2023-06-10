@@ -205,11 +205,11 @@
                                 <li class="megamenu-container active">
                                     <a href="/home" class="">Home</a>
                                 </li>
-                                {{#each_from_three categoryData}}
+                                {{#each categoryData}}
                                 <li>
                                     <a href="/products?id={{this._id}}" class="">{{this.category}}</a>
                                 </li>
-                                {{/each_from_three}}
+                                {{/each}}
                                 {{#if userData}}
                                 <li>
 

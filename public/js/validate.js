@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     //login form validate
 
     $("#login").validate({
@@ -294,6 +294,60 @@ $(document).ready(function () {
     });
 
 
+    //Sub-Category Validation
+
+    $("#subCategoryValidate").validate({
+        rules: {
+            name: {
+                required: true,
+                nameCheck: true,
+            },
+            subCategoryDescription:{
+                required:true,
+                CatDescCheck:true,
+                
+            }
+        },
+        messages: {
+            name: {
+                required: "Name is required",
+                nameCheck: "Please enter a valid name",
+            },
+            subCategoryDescription:{
+                required:"Description is required",
+                CatDescCheck:"Please enter a valid description"
+            }
+        },
+    });
+
+    //Sub-Category update validation
+
+    $("#updateSubCategoryValidate").validate({
+        rules: {
+            name: {
+                required: true,
+                nameCheck: true,
+            },
+            subCategoryDescription:{
+                required:true,
+                CatDescCheck:true,
+                
+            }
+        },
+        messages: {
+            name: {
+                required: "Name is required",
+                nameCheck: "Please enter a valid Name",
+            },
+            subCategoryDescription:{
+                required:"Description is required",
+                CatDescCheck:"Please enter a valid description"
+            }
+        },
+    });
+
+
+
 
     //Product Validation
 
@@ -403,5 +457,248 @@ $(document).ready(function () {
         },
     });
 
+
+
+    $('#addAddress').validate({
+        rules:{
+            name:{
+                required:true,
+                addressNameCheck:true            
+            },
+            mobileNumber:{
+                required:true,
+                mbcheck:true
+            },
+            addressLine:{
+                required:true,
+                addressCheck:true
+            },
+            email:{
+                required:true,
+                email:true
+            },
+            city:{
+                required:true,
+                cityCheck:true
+            },
+            state:{
+                required:true,
+                cityCheck:true
+            },
+            pincode:{
+                required:true,
+                pinCheck:true
+            }
+        },
+        messages:{
+            name:{
+                required:"Please enter your name",
+                addressNameCheck:"Please enter valid name"
+            },
+            mobileNumber:{
+                required:"Please enter your number",
+                mbcheck:"Please enter valid number"
+            },
+            addressLine:{
+                required:"Please enter your address",
+                addressCheck:"Please enter valid address"
+            },
+            email:{
+                required:"Please enter your email",
+                email:"Please enter valid email"
+            },
+            city:{
+                required:"Please enter your city",
+                cityCheck:"Please enter valid city"
+            },
+            state:{
+                required:"Please enter your state",
+                cityInput:"Please enter Valid state"
+            },
+            pincode:{
+                required:"Please enter your pincode",
+                pinCheck:"Please enter valid pincode"
+            }
+        }
+    })
+
+    $.validator.addMethod("addressNameCheck", function (value) {
+        return /^[a-zA-Z\s]+$/.test(value);
+    });
+
+    $.validator.addMethod("addressCheck", function (value) {
+        return /^[A-Za-z0-9 ]+$/.test(value);
+    });
+
+    $.validator.addMethod("cityCheck", function (value) {
+        return /^[A-Za-z]+$/.test(value);
+    });
+
+    $.validator.addMethod("pinCheck", function (value) {
+        return /^\d{6}$/.test(value);
+    });
+
+
+    $('#updateAddress').validate({
+        rules:{
+            name:{
+                required:true,
+                addressNameCheck:true            
+            },
+            mobile:{
+                required:true,
+                mbcheck:true
+            },
+            addressLine:{
+                required:true,
+                addressCheck:true
+            },
+            email:{
+                required:true,
+                email:true
+            },
+            city:{
+                required:true,
+                cityCheck:true
+            },
+            state:{
+                required:true,
+                cityCheck:true
+            },
+            pincode:{
+                required:true,
+                pinCheck:true
+            }
+        },
+        messages:{
+            name:{
+                required:"Please enter your name",
+                addressNameCheck:"Please enter valid name"
+            },
+            mobile:{
+                required:"Please enter your number",
+                mbcheck:"Please enter valid number"
+            },
+            addressLine:{
+                required:"Please enter your address",
+                addressCheck:"Please enter valid address"
+            },
+            email:{
+                required:"Please enter your email",
+                email:"Please enter valid email"
+            },
+            city:{
+                required:"Please enter your city",
+                cityCheck:"Please enter valid city"
+            },
+            state:{
+                required:"Please enter your state",
+                cityInput:"Please enter Valid state"
+            },
+            pincode:{
+                required:"Please enter your pincode",
+                pinCheck:"Please enter valid pincode"
+            }
+        }
+    })
+
+
+    $('#addAddressCheckout').validate({
+        rules:{
+            name:{
+                required:true,
+                addressNameCheck:true            
+            },
+            mobileNumber:{
+                required:true,
+                mbcheck:true
+            },
+            addressLine:{
+                required:true,
+                addressCheck:true
+            },
+            email:{
+                required:true,
+                email:true
+            },
+            city:{
+                required:true,
+                cityCheck:true
+            },
+            state:{
+                required:true,
+                cityCheck:true
+            },
+            pincode:{
+                required:true,
+                pinCheck:true
+            }
+        },
+        messages:{
+            name:{
+                required:"Please enter your name",
+                addressNameCheck:"Please enter valid name"
+            },
+            mobileNumber:{
+                required:"Please enter your number",
+                mbcheck:"Please enter valid number"
+            },
+            addressLine:{
+                required:"Please enter your address",
+                addressCheck:"Please enter valid address"
+            },
+            email:{
+                required:"Please enter your email",
+                email:"Please enter valid email"
+            },
+            city:{
+                required:"Please enter your city",
+                cityCheck:"Please enter valid city"
+            },
+            state:{
+                required:"Please enter your state",
+                cityInput:"Please enter valid state"
+            },
+            pincode:{
+                required:"Please enter your pincode",
+                pinCheck:"Please enter valid pincode"
+            }
+        }
+    })
+
+
+    $('#addCoupon').validate({
+        rules:{
+            couponCode:{
+                required:true,
+                couponNameCheck:true
+            },
+            couponDiscount:{
+                required:true,
+                discountCheck:true
+            }
+        },
+        messages:{
+            couponCode:{
+                required:"Please enter a coupon code",
+                couponNameCheck:"Enter a valid cooupon code"
+            },
+            couponDiscount:{
+                required:"Please enter discount percent",
+                discountCheck:"Enter valid discount percent"
+            },
+            couponDate:{
+                required:"Please choose an expiry date"
+            }
+        }
+    })
+
+    $.validator.addMethod("couponNameCheck", function (value) {
+        return /^[a-zA-Z0-9]{1,10}$/.test(value);
+    });
+
+    $.validator.addMethod("discountCheck", function (value) {
+        return /^(?:[1-9]\d?|100)$/.test(value);
+    });
     
 });

@@ -24,6 +24,18 @@ const produtSchema = new mongoose.Schema({
         required: true
     },
 
+    subCategory:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'SubCategory',
+        required: true
+    },
+
+    brand: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Brand',
+        required: true
+    },
+
     imageUrl: {
         type: Array,
         required: true

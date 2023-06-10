@@ -1,6 +1,9 @@
 {{>cartheader}}
 
 <style>
+    .swal2-popup {
+        font-size: 1.4rem !important;
+    }
     .btnCoupon {
         display: inline-flex;
         align-items: center;
@@ -19,41 +22,82 @@
     }
 
     .dropdown {
-    position: relative;
-    display: inline-block;
-}
+        position: relative;
+        display: inline-block;
+    }
 
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    z-index: 999;
-    background-color: #f9f9f9;
-    min-width: max-content;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    border: 1px solid #ddd;
-    list-style-type: none;
-}
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        z-index: 999;
+        background-color: #f9f9f9;
+        min-width: 192px;
+        padding: 5px 4px;
+        margin: -12px 0 0;
+        border: 1px solid #ddd;
+        list-style-type: none;
+    }
 
-.dropdown-menu li {
-    padding: 5px 8px;
-    cursor: pointer;
-    font-size: small;
-    color: #c96;
-    font-weight: 500;
+    .dropdown-menu li {
+        padding: 7px 5.5px;
+        cursor: pointer;
+        font-size: 10pt;
+        color: #c96;
+        font-weight: 500;
+
+
+    }
+
+    .dropdown-menu li:hover {
+        background-color: #c96;
+        color: white;
+
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
     
-    
-}
+    #couponMessage,
+    #couponDiscount{
+        color: green;
+        font-weight: 500;
+    }
 
-.dropdown-menu li:hover{
-    background-color: #c96;
-    color: white;
-    
-}
+    #subTotalText,
+    #subTotal{
+        font-weight: 600;
+    }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
+    #name-error,
+    #mobileNumber-error,
+    #addressLine-error,
+    #email-error,
+    #city-error,
+    #state-error,
+    #pincode-error,
+    #mobile-error{
+        font-size: 9pt;
+        color: #c96;
+        ;
+        position: relative;
+    }
+    .accordion-summary .card-body {
+    padding: 7px 7px 0px 16px;
+    }
+    .card p{
+        color: #c96;
+        font-weight: 500;
+    }
+    .sticky-alert {
+    position: sticky;
+    top: 61px;
+    z-index: 9999;
+    }
+    .card-dashboard .card-body, label{
+        cursor: pointer;
+    }
 
 </style>
 
@@ -77,6 +121,52 @@
     <div class="page-content">
         <div class="checkout">
             <div class="container">
+
+                <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                    </symbol>
+                    <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                    </symbol>
+                    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </symbol>
+                </svg>
+
+                
+                <div class="col-lg-12 d-flex justify-content-end sticky-alert p-0">
+
+                <div class="col-lg-4">
+                    <div class="row ">
+
+                
+
+                <div id="insufficientBalanceAlert" class="alert alert-danger d-none align-items-center alert-dismissible" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                    </svg>
+                    <div style="margin-left: 7px;">
+                        Insufficient balance in your wallet <br> Please choose another payment method
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+                
+
+                    </div>
+                </div>
+
+                </div>
+                
+                
+
+
+
+
                 <div class="checkout-discount">
 
                 </div><!-- End .checkout-discount -->
@@ -105,7 +195,9 @@
                                             <label>
 
 
-                                                <input type="radio" name="selectedAddress" value="{{this.id}}"><br>
+                                                <input type="radio" name="selectedAddress" value="{{this.id}}"
+                                                    onchange="handleAddressSelection()"><br>
+
                                                 <strong>Name:</strong> {{this.name}}<br>
                                                 <strong>Mobile number:</strong> {{this.mobile}}<br>
                                                 <strong>Email:</strong> {{this.email}}<br>
@@ -138,7 +230,7 @@
                             {{!-- new address form --}}
 
                             <div>
-                                <h2 class="checkout-title">Add New Address</h2><!-- End .checkout-title -->
+                                <h2 class="checkout-title">Or Add New Address</h2><!-- End .checkout-title -->
 
                                 <form id="addAddressCheckout">
                                     <div class="row">
@@ -215,8 +307,8 @@
 
                                         {{#each cart}}
                                         <tr>
-                                            <td><a href="#">{{this.product.name}}</a></td>
-                                            <td>₹ {{this.total}}</td>
+                                            <td style="color: #c96;"><a href="#">{{this.product.name}}</a></td>
+                                            <td style="color: #c96;">₹ {{this.total}}</td>
                                         </tr>
                                         {{/each}}
 
@@ -238,13 +330,15 @@
                                                             <td>
                                                                 <div class="dropdown">
                                                                     <input style="width: 110%;" type="text"
-                                                                        class="form-control"                        
+                                                                        class="form-control"
                                                                         id="checkout-discount-input"
                                                                         placeholder="Coupon code">
                                                                     <ul id="coupon-dropdown" class="dropdown-menu">
                                                                         {{#if availableCoupons}}
                                                                         {{#each availableCoupons}}
-                                                                        <li>{{this.code}} get {{this.discount}}% discount</li>
+                                                                        <li onclick="selectCoupon('{{this.code}}')">
+                                                                            {{this.code}} <small> get {{this.discount}}%
+                                                                            discount </small> </li>
                                                                         {{/each}}
                                                                         {{else}}
                                                                         <li>No coupons available</li>
@@ -257,11 +351,13 @@
                                                             {{!-- <div class="input-group-append"> --}}
                                                                 <td>
 
-                                                                    <button class="btn btnCoupon btn-outline-primary-2"
+                                                                    <button onclick="validateCoupon()" class="btn btnCoupon btn-outline-primary-2"
                                                                         type="submit"><i
                                                                             class="icon-long-arrow-right"></i></button>
 
                                                                 </td>
+
+
 
                                                                 {{!--
                                                             </div><!-- .End .input-group-append -->
@@ -269,87 +365,119 @@
                                                     </form>
                                                 </div><!-- End .cart-discount --> --}}
                                         </tr>
-                                        <tr class="summary-total">
-                                            <td>Total:</td>
-                                            <td>₹ {{subTotal}}</td>
+
+                                        
+
+                                        <input type="hidden" id="subTotalValue" value="{{subTotal}}">
+
+                                        
+
+                                        <tr id="couponModel" style="display: none;" class="summary-total">
+                                            <td id="couponMessage">Saved Amount:</td>
+                                            <td id="couponDiscount" ></td>
                                         </tr><!-- End .summary-total -->
+                                        
+                                        <tr class="summary-total">
+                                            <td id="subTotalText">Total:</td>
+                                            <td id="subTotal" >₹ {{subTotal}}</td>
+                                        </tr><!-- End .summary-total -->
+
+                                        
+                                        
                                     </tbody>
                                 </table><!-- End .table table-summary -->
 
 
                                 <div class="accordion-summary" id="accordion-payment">
 
-                                    {{!-- <div class="card">
-                                        <div class="card-header" id="heading-1">
-                                            <h2 class="card-title">
-                                                <a role="button" data-toggle="collapse" href="#collapse-1"
-                                                    aria-expanded="true" aria-controls="collapse-1">
-                                                    Direct bank transfer
-                                                </a>
-                                            </h2>
-                                        </div><!-- End .card-header -->
-                                        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Make your payment directly into our bank account. Please use your Order
-                                                ID as the payment reference. Your order will not be shipped until the
-                                                funds have cleared in our account.
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse -->
-                                    </div><!-- End .card --> --}}
 
+                                    <h6 class="mt-1 mb-2">PAYMENT METHODS</h6>
 
 
                                     <div class="card">
                                         <div class="card-header" id="heading-3">
                                             <h2 class="card-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse"
-                                                    href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-                                                    Cash on delivery
-                                                </a>
+                                                <label>
+                                                    <input class="payment-radio" type="radio" name="payment"
+                                                        value="Cash On Delivery" onchange="handleAddressSelection()"> 
+                                                        
+                                                    Cash On Delivery
+                                                </label>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
+                                        
+                                        {{!-- <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
                                             data-parent="#accordion-payment">
                                             <div class="card-body">Secure and Hassle-Free.
                                                 Pay when your order arrives at your doorstep!
                                             </div><!-- End .card-body -->
-                                        </div><!-- End .collapse -->
+                                        </div><!-- End .collapse --> --}}
+                                    
                                     </div><!-- End .card -->
 
-                                    <div class="card">
+                                    <div class="card mt-1">
                                         <div class="card-header" id="heading-4">
                                             <h2 class="card-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse"
-                                                    href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-                                                    PayPal
-                                                </a>
+                                                <label>
+                                                    <input class="payment-radio" type="radio" name="payment"
+                                                        value="Paypal" onchange="handleAddressSelection()"> 
+                                                        
+                                                    Paypal
+                                                </label>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        <div id="collapse-4" class="collapse" aria-labelledby="heading-4"
+                                        
+                                        {{!-- <div id="collapse-4" class="collapse" aria-labelledby="heading-4"
                                             data-parent="#accordion-payment">
                                             <div class="card-body">
                                                 Enjoy secure payments with PayPal, the globaly trusted payment platform.
                                             </div><!-- End .card-body -->
-                                        </div><!-- End .collapse -->
+                                        </div><!-- End .collapse --> --}}
+                                    
                                     </div><!-- End .card -->
 
-                                    <div class="card">
+                                    <div class="card mt-1">
                                         <div class="card-header" id="heading-2">
                                             <h2 class="card-title">
-                                                <a class="collapsed" role="button" data-toggle="collapse"
-                                                    href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                                                <label>
+                                                    <input class="payment-radio" type="radio" name="payment"
+                                                        value="Razorpay" onchange="handleAddressSelection()"> 
+                                                        
                                                     Razorpay
-                                                </a>
+                                                </label>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
+                                        
+                                        {{!-- <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
                                             data-parent="#accordion-payment">
                                             <div class="card-body">
                                                 Experience hassle-free and seamless Payments with Razorpay!
                                             </div><!-- End .card-body -->
-                                        </div><!-- End .collapse -->
+                                        </div><!-- End .collapse --> --}}
+                                    
                                     </div><!-- End .card -->
+
+                                    <div class="card mt-1">
+                                        <div class="card-header" id="heading-4">
+                                            <h2 class="card-title">
+                                                <label>
+                                                    <input data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" 
+                                                        aria-controls="collapseExample" class="payment-radio" type="radio" name="payment"
+                                                            value="Wallet" onchange="handleAddressSelection()"> 
+                                                        
+                                                    Wallet
+                                                </label>
+                                            </h2>
+                                        </div>
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="card card-body">
+                                                <p>
+                                                    Available Balance : ₹ {{userData.wallet}}
+                                                </p>
+                                                <input type="hidden" id="userWallet" value="{{userData.wallet}}" >
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="card ml-5 mt-2">
                                         <div class="card-header" id="heading-5">
@@ -363,7 +491,8 @@
                                     </div><!-- End .card -->
                                 </div><!-- End .accordion -->
 
-                                <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                <button disabled onclick="placeOrder()" id="place-order-btn"
+                                    class="btn btn-outline-primary-2 btn-order btn-block">
                                     Place Order
 
                                 </button>
@@ -371,7 +500,8 @@
                         </aside><!-- End .col-lg-3 -->
                     </div><!-- End .row -->
 
-                {{!-- </form> --}}
+                    {{!--
+                </form> --}}
 
             </div><!-- End .container -->
         </div><!-- End .checkout -->
