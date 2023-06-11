@@ -139,15 +139,16 @@ tbody{
 }
 
 .adminpages ul {
-  margin-left: 4rem;
+  margin-left: 4.5rem;
 }
 
 .adminpages li {
-  padding-left: 2rem;
+  padding-left: 1.5rem;
 }
 
 .adminroutes a {
   text-decoration: none;
+  text-transform: uppercase;
   color: grey;
 }
 
@@ -159,6 +160,11 @@ tbody{
 .adminroutes .active a {
   color: black;
   /* Add any additional styles you want for the active link */
+}
+
+.adminroutes h2{
+  font-size: 22pt;
+  font-weight: 600;
 }
 
 /* Responsive adjustments */

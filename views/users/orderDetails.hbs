@@ -78,8 +78,38 @@
     cursor: pointer;
 }
 
+.fa-regular.fa-file-lines{
+    color: black;
+    transition: 200ms;
+}
+.btn-outline-dark-2:hover .fa-regular.fa-file-lines{
+    color: #c96;
+    transition: 200ms;
+}
 
+    .success-message {
+  display: flex;
+  
+  justify-content: start;
+  align-items: center;
+  margin-top: 0.5rem;
+}
 
+.success-message i {
+  margin-right: 5px;
+  margin-top: 4px;
+  font-size: 2rem; 
+}
+.error-title {
+    font-size: 2rem;
+    margin-top: 1.8rem;
+    margin-left: 0.3rem;
+}
+.refund-message p{
+    padding-left: 2.8rem;
+    margin-top: -13px;
+    font-size: 9pt;
+}
 </style>
 
 <main class="main">
@@ -105,9 +135,11 @@
                 			
 
                             <div class="products mb-3">
+                                {{#each orderProductData}}
                                 <div class="product product-list">
-                                    <div class="row mb-2">
-                                        {{#each orderProductData}}
+                                    
+                                    <div class="row ">
+                                        
                                         <div class="col-6 col-lg-3">
                                             <figure class="product-media">
                                                 
@@ -160,17 +192,20 @@
                                                 
                                             </div><!-- End .product-body -->
                                         </div><!-- End .col-lg-6 -->
-                                        {{/each}}
+                                        
                                         
                                     </div><!-- End .row -->
                                     
+                                    
                                 </div><!-- End .product -->
+                                {{/each}}
                                 
 
                                 
 
                                 
                             </div><!-- End .products -->
+                            
                             <div class="row">
                             
                                 <div class="col-lg-12 product product-list pb-0">
@@ -178,50 +213,110 @@
                                         <h3>Delivery & returns</h3>
                                         <p>
                                             We hope you’ll love every purchase, but if you ever need to return an item you can do so
-                                            within <strong>7 days </strong>of receipt. For further assistance, contact our customer support team. We're here to
+                                            within <strong>7 days </strong>of receipt. For further assistance, contact our customer support team.
+                                            We're here to
                                             help!"</p>
                                     </div>
-                                    <div class="col-lg-3 p-0 mt-2">
-                                
-                                        <div class="product">
-                                            {{#if (eq orderDetails.status "Delivered")}}
+                            
+                                    <div class="refund-return-information mb-2">
 
-                                            <div id="orderStatusBtn">
-
-                                            <p onclick="returnOrder()" class="btn-product btn-cart icon-info-circle"><span id="updateOrder">Return Order</span></p>
+                                        <div class="row">
+                            
+                            
+                            
+                                        <div class="col-lg-3 mt-2">
+                            
+                                            <div class="product">
+                                                {{#if (eq orderDetails.status "Delivered")}}
+                            
+                                                <div id="orderStatusBtn">
+                            
+                                                    <p onclick="returnOrder()" class="btn-product btn-cart icon-info-circle"><span
+                                                            id="updateOrder">Return Order</span></p>
+                                                </div>
+                            
+                            
+                                                {{else if (eq orderDetails.status "Cancelled")}}
+                            
+                                                <div id="orderStatusBtn">
+                                                    <p class="disabled btn-product btn-cart icon-info-circle"><span>Order Cancelled</span></p>
+                            
+                                                </div>
+                            
+                                                {{else if (eq orderDetails.status "Returned")}}
+                            
+                                                <div id="orderStatusBtn">
+                                                    <p class="disabled btn-product btn-cart icon-info-circle"><span>Order Returned</span></p>
+                            
+                                                </div>
+                            
+                            
+                                                {{else}}
+                            
+                                                <div id="orderStatusBtn">
+                            
+                                                    <p onclick="cancelOrder()" class="btn-product btn-cart icon-info-circle"><span
+                                                            id="updateOrder">Cancel Order</span></p>
+                                                </div>
+                            
+                            
+                                                {{/if}}
+                                                <input type="hidden" id="orderId" value="{{orderDetails._id}}">
                                             </div>
-                                
-
-                                            {{else if (eq orderDetails.status "Cancelled")}}
-
-                                            <div id="orderStatusBtn">
-                                            <p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Cancelled</span></p>
-
-                                            </div>
-
-                                            {{else if (eq orderDetails.status "Returned")}}
-
-                                            <div id="orderStatusBtn">
-                                            <p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Returned</span></p>
-
-                                            </div>
-                                
-                                            
-                                            {{else}}
-
-                                            <div id="orderStatusBtn">
-
-                                            <p onclick="cancelOrder()" class="btn-product btn-cart icon-info-circle"><span id="updateOrder">Cancel Order</span></p>
-                                            </div>
-
-
-                                            {{/if}}
-                                            <input type="hidden" id="orderId" value="{{orderDetails._id}}">
                                         </div>
-                                    </div>
-                                </div>
+                            
+                                                                    
+                                        
+                                        {{#if (eq orderDetails.status "Returned")}}
+                                        <div class="col-lg-8 ml-5">
+                                            <div class="success-message">
+                                                <i class="fa-solid fa-circle-check" style="color: #2fad01;"></i>
+                                                <h1 class="error-title">Refund Initiated</h1>
+                                            </div>
+                                            <div class="refund-message">
+                                                <p>wil be refelected in your wallet within <strong>7 business days</strong></p>
+                            
+                                            </div>
+                            
+                                        </div>
+                                        {{/if}}
 
-                                
+                                        {{#if (and (eq orderDetails.status "Cancelled") (or (eq orderDetails.paymentMethod "Razorpay") (eq
+                                        orderDetails.paymentMethod "Wallet")))}}
+                                        <div class="col-lg-8 ml-5">
+                                            <div class="success-message">
+                                                <i class="fa-solid fa-circle-check" style="color: #2fad01;"></i>
+                                                <h1 class="error-title">Refund Initiated</h1>
+                                            </div>
+                                            <div class="refund-message">
+                                                <p>wil be refelected in your wallet within <strong>7 business days</strong></p>
+                            
+                                            </div>
+                            
+                                        </div>
+                                        {{/if}}
+
+                                        <div id="refundMessage" class="col-lg-8 ml-5 d-none">
+                                            <div class="success-message">
+                                                <i class="fa-solid fa-circle-check" style="color: #2fad01;"></i>
+                                                <h1 class="error-title">Refund Initiated</h1>
+                                            </div>
+                                            <div class="refund-message">
+                                                <p>wil be refelected in your wallet within <strong>7 business days</strong></p>
+                            
+                                            </div>
+                            
+                                        </div>
+
+                                    </div>
+                            
+                                    </div>
+                            
+                            
+                                    
+                                </div>
+                            
+                            
                             
                             
                             </div>
@@ -252,7 +347,8 @@
                         
                                             <tr>
                                                 <td class="order-one">Grand Total :</td>
-                                                <td class="order-two" >₹ {{orderDetails.total}}</td>
+                                                <td class="order-two" style="text-align: end;">₹ {{orderDetails.total}}</td>
+                                                <input type="hidden" id="grandTotal" value="{{orderDetails.total}}">
                                             </tr>
                                             <tr>
                                                 <td class="order-one">Payment method :</td>
@@ -300,6 +396,9 @@
                         
                         
                                     </div><!-- End .product-list-action -->
+
+
+                                    
                         
                         
                         
@@ -322,8 +421,15 @@
                         
                         
                                 </div><!-- End .sidebar sidebar-shop -->
+
+                                
                                     
 
+                            </div>
+                            <div class="download-invoice">
+
+                            <a href="/home" class="btn btn-outline-dark-2 btn-block mb-3"><span>DOWNLOAD
+                                INVOICE</span><i class="fa-regular fa-file-lines"></i></a>
                             </div>
                             
 

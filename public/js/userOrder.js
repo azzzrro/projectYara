@@ -426,6 +426,13 @@ const cancelOrder = async()=>{
 const updateOrder = async (orderId, orderStatus)=>{
     try {
 
+        const walletBalance = Number(document.getElementById('userWallet').value)
+        const grandTotal = Number(document.getElementById('grandTotal').value)
+        console.log(walletBalance);
+        console.log(grandTotal);
+
+        const updatedBalance = walletBalance + grandTotal
+        
         const paymentMethod = document.getElementById('paymentMethod').innerHTML
         const response = await fetch(`/updateOrder?orderId=${orderId}`,{
             method:'POST',
@@ -433,7 +440,9 @@ const updateOrder = async (orderId, orderStatus)=>{
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                orderStatus: orderStatus
+                orderStatus: orderStatus,
+                paymentMethod: paymentMethod,
+                wallet: updatedBalance
             })
         })
 
@@ -446,14 +455,24 @@ const updateOrder = async (orderId, orderStatus)=>{
                 position: "center",
                 icon: "success",
                 title: "Your order has been successfully cancelled",
-                text: "For further assistance,\n contact our customer support team.\n We're here to help!",
+                text: "Your order has been cancelled.\n Any payment made will be refunded\n in your account within 7 business days.",
                 showConfirmButton: true,
                 confirmButtonColor: "#00A300",
             });
 
             if(result.value){
 
+                console.log(data.refund)
+
                 orderStatusBtn.innerHTML= `<p class="disabled btn-product btn-cart icon-info-circle"><span>Order Cancelled</span></p>`
+                
+                    if(data.refund === "Refund"){
+                        const refundMessage = document.getElementById('refundMessage');
+                        refundMessage.classList.remove('d-none');
+                    }else{
+                        const refundMessage = document.getElementById("refundMessage");
+                        refundMessage.classList.add("d-none");
+                    }
             }
 
         }else if(data.message === "Returned"){
@@ -461,7 +480,7 @@ const updateOrder = async (orderId, orderStatus)=>{
                 position: "center",
                 icon: "success",
                 title: "Successfully placed return request",
-                text: "For further assistance,\n contact our customer support team.\n We're here to help!",
+                text: "Return request received!.\n Our team will review it and\n provide further instructions",
                 showConfirmButton: true,
                 confirmButtonColor: "#00A300",
             });
@@ -469,6 +488,14 @@ const updateOrder = async (orderId, orderStatus)=>{
             if(result.value){
 
                 orderStatusBtn.innerHTML=`<p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Returned</span></p>`
+
+                if(data.refund === "Refund"){
+                    const refundMessage = document.getElementById('refundMessage');
+                    refundMessage.classList.remove('d-none');
+                }else{
+                    const refundMessage = document.getElementById("refundMessage");
+                    refundMessage.classList.add("d-none");
+                }
             }
 
         }

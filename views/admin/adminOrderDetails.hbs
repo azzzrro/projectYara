@@ -1,0 +1,201 @@
+{{>dashhead}}
+
+
+<style>
+    .order-details-container {
+        width: 83%;
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.order-details-list {
+  list-style: none;
+  padding: 0;
+}
+
+.order-details-list li {
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-weight: bold;
+}
+
+.detail-value {
+  margin-left: 10px;
+}
+
+
+.nav-4 h2 a{
+        color: black;
+    }
+
+
+
+</style>
+
+
+        </div>
+    </div>
+
+
+    <div class="container order-details-container">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Order Details</h2>
+                <ul class="order-details-list mt-3">
+                    <li>
+                        <span class="detail-label">Order Id:</span>
+                        <span class="detail-value">{{orderDetails.orderId}}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Order Date:</span>
+                        <span class="detail-value">{{orderDetails.date}}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Payment Method:</span>
+                        <span class="detail-value">{{orderDetails.paymentMethod}}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Total:</span>
+                        <span class="detail-value">{{orderDetails.total}}</span>
+                    </li>
+                    {{#if orderDetails.couponName}}
+                    <li>
+                        <span class="detail-label">Coupon Name:</span>
+                        <span class="detail-value">{{orderDetails.couponName}}</span>
+                    </li>
+                    <li>
+                        <span class="detail-label">Discount Amount:</span>
+                        <span class="detail-value">{{orderDetails.discountAmount}}</span>
+                    </li>
+                    {{else}}
+                    <li>
+                        <span class="detail-label">Coupon Used:</span>
+                        <span class="detail-value">No coupon used</span>
+                    </li>
+                    {{/if}}
+
+                    <!-- Add more order details here -->
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h2>Shipping Address</h2>
+                <p class="mt-3">
+                    {{addressData.name}}<br>
+                    {{addressData.mobile}}<br>
+                    {{addressData.email}}<br>
+                    {{addressData.addressLine}}<br>
+                    {{addressData.city}}<br>
+                    {{addressData.state}}<br>
+                    {{addressData.pincode}}<br>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h2>Order-Status</h2>
+                {{#if (eq orderDetails.status "Pending")}}
+                <h4 style="color: orange;" >{{orderDetails.status}}</h4>
+                {{else if (eq orderDetails.status "Shipped")}}
+                <h4 style="color: green;" >{{orderDetails.status}}</h4>
+                {{else if (eq orderDetails.status "Delivered")}}
+                <h4 style="color: teal;" >{{orderDetails.status}}</h4>
+                {{else if (eq orderDetails.status "Cancelled")}}
+                <h4 style="color: red;" >{{orderDetails.status}}</h4>
+                {{else if (eq orderDetails.status "Returned")}}
+                <h4 style="color: purple;" >{{orderDetails.status}}</h4>
+                {{/if}}
+
+                <h6>Change Order Status</h6>
+
+
+                {{#if (eq orderDetails.status "Pending")}}
+                
+                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                    <option value="" disabled selected>{{this.status}}</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                
+                
+                {{else if (eq orderDetails.status "Shipped")}}
+                
+                
+                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                    <option value="" disabled selected>{{this.status}}</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                
+                
+                {{else if (eq orderDetails.status "Cancelled")}}
+                
+                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                    <option value="" disabled selected>{{this.status}}</option>
+                </select>
+                
+                {{else if (eq orderDetails.status "Returned")}}
+                
+                <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                    <option value="" disabled selected>{{this.status}}</option>
+                </select>
+                
+                {{else}}
+                
+                <td>
+                    <select name="orderUpdate" id="orderUpdate-{{this._id}}">
+                        <option value="" disabled selected>{{this.status}}</option>
+                        <option value="Returned">Returned</option>
+                    </select>
+                </td>
+                
+                {{/if}}
+
+                
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-10 w-100 m-auto">
+                <div class="table-container">
+                    <h2>Order Items</h2>
+                    <table class="table table-hover mt-4">
+                        <thead>
+                            <tr>
+                                <th scope="col">NO</th>
+                                <th scope="col">IMAGE</th>
+                                <th scope="col">NAME</th>
+                                <th scope="col">QUANTITY</th>
+                                <th scope="col">PRICE</th>        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each productData}}
+                            <tr>
+                                <td>{{@index}}</td>
+                                <td>
+                                <img style="width: 80px; height: 80px;" src="/uploads/{{this.image}}"
+                                    alt="Product Image">
+                            </td>
+                            <td class="name-Cell" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{this.name}}">
+                                {{this.name}}
+                            </td>
+
+                                <td>{{this.quantity}}</td>
+                                <td>{{this.price}}</td>
+                            
+                             </tr>
+                             {{/each}}
+                        </tbody>
+                    </table>                              
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+{{>dashfoot}}

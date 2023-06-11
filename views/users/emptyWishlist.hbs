@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="homecss/bootstrap.min.css">
 
     <link rel="stylesheet" href="homecss/style.css">
+    <link rel="stylesheet" href="homecss/plugins/nouislider/nouislider.css">
+    
+    <link rel="stylesheet" href="homecss/demos/demo-8.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 
     <style>
@@ -173,6 +177,22 @@
         .header .header-right {
             margin-left: 0
         }
+
+        .compare-dropdown .dropdown-menu {
+        padding: 2.2rem 2rem 2.5rem;
+    }
+
+    .addFund span{
+        font-weight: 500;
+    }
+    .addFund a {
+        border: 1px solid;
+        padding: 8px 15px 8px 15px;
+    }
+
+    .dropdown-toggle:hover .fa-regular.fa-credit-card {
+        color: #c96;
+    }
     </style>
 
 
@@ -252,6 +272,35 @@
 
                         {{#if userData}}
 
+                        <div class="dropdown compare-dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            data-display="static" title="Compare Products" aria-label="Compare Products">
+                            <i class="fa-regular fa-credit-card fa-sm"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <ul class="compare-products">
+                    
+                                <li class="compare-product text-center">
+                                    <h5>Available Wallet Balance</h5>
+                                </li>
+                            </ul>
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex justify-content-center">
+                                        <p style="font-size: 2.4rem; font-weight: 500;">₹ {{userData.wallet}}</p>
+                                    </div>
+                                    <div class="col-lg-6 d-flex justify-content-start align-items-center p-0">
+                                        <div class="addFund">
+                                            <a href="#" class=" btn-outline-primary"><span>Add Fund</span><i
+                                                    class="icon-long-arrow-right"></i></a>
+                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End .dropdown-menu -->
+                    </div><!-- End .compare-dropdown -->
+
                         <a href="/wishlist" class="wishlist-link">
                             <i class="icon-heart-o"></i>
                             <span class="wishlist-count">0</span>
@@ -263,6 +312,29 @@
                         </a>
 
                         {{else}}
+
+                        <div class="dropdown compare-dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            data-display="static" title="Compare Products" aria-label="Compare Products">
+                            <i class="fa-regular fa-credit-card fa-sm"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <ul class="compare-products">
+                    
+                                <li class="compare-product text-center">
+                                    <h5>Available Wallet Balance</h5>
+                                </li>
+                            </ul>
+                            <div class="col-lg-12">
+                                <div class="row justify-content-center align-items-center p-0">
+                                    <div class="addFund">
+                                        <a href="/login" class=" btn-outline-primary-2"><span>Login to check wallet balance</span></a>
+                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End .dropdown-menu -->
+                    </div><!-- End .compare-dropdown -->
 
                         <a href="/login" class="wishlist-link">
                             <i class="icon-heart-o"></i>

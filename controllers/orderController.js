@@ -138,7 +138,7 @@ const placeOrder = async (req,res)=>{
 
                     const walletBalance = req.body.walletBalance
                     
-                    await user.findByIdAndUpdate(userId,
+                    await User.findByIdAndUpdate(userId,
                         { $set: { wallet: walletBalance }}, { new: true })
 
                     saveOrder()
@@ -236,10 +236,10 @@ const orderDetails = async(req,res)=>{
         })        
         const orderProductData = orderDetails.product
         const addressId = orderDetails.address
-        console.log(addressId)
+        
 
         const address = await Address.findById(addressId)
-        console.log(orderDetails.couponName);
+        
 
         
         res.render('orderDetails', { 
@@ -277,25 +277,56 @@ const filterOrder = async(req,res)=>{
 }
 
 
-const updateOrder = async(req,res)=>{
+const updateOrder = async (req, res) => {
     try {
+        const userData = req.session.user;
+        const userId = userData._id;
+
+        const orderId = req.query.orderId;
+        const status = req.body.orderStatus;
+        const paymentMethod = req.body.paymentMethod;
+        const updatedBalance = req.body.wallet;
+
         
-        const orderId = req.query.orderId
-        const status = req.body.orderStatus
+        if (paymentMethod !== "Cash On Delivery") {
+            await User.findByIdAndUpdate(userId, { $set: { wallet: updatedBalance } }, { new: true });
 
-        if(status === "Returned"){
-            await Order.findByIdAndUpdate(orderId, { $set: { status: status } })
-            res.json({ message: "Returned" })
-        }
-        if(status === "Cancelled"){
-            await Order.findByIdAndUpdate(orderId, { $set: { status: status } })
-            res.json({ message: "Cancelled" })
-        }
+            if (status === "Returned") {
+                await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
+                res.json({ 
+                    message: "Returned",
+                    refund: "Refund"
+                });
+            }
+            if (status === "Cancelled") {
+                await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
+                res.json({ 
+                    message: "Cancelled",
+                    refund: "Refund"
+                });
+            }
+        } else if(paymentMethod == "Cash On Delivery" && status === "Returned") {
+            
+            await User.findByIdAndUpdate(userId, { $set: { wallet: updatedBalance } }, { new: true });
 
+            await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
+                res.json({ 
+                    message: "Returned",
+                    refund: "Refund"
+                });
+
+        }else if(paymentMethod == "Cash On Delivery" && status === "Cancelled"){
+            
+            await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
+                res.json({ 
+                    message: "Returned",
+                    refund: "No Refund"
+                });
+        }
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
 module.exports = {
     orderSuccess,

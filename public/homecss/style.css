@@ -21,6 +21,12 @@ body {
     overflow-x: hidden
 }
 
+@media (max-width: 761px) {
+    .zoomContainer{
+        display: none;
+    }
+}
+
 ::-moz-selection {
     color: #fff;
     background-color: #c96

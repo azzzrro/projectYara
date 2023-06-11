@@ -5,6 +5,7 @@ const Product = require("../models/productModel");
 const Brand = require("../models/brandModel")
 const Coupon = require("../models/couponModel");
 const Order = require("../models/orderModel")
+const Addres = require("../models/addressModel")
 const moment = require("moment");
 require("dotenv").config();
 
@@ -142,6 +143,29 @@ const updateOrder = async(req,res)=>{
 
         res.json({
             messaage: "Success"
+        })
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const orderDetails = async(req,res)=>{
+    try {
+
+        const orderId = req.query.orderId
+
+        const orderDetails = await Order.findById(orderId)
+        const orderProductData = orderDetails.product
+        const addressId = orderDetails.address
+
+        const addressData = await Addres.findById(addressId)
+        
+        res.render('adminOrderDetails',{
+            orderDetails,
+            orderProductData,
+            addressData
         })
         
     } catch (error) {
@@ -760,6 +784,7 @@ module.exports = {
 
     loadOrders,
     updateOrder,
+    orderDetails,
 
     loadCategories,
     addCategory,

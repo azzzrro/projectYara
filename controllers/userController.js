@@ -55,7 +55,6 @@ let name;
 let email;
 let mobile;
 let password;
-let userData;
 let forgotPasswordOtp;
 
 const sendOtp = async (req, res) => {
@@ -138,7 +137,7 @@ const verifyLogin = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-        userData = await User.findOne({ email: email });
+        const userData = await User.findOne({ email: email });
 
         if (userData) {
             const passwordMatch = await bcrypt.compare(password, userData.password);
@@ -291,8 +290,9 @@ const homeload = async (req, res) => {
     try {
         const categoryData = await Category.find({ is_blocked: false });
         const subCategoryData = await SubCategory.find({ is_blocked: false });
+        const userData = req.session.user
 
-        if (req.session.user) {
+        if (userData) {
             res.render("home", { userData, categoryData, subCategoryData });
         } else {
             res.render("home", { categoryData , subCategoryData});
@@ -405,7 +405,6 @@ const deleteAddress = async (req, res) => {
 const doLogout = async (req, res) => {
     try {
         req.session.destroy();
-        userData = null;
         res.redirect("/login");
     } catch (error) {
         console.log(error.message);

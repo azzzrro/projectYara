@@ -1,5 +1,8 @@
 const hbs = require('hbs');
 const path = require('path');
+const handlebars = require('handlebars')
+const handlebarsHelpers = require('handlebars-helpers')()
+
 
 const partialsPath = path.join(__dirname, '../views/partials');
 
@@ -9,6 +12,15 @@ hbs.registerPartials(path.join(partialsPath, 'dashboard'));
 hbs.registerPartials(path.join(partialsPath, 'signup'));
 
 
+hbs.registerHelper('and', function () {
+  const values = Array.prototype.slice.call(arguments);
+  return values.slice(0, -1).every(Boolean);
+});
+
+hbs.registerHelper('or', function () {
+  const values = Array.prototype.slice.call(arguments);
+  return values.slice(0, -1).some(Boolean);
+});
 
 hbs.registerHelper('slice', function (context, start, end) {
   return context.slice(start, end);
