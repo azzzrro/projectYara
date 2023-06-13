@@ -12893,9 +12893,10 @@ button:focus {
 }
 
 .product-details-action {
-    display: inline-block;
-    
-    margin-bottom: 3rem
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin-bottom: 3rem;
 }
 
 .product-details-action .btn-cart {
@@ -12929,8 +12930,7 @@ button:focus {
 .details-action-wrapper {
     display: flex;
     align-items: center;
-    margin-top: 2rem;
-    margin-left: 0rem;
+    margin-left: 4rem;
 }
 
 .details-action-wrapper .btn-product {

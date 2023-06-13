@@ -77,21 +77,22 @@
                                         {{#if (eq this.stock 0)}}
                                         <span class="product-label label-out">Out of Stock</span>
                                         {{/if}}
-                                        {{#notEmpty this.offerlabel}}
                                         <span class="product-label label-sale">Sale</span>
-                                        {{/notEmpty}}
-                                        
                             
                                         <a href="/productView?id={{this._id}}">
                             
                                             <img src="/uploads/{{this.imageUrl.[0]}}" alt="Product image" class="product-image">
                                         </a>
-                           
+                            
+                            
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add
                                                     to wishlist</span></a>
                                         </div><!-- End .product-action-vertical -->
-                                               
+                            
+                            
+                            
+                            
                                         <div class="product-action">
                                             {{#if (eq this.stock 0)}}
                                             <button style="border: none;" disabled="disabled" class="btn-product btn-cart"><span>out Of
@@ -111,12 +112,9 @@
                                         <h3 class="product-title"><a href="/productView?id={{this._id}}">{{this.name}}</a></h3>
                                         <!-- End .product-title -->
                                         <div class="product-price">
-                                            {{#if this.oldPrice }}
                                             <span class="new-price">₹ {{this.price}}</span>
                                             <span class="old-price">₹ {{this.oldPrice}}</span>
-                                            {{else}}
-                                            ₹ {{this.price}}
-                                            {{/if}}
+                                            
                                         </div><!-- End .product-price -->
                             
                                         <div class="ratings-container">
@@ -145,14 +143,14 @@
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
-                                    <a class="page-link page-link-prev" href="?page={{subtract currentPage 1}}" aria-label="Previous"
+                                    <a class="page-link page-link-prev" href="?offerPage={{subtract currentPage 1}}" aria-label="Previous"
                                         tabindex="-1" aria-disabled="{{eq currentPage 1}}">
                                         <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                                     </a>
                                 </li>
                                 <li class="page-item-total">Page {{currentPage}} of {{totalPages}}</li>
                                 <li class="page-item {{#if (eq currentPage totalPages)}}disabled{{/if}}">
-                                    <a class="page-link page-link-next" href="?page={{add currentPage 1}}" aria-label="Next"
+                                    <a class="page-link page-link-next" href="?offerPage={{add currentPage 1}}" aria-label="Next"
                                         aria-disabled="{{eq currentPage totalPages}}">
                                         Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                                     </a>

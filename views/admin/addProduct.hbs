@@ -23,7 +23,8 @@
     #name,
     #quantity,
     #Price,
-    #new-brand-input {
+    #new-brand-input,
+    #offerPrice {
         margin-bottom: 20px;
         margin-left: 22px;
 
@@ -109,7 +110,9 @@
 
     }
 
-    select {
+    .category-select,
+    .subCategory-select,
+    .brand-select {
 
         margin-left: 22px;
         margin-top: 8px;
@@ -150,6 +153,8 @@
         margin: auto;
         margin-left: 1.8rem;
     }
+
+    
 </style>
 
 
@@ -161,90 +166,88 @@
 
     <div class="container">
         <h1>Add New Product</h1>
-
+    
         <form action="/admin/addProduct" method="post" id="addProductValidation" enctype="multipart/form-data">
-
-
-        <div class="container-fluid">
-            <div class="row mt-4">
-                <div class="col-lg-12 col-md-6 p-0">
-        
-                    
-        
+    
+            <div class="container-fluid">
+                <div class="row mt-4">
+                    <div class="col-lg-12 col-md-6 p-0">
                         <input type="text" placeholder="Product Name" id="name" name="name">
                         <input type="number" placeholder="Price" id="Price" name="price">
                         <input type="number" placeholder="Quantity" id="quantity" name="quantity">
-
-                
+                    </div>
                 </div>
-
-            </div>
-
-            <div class="row mt-4">
-
-                <div class="col-lg-12 col-md-6 p-0">
-        
-                        <select style="width:180px;" name="category" required>
+    
+                <div class="row mt-4">
+                    <div class="col-lg-12 col-md-6 p-0">
+    
+                        <select style="width:180px;" name="category" class="category-select" required>
                             <option value="" disabled selected>Select category</option>
                             {{#each categoryData}}
                             <option value="{{this._id}}">{{this.category}}</option>
                             {{/each}}
                         </select>
-        
-                        <select style="width:200px;" name="subCategory" required>
+    
+                        <select style="width:200px;" name="subCategory" class="subCategory-select" required>
                             <option value="" disabled selected>Select Sub-Category</option>
                             {{#each subCategoryData}}
                             <option value="{{this._id}}">{{this.subCategory}}</option>
                             {{/each}}
                         </select>
-
-                        <select style="width: 200px;" name="brand" id="brand-select" required>
+    
+                        <select style="width: 200px;" name="brand" id="brand-select" class="brand-select" required>
                             <option value="" disabled selected>Select Brand</option>
                             {{#each brands}}
                             <option value="{{this._id}}">{{this.name}}</option>
                             {{/each}}
                             <option class="new-brand" value="new">Enter New Brand</option>
                         </select>
-                        
-                        <input type="text" id="new-brand-input" class="d-none" name="newBrand" placeholder="Enter brand" required >
-
-
-        
-                    
-        
+    
+                        <input type="text" id="new-brand-input" class="d-none" name="newBrand" placeholder="Enter brand"
+                            required>
+                    </div>
                 </div>
+    
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="offer-labels mt-5 ps-3">
+                            <label>
+                                <h5>Select Offer Labels(If any):</h5>
+                            </label>
+                            {{#each banners}}
+                            <div>
+                                <input type="checkbox" name="offerLabel" id="offerLabel" value="{{this.label}}">
+                                <label>{{this.label}}</label>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 mt-5">
+                            <label class="ps-4">
+                                <h5>Enter Offer Price(If Offer):</h5>
+                            </label>
+                        <input type="number" placeholder="Offer Price" id="offerPrice" name="offerPrice">
+                    </div>
+                </div>
+                
+                
             </div>
-
-            
-        </div>
-            
-
+    
             <textarea type="text" placeholder="Description" id="description" name="description" required></textarea>
-
-
-
             <div id="images">
-
-
-
                 <input type="file" id="image1" name="image" required>
                 <input type="file" id="image2" name="image" required>
                 <br>
                 <input type="file" id="image3" name="image" required>
                 <input type="file" id="image4" name="image" required>
-
-
             </div>
-
-
-
+    
             <div class="image-preview-container">
                 <img id="preview1" class="image-preview" src="#" alt="Image Preview" style="display: none;">
                 <img id="preview2" class="image-preview" src="#" alt="Image Preview" style="display: none;">
                 <img id="preview3" class="image-preview" src="#" alt="Image Preview" style="display: none;">
                 <img id="preview4" class="image-preview" src="#" alt="Image Preview" style="display: none;">
             </div>
-
             <input type="submit" value="Add Product">
         </form>
     </div>

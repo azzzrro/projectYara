@@ -3,279 +3,248 @@ const Product = require("../models/productModel");
 const Category = require("../models/categoryModel");
 const Address = require("../models/addressModel");
 const Coupon = require("../models/couponModel");
-const Order = require("../models/orderModel")
-const moment = require('moment')
-const Razorpay = require('razorpay')
+const Order = require("../models/orderModel");
+const moment = require("moment");
+const Razorpay = require("razorpay");
 
-require('dotenv').config();
-
+require("dotenv").config();
 
 ////////////////////ORDER CONTROLLERS/////////////////////////////
 
-
-
-const placeOrder = async (req,res)=>{
+const placeOrder = async (req, res) => {
     try {
+        const userData = req.session.user;
+        const userId = userData._id;
+        const addressId = req.body.selectedAddress;
+        const amount = req.body.amount;
+        const paymentMethod = req.body.selectedPayment;
+        const couponData = req.body.couponData;
 
-        const userData = req.session.user
-        const userId = userData._id
-        const addressId = req.body.selectedAddress
-        const amount = req.body.amount
-        const paymentMethod = req.body.selectedPayment
-        const couponData = req.body.couponData
+        const user = await User.findOne({ _id: userId }).populate("cart.product");
+        const userCart = user.cart;
 
-        const user = await User.findOne({ _id: userId }).populate("cart.product")
-        const userCart = user.cart
+        let subTotal = 0;
+        let offerDiscount = 0
 
-        let subTotal = 0
+        userCart.forEach((item) => {
+            item.total = item.product.price * item.quantity;
+            subTotal += item.total;
+        });
 
-        userCart.forEach((item)=>{
-            item.total = item.product.price * item.quantity
-            subTotal += item.total
-        })
-
-        let productData = userCart.map(item =>{
-            return{
-                id       : item.product._id,
-                name     : item.product.name,
-                category : item.product.category,
-                subCategory : item.product.subCategory,
-                price    : item.product.price,
-                quantity : item.quantity,
-                image    : item.product.imageUrl[0],
+        userCart.forEach((item) => {
+            if(item.product.oldPrice > 0){
+            item.offerDiscount = (item.product.oldPrice - item.product.price) * item.quantity
+            offerDiscount += item.offerDiscount;
             }
-        })
-        
-        const result = Math.random().toString(36).substring(2,7)
-        const id = Math.floor(100000 + Math.random() * 900000)
-        const orderId = result + id
+        });
 
-        let saveOrder = async ()=>{
-            if(couponData){
-                
+        let productData = userCart.map((item) => {
+            return {
+                id: item.product._id,
+                name: item.product.name,
+                category: item.product.category,
+                subCategory: item.product.subCategory,
+                price: item.product.price,
+                oldPrice: item.product.oldPrice,
+                quantity: item.quantity,
+                image: item.product.imageUrl[0],
+            };
+        });
+
+        const result = Math.random().toString(36).substring(2, 7);
+        const id = Math.floor(100000 + Math.random() * 900000);
+        const orderId = result + id;
+
+        let saveOrder = async () => {
+            if (couponData) {
                 const order = new Order({
                     userId: userId,
                     product: productData,
                     address: addressId,
                     orderId: orderId,
                     total: amount,
+                    offerDiscount: offerDiscount,
                     paymentMethod: paymentMethod,
                     discountAmount: couponData.discountAmount,
                     amountAfterDiscount: couponData.newTotal,
-                    couponName : couponData.couponName
+                    couponName: couponData.couponName,
+                });
 
-                })
-
-                const orderSuccess = await order.save()
-            }else{
-
+                const orderSuccess = await order.save();
+            } else {
                 const order = new Order({
                     userId: userId,
                     product: productData,
                     address: addressId,
                     orderId: orderId,
                     total: subTotal,
-                    paymentMethod: paymentMethod
-                })
+                    offerDiscount: offerDiscount,
+                    paymentMethod: paymentMethod,
+                });
 
-                const orderSuccess = await order.save()
+                const orderSuccess = await order.save();
             }
 
-            let userDetails = await User.findById(userId)
-            let userCartDetails = userDetails.cart
+            let userDetails = await User.findById(userId);
+            let userCartDetails = userDetails.cart;
 
-            userCartDetails.forEach( async item=>{
-                const productId = item.product
-                const quantity = item.quantity
+            userCartDetails.forEach(async (item) => {
+                const productId = item.product;
+                const quantity = item.quantity;
 
-                const product = await Product.findById(productId)
-                const stock = product.stock
-                const updatedStock = stock - quantity
+                const product = await Product.findById(productId);
+                const stock = product.stock;
+                const updatedStock = stock - quantity;
 
                 await Product.findByIdAndUpdate(
                     productId,
                     { $set: { stock: updatedStock, isOnCart: false } },
                     { new: true }
-                )
-            })
+                );
+            });
 
-            userDetails.cart = []
-            await userDetails.save()
-        }
+            userDetails.cart = [];
+            await userDetails.save();
+        };
 
-        if(addressId){
-            if(paymentMethod === "Cash On Delivery"){
-                
-                saveOrder()
+        if (addressId) {
+            if (paymentMethod === "Cash On Delivery") {
+                saveOrder();
 
                 res.json({
-                    order: "Success"
-                })
-            }
-            else if(paymentMethod === "Razorpay"){
-
+                    order: "Success",
+                });
+            } else if (paymentMethod === "Razorpay") {
                 var instance = new Razorpay({
                     key_id: process.env.RAZORPAY_KEY_ID,
                     key_secret: process.env.RAZORPAY_KEY_SECRET,
                 });
 
                 const order = await instance.orders.create({
-                    amount: amount*100,
-                    currency: 'INR',
-                    receipt: 'Yara SkinCare'
+                    amount: amount * 100,
+                    currency: "INR",
+                    receipt: "Yara SkinCare",
+                });
 
-                })
-
-                saveOrder()
+                saveOrder();
 
                 res.json({
-                    order: "Success"
-                })
+                    order: "Success",
+                });
+            } else if (paymentMethod === "Wallet") {
+                try {
+                    const walletBalance = req.body.walletBalance;
 
-            }
-            else if(paymentMethod === 'Wallet'){
-                try{
+                    await User.findByIdAndUpdate(userId, { $set: { wallet: walletBalance } }, { new: true });
 
-                    const walletBalance = req.body.walletBalance
-                    
-                    await User.findByIdAndUpdate(userId,
-                        { $set: { wallet: walletBalance }}, { new: true })
-
-                    saveOrder()
+                    saveOrder();
 
                     res.json({
-                        order: "Success"
-                    })
-
-                }catch(error){
+                        order: "Success",
+                    });
+                } catch (error) {
                     console.log(error.message);
                 }
             }
         }
-
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
-
-
-
-
-const orderSuccess = async(req,res)=>{
+const orderSuccess = async (req, res) => {
     try {
-        
-        const userData = req.session.user
+        const userData = req.session.user;
         const categoryData = await Category.find({ is_blocked: false });
 
-        res.render('orderSuccess', {userData, categoryData})
-
-
+        res.render("orderSuccess", { userData, categoryData });
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
-
-const myOrders = async(req,res)=>{
+const myOrders = async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const ordersPerPage = 6;
+        const skip = (page - 1) * ordersPerPage;
 
-        const page = parseInt(req.query.page) || 1
-        const ordersPerPage = 6
-        const skip = (page - 1) * ordersPerPage
-        
-        
-        const userData = req.session.user
-        const userId = userData._id
+        const userData = req.session.user;
+        const userId = userData._id;
 
         const categoryData = await Category.find({ is_blocked: false });
-        
-        const orders = await Order.find({ userId })
-            .sort({ date: -1 })
-            .skip(skip)
-            .limit(ordersPerPage)
 
-        const totalCount = await Order.countDocuments({ userId })
-        const totalPages = Math.ceil(totalCount / ordersPerPage)
+        const orders = await Order.find({ userId }).sort({ date: -1 }).skip(skip).limit(ordersPerPage);
 
-        const formattedOrders = orders.map(order =>{
-            const formattedDate = moment(order.date).format('MMMM D, YYYY')
-            return { ...order.toObject(), date: formattedDate }
-        })
+        const totalCount = await Order.countDocuments({ userId });
+        const totalPages = Math.ceil(totalCount / ordersPerPage);
 
-        res.render('myOrders', {
-            userData, 
-            categoryData, 
+        const formattedOrders = orders.map((order) => {
+            const formattedDate = moment(order.date).format("MMMM D, YYYY");
+            return { ...order.toObject(), date: formattedDate };
+        });
+
+        res.render("myOrders", {
+            userData,
+            categoryData,
             myOrders: formattedOrders || [],
             currentPage: page,
-            totalPages
-        })
-
-
+            totalPages,
+        });
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
-
-const orderDetails = async(req,res)=>{
+const orderDetails = async (req, res) => {
     try {
-
-        const userData = req.session.user
-        const orderId = req.query.orderId
+        const userData = req.session.user;
+        const orderId = req.query.orderId;
 
         const categoryData = await Category.find({ is_blocked: false });
-       
-        const orderDetails = await Order.findById(orderId)
-        .populate({
-          path: 'product',
-          populate: [
-            { path: 'category', model: 'category' },
-            { path: 'subCategory', model: 'SubCategory' }
-          ]
-        })        
-        const orderProductData = orderDetails.product
-        const addressId = orderDetails.address
-        
 
-        const address = await Address.findById(addressId)
-        
+        const orderDetails = await Order.findById(orderId).populate({
+            path: "product",
+            populate: [
+                { path: "category", model: "category" },
+                { path: "subCategory", model: "SubCategory" },
+            ],
+        });
+        const orderProductData = orderDetails.product;
+        const addressId = orderDetails.address;
 
-        
-        res.render('orderDetails', { 
-            userData, 
-            categoryData, 
-            orderDetails, 
-            orderProductData, 
-            address })
-        
+        const address = await Address.findById(addressId);
+
+        res.render("orderDetails", {
+            userData,
+            categoryData,
+            orderDetails,
+            orderProductData,
+            address,
+        });
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
-
-const filterOrder = async(req,res)=>{
+const filterOrder = async (req, res) => {
     try {
+        const status = req.query.status;
+        const userData = req.session.user;
+        const userId = userData._id;
 
-        const status = req.query.status
-        const userData = req.session.user
-        const userId = userData._id
+        const orders = await Order.find({ userId, status: status }).sort({ date: -1 });
 
-        const orders = await Order.find({ userId, status: status }).sort({ date: -1 })
+        const formattedOrders = orders.map((order) => {
+            const formattedDate = moment(order.date).format("MMMM D YYYY");
+            return { ...order.toObject(), date: formattedDate };
+        });
 
-        const formattedOrders = orders.map(order=>{
-            const formattedDate = moment(order.date).format("MMMM D YYYY")
-            return { ...order.toObject(), date: formattedDate }
-        })
-
-        res.json(formattedOrders)
-        
+        res.json(formattedOrders);
     } catch (error) {
         console.log(error.message);
     }
-}
-
+};
 
 const updateOrder = async (req, res) => {
     try {
@@ -287,41 +256,37 @@ const updateOrder = async (req, res) => {
         const paymentMethod = req.body.paymentMethod;
         const updatedBalance = req.body.wallet;
 
-        
         if (paymentMethod !== "Cash On Delivery") {
             await User.findByIdAndUpdate(userId, { $set: { wallet: updatedBalance } }, { new: true });
 
             if (status === "Returned") {
                 await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
-                res.json({ 
+                res.json({
                     message: "Returned",
-                    refund: "Refund"
+                    refund: "Refund",
                 });
             }
             if (status === "Cancelled") {
                 await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
-                res.json({ 
+                res.json({
                     message: "Cancelled",
-                    refund: "Refund"
+                    refund: "Refund",
                 });
             }
-        } else if(paymentMethod == "Cash On Delivery" && status === "Returned") {
-            
+        } else if (paymentMethod == "Cash On Delivery" && status === "Returned") {
             await User.findByIdAndUpdate(userId, { $set: { wallet: updatedBalance } }, { new: true });
 
             await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
-                res.json({ 
-                    message: "Returned",
-                    refund: "Refund"
-                });
-
-        }else if(paymentMethod == "Cash On Delivery" && status === "Cancelled"){
-            
+            res.json({
+                message: "Returned",
+                refund: "Refund",
+            });
+        } else if (paymentMethod == "Cash On Delivery" && status === "Cancelled") {
             await Order.findByIdAndUpdate(orderId, { $set: { status: status } });
-                res.json({ 
-                    message: "Returned",
-                    refund: "No Refund"
-                });
+            res.json({
+                message: "Returned",
+                refund: "No Refund",
+            });
         }
     } catch (error) {
         console.log(error.message);
@@ -334,5 +299,5 @@ module.exports = {
     placeOrder,
     orderDetails,
     filterOrder,
-    updateOrder
-}
+    updateOrder,
+};

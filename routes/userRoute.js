@@ -17,8 +17,6 @@ user_route.set("views", "./views/users");
 
 
 user_route.get("/",  userController.homeload);
-// user_route.get("/landing",isLogout,   userController.landing)
-
 
 user_route.get("/login", isLogout,  userController.login)
 user_route.post('/login',  userController.verifyLogin);
@@ -52,7 +50,7 @@ user_route.get('/deleteAddress', userController.deleteAddress)
 user_route.get('/allProducts', blockCheck, productController.loadAllProducts)
 user_route.get("/products", blockCheck, productController.loadProducts)
 user_route.get("/productView", blockCheck, productController.productView)
-
+user_route.get("/offerProducts", blockCheck, productController.offerProducts)
 
 user_route.get('/categoryFilter', productController.categoryFilter)
 user_route.get('/subCategoryFilter', productController.subCategoryFilter)

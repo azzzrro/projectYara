@@ -84,7 +84,7 @@ const validateCoupon = async () => {
         couponDiscount.innerHTML = `₹ ${couponData.discountAmount}`;
 
         subTotalElement.innerHTML = `₹ ${couponData.newTotal}`;
-        subTotalText.innerHTML = "Total After Discount:";
+        subTotalText.innerHTML = "Total After Coupon Discount:";
         document.getElementById('subTotalValue').value = couponData.newTotal
 
     }

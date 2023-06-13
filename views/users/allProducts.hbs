@@ -145,14 +145,14 @@
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
-                                    <a class="page-link page-link-prev" href="?page={{subtract currentPage 1}}" aria-label="Previous"
+                                    <a class="page-link page-link-prev" href="?allProductsPage={{subtract currentPage 1}}" aria-label="Previous"
                                         tabindex="-1" aria-disabled="{{eq currentPage 1}}">
                                         <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
                                     </a>
                                 </li>
                                 <li class="page-item-total">Page {{currentPage}} of {{totalPages}}</li>
                                 <li class="page-item {{#if (eq currentPage totalPages)}}disabled{{/if}}">
-                                    <a class="page-link page-link-next" href="?page={{add currentPage 1}}" aria-label="Next"
+                                    <a class="page-link page-link-next" href="?allProductsPage={{add currentPage 1}}" aria-label="Next"
                                         aria-disabled="{{eq currentPage totalPages}}">
                                         Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
                                     </a>

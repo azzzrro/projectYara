@@ -58,7 +58,16 @@
                                             </h3><!-- End .product-title -->
                                         </div><!-- End .product -->
                                     </td>
-                                    <td class="price-col" value="{{this.product.price}}">₹ {{this.product.price}}</p> </td>
+                                    <div class="product-price">
+                                    <td class="price-col" value="{{this.product.price}}">
+                                        {{#if this.product.oldPrice }}
+                                        <div class="old-price" >₹ {{this.product.oldPrice}}</div>
+                                        <div class="new-price" >₹ {{this.product.price}}</div>
+                                        {{else}}
+                                        <div>₹ {{this.product.price}}</div>
+                                        {{/if}}
+                                        </td>
+                                    </div>
 
                                     <input type="hidden" name="productprice" value="{{this.product.price}}">
 

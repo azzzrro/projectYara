@@ -1,0 +1,122 @@
+{{>dashhead}}
+
+
+<style>
+    .nav-7 h2 a{
+        color: black;
+    }
+</style>
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="user_search">
+                    
+                    
+                        <div class="col-lg-6">
+                    
+                    
+                    
+                            <div id="catMsg">
+                                <h5 id="noResultsFound">no results found!!</h5>
+                            </div>
+                            {{#if bannerSave}}
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{bannerSave}}</h5>
+                            </div>
+                            {{else if bannerExist}}
+                            <div id="catMsg">
+                                <h5 style="color: red;">{{bannerExist}}</h5>
+                            </div>
+                            {{else if bannerUpdate}}
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{bannerUpdate}}</h5>
+                            </div>
+                            {{else if bannerDelete}}
+                            <div id="catMsg">
+                                <h5 style="color: #4CAF50;">{{bannerDelete}}</h5>
+                            </div>
+                            {{/if}}
+                    
+                        </div>
+                    
+                        <div class="col-lg-6">
+                    
+                            
+                            <div  id="search">
+                                <input type="search" placeholder="Search Banners" aria-label="Search" />
+                            </div>
+                    
+                        </div>
+                    
+                    </div>
+                    
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-lg-10 m-auto">
+            <div class="table-container">
+                <table class="table table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">NO</th>
+                            <th scope="col">IMAGE</th>
+                            <th scope="col">BANNER TITLE</th>
+                            <th scope="col">SUBTITLE</th>
+                            <th scope="col">OFFER LABEL</th>
+                            <th scope="col">STATUS</th>
+                            <th scope="col">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each bannerData}}
+                        <tr>
+                            <td scope="row">{{@index}}</td>
+                            <td><img style="width: 100px; height: 60px;" src="/uploads/{{this.image}}"
+                                    alt="Category Image"></td>
+                            <td style="width: 20%;">{{this.title}}</td>
+                            <td  class="description-Cell" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="{{this.subtitle}}">{{this.subtitle}}</td>
+                            <td>{{this.label}}</td>
+                            {{#if this.active}}
+                            <td>Active</td>
+                            {{else}}
+                            <td>Unlisted</td>
+                            {{/if}}
+                            <td style="width: 200px;">
+                                <a href="/admin/updateBanner/{{this.id}}" class="btn btn-sm btn-primary">Update</a>
+                                {{#if this.active}}
+                                <a href="/admin/bannerStatus/{{this.id}}" class="btn btn-sm btn-danger">Unlist</a>
+                                {{else}}
+                                <a href="/admin/bannerStatus/{{this.id}}" class="btn btn-sm btn-success">List</a>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center mt-4 mb-5">
+                <a href="/admin/addBanner"><button class="btn btn-primary add_user" id="addUser">Add
+                        Banner</button></a>
+    </div>
+</div>
+
+
+
+
+
+
+{{>dashfoot}}

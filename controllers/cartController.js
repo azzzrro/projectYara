@@ -267,10 +267,18 @@ const loadCheckout = async (req, res) => {
         const cart = userCart.cart;
 
         let subTotal = 0;
+        let offerDiscount = 0
 
         cart.forEach((element) => {
             element.total = element.product.price * element.quantity;
             subTotal += element.total;
+        });
+
+        cart.forEach((element) => {
+            if(element.product.oldPrice > 0){
+            element.offerDiscount = (element.product.oldPrice - element.product.price) * element.quantity;
+            offerDiscount += element.offerDiscount;
+            }
         });
 
         const now = new Date();
@@ -280,12 +288,11 @@ const loadCheckout = async (req, res) => {
             status: true,
         });
 
-        res.render("checkout", { userData, categoryData, addressData, subTotal, cart, availableCoupons });
+        res.render("checkout", { userData, categoryData, addressData, subTotal, offerDiscount, cart, availableCoupons });
     } catch (error) {
         console.log(error.message);
     }
 };
-
 
 const validateCoupon = async (req, res) => {
     try {
@@ -309,12 +316,9 @@ const validateCoupon = async (req, res) => {
                 await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
 
                 const discountValue = Number(discount);
-
                 const discountAmount = (subTotal * discountValue) / 100;
-
                 const newTotal = subTotal - discountAmount;
-
-                const couponName = coupon
+                const couponName = coupon;
 
                 res.json({
                     couponName,
@@ -327,8 +331,6 @@ const validateCoupon = async (req, res) => {
         console.log(error.message);
     }
 };
-
-
 
 module.exports = {
     loadCart,
@@ -344,5 +346,4 @@ module.exports = {
     checkStock,
     loadCheckout,
     validateCoupon,
-
 };

@@ -40,9 +40,12 @@ admin_route.get('/editSubCategory/:id', adminAuth.isLogin, adminController.editS
 admin_route.post('/updateSubCategory/:id', adminAuth.isLogin, store.single('image') , adminController.updateSubCategory)
 admin_route.get('/unlistSubCategory/:id', adminAuth.isLogin, adminController.unlistSubCategory)
 
-
-
-
+admin_route.get("/banners", adminAuth.isLogin, adminController.loadBanners)
+admin_route.get("/addBanner", adminAuth.isLogin, adminController.addBanner)
+admin_route.post('/addBanner', adminAuth.isLogin, store.single('image') , adminController.addNewBanner)
+admin_route.get('/updateBanner/:id', adminAuth.isLogin, adminController.editBanner)
+admin_route.post('/updateBanner/:id', adminAuth.isLogin, store.single('image') , adminController.updateBanner)
+admin_route.get('/bannerStatus/:id', adminAuth.isLogin, adminController.bannerStatus)
 
 
 admin_route.get("/products", adminAuth.isLogin, adminController.loadProducts)

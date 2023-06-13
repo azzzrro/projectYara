@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema({
           category: { type: String  },
           subCategory: { type: String  },
           price: { type: Number },
+          oldPrice: { type: Number },
           quantity: { type: Number },
           image: { type: String },
           address: { type: Object },
@@ -43,6 +44,9 @@ const orderSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
+    },
+    offerDiscount:{
+        type:Number
     },
     discountAmount:{
         type:Number

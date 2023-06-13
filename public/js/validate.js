@@ -700,5 +700,24 @@ $(document).ready(function () {
     $.validator.addMethod("discountCheck", function (value) {
         return /^(?:[1-9]\d?|100)$/.test(value);
     });
+
+
+    $('#bannerValidate').validate({
+        rules:{
+            title:{
+                required: true
+            },
+            label:{
+                required:true
+            },
+            bannerSubtitle:{
+                required:true
+            },
+            image:{
+                required:true
+            }
+
+        }
+    })
     
 });

@@ -22,6 +22,14 @@ hbs.registerHelper('or', function () {
   return values.slice(0, -1).some(Boolean);
 });
 
+hbs.registerHelper('notEmpty', function(array, options) {
+  if (array && array.length > 0) {
+    return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
+});
+
 hbs.registerHelper('slice', function (context, start, end) {
   return context.slice(start, end);
 });
@@ -39,6 +47,7 @@ hbs.registerHelper('checkStock', function (stock, options) {
 hbs.registerHelper('eq', function (a, b) {
   return a === b;
 });
+
 
 
 hbs.registerHelper('gt', function (a, b, options) {

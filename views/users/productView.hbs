@@ -1,5 +1,21 @@
 {{>productheader}}
 
+<style>
+  @media (max-width: 767px) {
+    .col-md-6.d-flex.align-items-center {
+      justify-content: center;
+    }
+  }
+   @media (max-width: 767px) {
+  .ratings-container,
+  .product-price .details-filter-row,
+  .product-details-action,
+  .product-details-footer {
+    justify-content: center;
+  }
+}
+</style>
+
 
 <main class="main">
 
@@ -37,6 +53,9 @@
                                     {{#if (eq productData.stock 0)}}
                                     <span class="product-label label-out">Out of Stock</span>
                                     {{/if}}
+                                    {{#notEmpty productData.offerlabel}}
+                                        <span class="product-label label-sale">Sale</span>
+                                    {{/notEmpty}}
                                     <img id="product-zoom" src="/uploads/{{productData.imageUrl.[0]}}"
                                         data-zoom-image="/uploads/{{productData.imageUrl.[0]}}" alt="product image">
 
@@ -75,7 +94,10 @@
                     </div><!-- End .col-md-6 -->
 
 
-                    <div class="col-md-6">
+                    
+
+                    
+                    <div class="col-md-6 d-flex align-items-center">
                         <div class="product-details">
                             <h1 class="product-title">{{productData.name}}</h1>
                             <input name="productName" value="{{productData.name}}" type="hidden">
@@ -89,7 +111,12 @@
                             </div><!-- End .rating-container -->
 
                             <div class="product-price">
+                                {{#if productData.oldPrice }}
+                                <span class="new-price">₹ {{productData.price}}</span>
+                                <span class="old-price">₹ {{productData.oldPrice}}</span>
+                                {{else}}
                                 ₹ {{productData.price}}
+                                {{/if}}
                             </div><!-- End .product-price -->
 
                             {{!-- <div class="product-content">
@@ -144,48 +171,70 @@
                             </div><!-- End .details-filter-row -->
 
 
-                            <div class="product-details-action">
-                                {{#if productData.stock}}
-                                {{#if userData}}
-                                {{#if productData.isOnCart}}
-
-                                <a href="/cart?id={{userData._id}}" class="btn-product btn-cart"><span>Go to
-                                        cart</span></a>
-
-                                {{else}}
-
-
-                                <span id="addToCartBtn">
-
-                                    <button  onclick="addToCart('{{productData._id}}')" 
-                                    class="btn-product btn-cart"><span>Add to cart</span></button>
-
-
-                                </span>
-
+                            
                                 
-                                {{/if}}
+                                        <div class="product-details-action">
+                                            {{#if productData.stock}}
+                                            {{#if userData}}
+                                            {{#if productData.isOnCart}}
+                                        
+                                            <a href="/cart?id={{userData._id}}" class="btn-product btn-cart"><span>Go to
+                                                    cart</span></a>
+                                        
+                                            {{else}}
+                                        
+                                        
+                                            <span id="addToCartBtn" class="btn-product btn-cart" style="cursor: pointer;">
+                                        
+                                                <div onclick="addToCart('{{productData._id}}')" ><span>Add to
+                                                        cart</span></div>
+                                        
+                                        
+                                            </span>
+                                        
+                                        
+                                            {{/if}}
+                                        
+                                            {{else}}
+                                        
+                                            <a href="/login" class="btn-product btn-cart"><span>Add to cart</span></a>
+                                        
+                                            {{/if}}
+                                            {{else}}
+                                        
+                                        
+                                            <button disabled="disabled" class="btn-product btn-cart"><span>Out of
+                                                    stock</span></button>
+                                        
+                                            {{/if}}
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                            
+                                            <div class="details-action-wrapper">
+                                                {{#if userData}}
+                                                <div onclick="addToWishlist('{{productData._id}}','{{cartId}}')" style="cursor: pointer;"
+                                                    class="btn-product btn-wishlist" title="Wishlist"><span>Add to
+                                                        Wishlist</span>
+                                                </div>
+                                                {{else}}
+                                                <a href="/login"
+                                                    class="btn-product btn-wishlist" title="Wishlist"><span>Add to
+                                                        Wishlist</span>
+                                                </a>
+                                                {{/if}}
+                                        
+                                            </div><!-- End .details-action-wrapper -->
+                                        </div>
+                                    
+                                
+                            
 
-                                {{else}}
 
-                                <a href="/login" class="btn-product btn-cart"><span>Add to cart</span></a>
-
-                                {{/if}}
-                                {{else}}
-
-
-                                <button disabled="disabled" class="btn-product btn-cart"><span>Out of
-                                        stock</span></button>
-
-                                {{/if}}
-
-
-                                <div class="details-action-wrapper">
-                                    <div onclick="addToWishlist('{{productData._id}}','{{cartId}}')" style="cursor: pointer;" class="btn-product btn-wishlist" title="Wishlist"><span>Add to
-                                            Wishlist</span></div>
-
-                                </div><!-- End .details-action-wrapper -->
-                            </div><!-- End .product-details-action -->
+                            <!-- End .product-details-action -->
 
 
                             <div class="product-details-footer">
@@ -206,6 +255,7 @@
 
                         </div><!-- End .product-details -->
                     </div><!-- End .col-md-6 -->
+                    
                 </div><!-- End .row -->
             </div><!-- End .product-details-top -->
 

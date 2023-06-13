@@ -1,7 +1,13 @@
 {{>userheader}}
 
 
-
+<style>
+    .intro-subtitle-2{
+        color: #eea287;
+        font-weight: 700;
+        font-size: 4rem;
+    }
+</style>
 
     
 
@@ -18,21 +24,23 @@
                         }
                     }
                 }'>
-                <div class="intro-slide" style="background-image: url(/assets/images/demos/demo-8/slider/slide-1.jpg);">
+                {{#each bannerData}}
+                <div class="intro-slide" style="background-image: url(/uploads/{{this.image}});">
                     <div class="container intro-content text-left">
                         <h3 class="intro-subtitle">Limited time only *</h3><!-- End .h3 intro-subtitle -->
-                        <h1 class="intro-title">Summer<br><strong>sale</strong></h1><!-- End .intro-title -->
-                        <h3 class="intro-subtitle">Up to 50% off</h3><!-- End .h3 intro-subtitle -->
+                        <h1 class="intro-title mt-2"><strong style="color: white;">{{this.title}}</strong></h1><!-- End .intro-title -->
+                        <h3 class="intro-subtitle intro-subtitle-2">{{this.subtitle}}</h3><!-- End .h3 intro-subtitle -->
 
-                        <a href="/allProducts" class="btn">
+                        <a href="/offerProducts?label={{this.label}}" class="btn">
                             <span>SHOP NOW</span>
                             <i class="icon-long-arrow-right"></i>
                         </a>
                     </div><!-- End .intro-content -->
                     <!-- <img class="position-right" src="/assets/images/demos/demo-8/slider/img-1.png"> -->
                 </div><!-- End .intro-slide -->
+                {{/each}}
 
-                <div class="intro-slide" style="background-image: url(/assets/images/demos/demo-8/slider/slide-2.jpg);">
+                {{!-- <div class="intro-slide" style="background-image: url(/assets/images/demos/demo-8/slider/slide-2.jpg);">
                     <div class="container intro-content text-right">
                         <h3 class="intro-subtitle">ORIGINAL QUALITY</h3><!-- End .h3 intro-subtitle -->
                         <h1 class="intro-title">sunscreens <span class="highlight">&</span><br>haircreams</h1>
@@ -44,7 +52,8 @@
                         </a>
                     </div><!-- End .intro-content -->
                     <!-- <img class="position-left" src="/assets/images/demos/demo-8/slider/img-2.png"> -->
-                </div><!-- End .intro-slide -->
+                </div><!-- End .intro-slide --> --}}
+
             </div><!-- End .intro-slider owl-carousel owl-simple -->
 
             <span class="slider-loader"></span><!-- End .slider-loader -->

@@ -171,7 +171,14 @@
                                                 <div class="product-content pt-1">
                                                     <div class="product-info" style="margin-bottom: 5px;">
                                                         <p>Price :</p> <span>
-                                                            <p>₹ {{this.price}}</p>
+                                                            {{#if this.oldPrice }}
+                                                            <div class="row ml-1">
+                                                            <p class="old-price">₹ {{this.oldPrice}}</p>
+                                                            <p class="new-price">₹ {{this.price}}</p>
+                                                            </div>
+                                                            {{else}} 
+                                                            <p>₹ {{this.price}}</p>                                            
+                                                            {{/if}}
                                                         </span>
                                                 
                                                     </div>

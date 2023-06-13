@@ -313,10 +313,22 @@
                                         {{/each}}
 
 
+                                         {{#if offerDiscount}}
                                         <tr class="summary-subtotal">
-                                            <td>Subtotal:</td>
+                                            <td style="color: green; font-weight: 500;">Offer Discount :</td>
+                                            <td style="color: green; font-weight: 500;">₹ {{offerDiscount}}</td>
+                                        </tr>
+                                        {{/if}}
+                                        <tr id="couponModel" style="display: none;" class="summary-total">
+                                            <td id="couponMessage">Coupon Discount:</td>
+                                            <td id="couponDiscount" ></td>
+                                        </tr>
+
+                                        {{!-- <tr class="summary-subtotal">
+                                            <td style="font-weight: 500;" >Subtotal:</td>
                                             <td>₹ {{subTotal}}</td>
-                                        </tr><!-- End .summary-subtotal -->
+                                        </tr><!-- End .summary-subtotal --> --}}
+                                       
                                         <tr>
                                             <td>Shipping:</td>
                                             <td>Free shipping</td>
@@ -372,13 +384,10 @@
 
                                         
 
-                                        <tr id="couponModel" style="display: none;" class="summary-total">
-                                            <td id="couponMessage">Saved Amount:</td>
-                                            <td id="couponDiscount" ></td>
-                                        </tr><!-- End .summary-total -->
+                                        <!-- End .summary-total -->
                                         
                                         <tr class="summary-total">
-                                            <td id="subTotalText">Total:</td>
+                                            <td id="subTotalText">Grand Total:</td>
                                             <td id="subTotal" >₹ {{subTotal}}</td>
                                         </tr><!-- End .summary-total -->
 

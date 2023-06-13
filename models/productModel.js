@@ -54,6 +54,16 @@ const produtSchema = new mongoose.Schema({
     isWishlisted:{
         type:Boolean,
         default:false
+    },
+
+    offerlabel:{
+        type: Array,
+        default: []
+    },
+
+    oldPrice:{
+        type: Number,
+        default: 0
     }
 
 })
