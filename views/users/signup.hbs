@@ -1,4 +1,4 @@
-{{>signupheader}}
+{{>signupheaderNew}}
 
 <!-- Preloader -->
 <div class="spinner-wrapper">
@@ -16,22 +16,17 @@
             <div class="row w-100">
 
                 <div class="col-md-6">
-
-
-
                     <div class="signupPage">
                         <h1>Sign up Now!</h1>
                         <form action="/signup" method="post" id="signup">
                             <input type="text" placeholder="Name" name="name" id="name">
-                            <input type="email" placeholder="Email" name="email" id="email">
+                            <input type="email" placeholder="Email" name="signupEmail" id="signupEmail">
                             <input type="number" placeholder="Mobile Number" name="mobile" id="signupMobile">
                             <input type="password" placeholder="Password" name="password_signup" id="password_signup">
                             <input type="password" placeholder="Re-enter Password" name="re_password" id="re_password">
                             {{!-- <input id="forgot" type="checkbox" onclick="showPassword()">
                             <p id="show">Show Password </p> --}}
                             <p id="notmatch">Password does not match</p>
-                            <p id="fillout">Fillout all the fields</p>
-
 
                             {{#if alreadyUser}}
                             <div class="invalid_alert" role="alert">
@@ -48,22 +43,14 @@
                             Already a member? <a href="/login">Login here</a>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col-md-6 signupBackImage">
 
-
                 </div>
 
-
-
-
-
             </div>
-
         </div>
-
     </div>
 </div>
 

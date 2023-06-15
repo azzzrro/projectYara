@@ -14,6 +14,18 @@ const couponSchema = new mongoose.Schema({
         max: 100
     },
 
+    minDiscount:{
+        type: Number,
+        required:true,
+        default: 0
+    },
+
+    maxDiscount:{
+        type: Number,
+        required:true,
+        default: 0
+    },
+
     expiryDate:{
         type:Date,
         required: true

@@ -46,6 +46,8 @@
                             <th scope="col">NO</th>
                             <th scope="col">COUPON CODE</th>
                             <th scope="col">DISCOUNT PERCENT</th>
+                            <th scope="col">MIN DISCOUNT AMT</th>
+                            <th scope="col">MAX DISCOUNT AMT</th>
                             <th scope="col">STATUS</th>
                             <th scope="col">EXPIRY DATE</th>
                             <th scope="col">ACTION</th>
@@ -57,6 +59,8 @@
                             <td scope="row">{{@index}}</td>
                             <td>{{this._doc.code}}</td>
                             <td>{{this._doc.discount}}%</td>
+                            <td>₹ {{this._doc.minDiscount}}</td>
+                            <td>₹ {{this._doc.maxDiscount}}</td>
                             {{#if this._doc.status}}
                             <td style="color: green; font-weight: 600;"> ACTIVE</td>
                             {{else}}

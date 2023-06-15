@@ -14,23 +14,23 @@ $(document).ready(function () {
         },
         messages: {
             email: {
-                required: "",
-                email: "Enter valid email address",
+                required: "Please enter your email",
+                email: "Please enter valid email",
             },
             password: {
-                required: "",
+                required: "Please enter the password",
             },
         },
     });
 
-    $("#login").submit(function (e) {
-        if ($.trim($("#email").val()) === "" || $.trim($("#password").val()) === "") {
-            e.preventDefault();
-            $("#fillout2").show();
-        } else if ($.trim($("#email").val()) && $.trim($("#password").val())) {
-            $("#fillout2").hide();
-        }
-    });
+    // $("#login").submit(function (e) {
+    //     if ($.trim($("#email").val()) === "" || $.trim($("#password").val()) === "") {
+    //         e.preventDefault();
+    //         $("#fillout2").show();
+    //     } else if ($.trim($("#email").val()) && $.trim($("#password").val())) {
+    //         $("#fillout2").hide();
+    //     }
+    // });
 
     //signup form validate
 
@@ -38,6 +38,10 @@ $(document).ready(function () {
         rules: {
             name: {
                 required: true,
+            },
+            signupEmail:{
+                required:true,
+                email:true
             },
             mobile: {
                 required: true,
@@ -57,9 +61,9 @@ $(document).ready(function () {
             name: {
                 required: "",
             },
-            email: {
+            signupEmail: {
                 required: "",
-                email: "Enter valid email address",
+                email: "Please enter valid email address",
             },
             mobile: {
                 required: "",
@@ -70,7 +74,7 @@ $(document).ready(function () {
             },
             password_signup: {
                 required: "",
-                pwcheck: "One lower-case character & one digit",
+                pwcheck: "One Upper-case character & one digit",
             },
         },
     });
@@ -101,33 +105,44 @@ $(document).ready(function () {
 
     })
 
-
-
-    $("#signup").submit(function (e) {
-        if (
-            $.trim($("#name").val()) === "" ||
-            $.trim($("#email").val()) === "" ||
-            $.trim($("#password_signup").val()) === "" ||
-            $.trim($("#re_password").val()) === ""
-        ) {
+    $('#signup').submit(function(e){
+        const pass = $("#password_signup").val();
+        const pass2 = $("#re_password").val();
+        if(pass2!==pass){
             e.preventDefault();
-            $("#fillout").show();
-        } else if (
-            $.trim($("#name").val()) &&
-            $.trim($("#email").val()) &&
-            $.trim($("#password_signup").val()) &&
-            $.trim($("#re_password").val())
-        ) {
-            $("#fillout").hide();
-
-            var pass = $("#password_signup").val();
-            var pass2 = $("#re_password").val();
-            if (pass2 !== pass) {
-                e.preventDefault();
-                $("#notmatch").show();
-            }
+            $("#notmatch").show();
+        }else{
+            $("#notmatch").hide();
         }
-    });
+
+    })
+
+
+    // $("#signup").submit(function (e) {
+    //     if (
+    //         $.trim($("#name").val()) === "" ||
+    //         $.trim($("#email").val()) === "" ||
+    //         $.trim($("#password_signup").val()) === "" ||
+    //         $.trim($("#re_password").val()) === ""
+    //     ) {
+    //         e.preventDefault();
+    //         $("#fillout").show();
+    //     } else if (
+    //         $.trim($("#name").val()) &&
+    //         $.trim($("#email").val()) &&
+    //         $.trim($("#password_signup").val()) &&
+    //         $.trim($("#re_password").val())
+    //     ) {
+    //         $("#fillout").hide();
+
+    //         var pass = $("#password_signup").val();
+    //         var pass2 = $("#re_password").val();
+    //         if (pass2 !== pass) {
+    //             e.preventDefault();
+    //             $("#notmatch").show();
+    //         }
+    //     }
+    // });
 
 
     $("#otpEnter").submit(function (e) {

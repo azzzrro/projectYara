@@ -67,12 +67,30 @@
         <h5 style="margin-left: 1rem; color: red;">{{couponExist}}</h5>
         <form id="addCoupon">
 
-            <input type="text" placeholder="Enter Coupon Code" id="couponCode" name="couponCode">
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" placeholder="Enter Coupon Code" id="couponCode" name="couponCode">
+                </div>
+                <div class="col-lg-6">
+                    <input type="number" placeholder="Discount %" id="couponDiscount" name="couponDiscount">
+                </div>
+            </div>
 
-            <input type="number" placeholder="Discount %" id="couponDiscount" name="couponDiscount">
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="number" placeholder="Enter minimum discount amount" id="minDiscount" name="minDiscount">
+                </div>
+                <div class="col-lg-6">
+                    <input type="number" placeholder="Enter maximum discount amount" id="maxDiscount" name="maxDiscount">
+                </div>
+            </div>
 
-
-            <input type="date" placeholder="Expiry Date" id="couponDate" name="couponDate" required>
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="date" placeholder="Expiry Date" id="couponDate" name="couponDate" required>
+                </div>
+            </div>
+            
 
             <button type="submit">ADD COUPON</button>
         </form>

@@ -26,7 +26,7 @@
         display: inline-block;
     }
 
-    .dropdown-menu {
+    #coupon-dropdown {
         display: none;
         position: absolute;
         z-index: 999;
@@ -38,7 +38,7 @@
         list-style-type: none;
     }
 
-    .dropdown-menu li {
+    #coupon-dropdown li {
         padding: 7px 5.5px;
         cursor: pointer;
         font-size: 10pt;
@@ -48,13 +48,15 @@
 
     }
 
-    .dropdown-menu li:hover {
+    #coupon-dropdown li:hover {
         background-color: #c96;
         color: white;
 
     }
 
-    .dropdown:hover .dropdown-menu {
+   
+
+    .dropdown:hover #coupon-dropdown {
         display: block;
     }
 
@@ -97,6 +99,10 @@
     }
     .card-dashboard .card-body, label{
         cursor: pointer;
+    }
+
+    .header .compare-dropdown:hover .dropdown-toggle{
+        color: #c96;
     }
 
 </style>
@@ -307,8 +313,8 @@
 
                                         {{#each cart}}
                                         <tr>
-                                            <td style="color: #c96;"><a href="#">{{this.product.name}}</a></td>
-                                            <td style="color: #c96;">₹ {{this.total}}</td>
+                                            <td style="color: #c96; font-weight: 500;"><a href="#">{{this.product.name}}</a></td>
+                                            <td style="color: #c96; font-weight: 500">₹ {{this.total}}</td>
                                         </tr>
                                         {{/each}}
 
@@ -362,11 +368,8 @@
 
                                                             {{!-- <div class="input-group-append"> --}}
                                                                 <td>
-
-                                                                    <button onclick="validateCoupon()" class="btn btnCoupon btn-outline-primary-2"
-                                                                        type="submit"><i
-                                                                            class="icon-long-arrow-right"></i></button>
-
+                                                                    <button id="couponButton" onclick="validateCoupon()" class="btn btnCoupon btn-outline-primary-2"
+                                                                        type="submit"><i id="couponIcon" class="icon-long-arrow-right"></i></button>
                                                                 </td>
 
 

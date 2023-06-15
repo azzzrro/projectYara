@@ -54,6 +54,18 @@
                         <span class="detail-label">Order Date:</span>
                         <span class="detail-value">{{orderDetails.date}}</span>
                     </li>
+                    {{#if orderDetails.deliveredDate}}
+                    <li>
+                        <span class="detail-label">Delivered Date:</span>
+                        <span class="detail-value">{{orderDetails.deliveredDate}}</span>
+                    </li>
+                    {{/if}}
+                    {{#if orderDetails.returnEndDate}}
+                    <li>
+                        <span class="detail-label">Return End Date:</span>
+                        <span class="detail-value">{{orderDetails.returnEndDate}}</span>
+                    </li>
+                    {{/if}}
                     <li>
                         <span class="detail-label">Payment Method:</span>
                         <span class="detail-value">{{orderDetails.paymentMethod}}</span>

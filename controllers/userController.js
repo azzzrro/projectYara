@@ -56,7 +56,7 @@ const sendOtp = async (req, res) => {
             const generatedOtp = generateOTP();
             saveOtp = generatedOtp;
             name = req.body.name;
-            email = req.body.email;
+            email = req.body.signupEmail;
             mobile = req.body.mobile;
             password = req.body.password_signup;
             sendOtpMail(email, generatedOtp);

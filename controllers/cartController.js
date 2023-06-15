@@ -8,6 +8,7 @@ const Coupon = require("../models/couponModel");
 
 const loadCart = async (req, res) => {
     try {
+        req.session.checkout = true
         const userData = req.session.user;
         const userId = req.query.id;
 
@@ -288,7 +289,19 @@ const loadCheckout = async (req, res) => {
             status: true,
         });
 
-        res.render("checkout", { userData, categoryData, addressData, subTotal, offerDiscount, cart, availableCoupons });
+       
+
+        res.render("checkout", { 
+            userData, 
+            categoryData, 
+            addressData, 
+            subTotal, 
+            offerDiscount, 
+            cart, 
+            availableCoupons,
+             
+        });
+        
     } catch (error) {
         console.log(error.message);
     }
@@ -306,6 +319,8 @@ const validateCoupon = async (req, res) => {
         } else {
             const couponId = couponData._id;
             const discount = couponData.discount;
+            const minDiscount = couponData.minDiscount
+            const maxDiscount = couponData.maxDiscount
             const userId = req.session.user._id;
 
             const couponUsed = await Coupon.findOne({ _id: couponId, usedBy: { $in: [userId] } });
@@ -313,18 +328,37 @@ const validateCoupon = async (req, res) => {
             if (couponUsed) {
                 res.json("already used");
             } else {
-                await Coupon.updateOne({ _id: couponId }, { $push: { usedBy: userId } });
+
+                let discountAmount
+                let maximum
 
                 const discountValue = Number(discount);
-                const discountAmount = (subTotal * discountValue) / 100;
-                const newTotal = subTotal - discountAmount;
-                const couponName = coupon;
+                const couponDiscount = (subTotal * discountValue) / 100;
 
-                res.json({
-                    couponName,
-                    discountAmount,
-                    newTotal,
-                });
+                if(couponDiscount < minDiscount){
+
+                    res.json("minimum value not met")
+
+                }else{
+                    if(couponDiscount > maxDiscount){
+                        discountAmount = maxDiscount
+                        maximum = "maximum"
+                    }else{
+                        discountAmount = couponDiscount
+                    }
+                    
+                    const newTotal = subTotal - discountAmount;
+                    const couponName = coupon;
+    
+                    res.json({
+                        couponName,
+                        discountAmount,
+                        newTotal,
+                        maximum
+                    });
+                }
+                
+                
             }
         }
     } catch (error) {

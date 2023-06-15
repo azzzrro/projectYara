@@ -45,17 +45,29 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    ExpectedDeliveryDate:{
+        type: Date
+    },
+    deliveredDate:{
+        type: Date
+    },
+    returnEndDate:{
+        type:Date,
+    },
     offerDiscount:{
-        type:Number
+        type:Number,
+        default: 0
     },
     discountAmount:{
-        type:Number
+        type:Number,
+        default: 0
     },
     amountAfterDiscount:{
         type:Number
     },
     couponName:{
-        type:String
+        type:String,
+        default: "NIL"
     }
 })
 

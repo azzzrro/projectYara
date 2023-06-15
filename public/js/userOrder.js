@@ -5,6 +5,13 @@
 
 let coupon
 let couponData
+let couponDeleteSubtotal = null;
+
+let subtotalElement = document.getElementById("subTotalValue");
+
+if (subtotalElement) {
+    couponDeleteSubtotal = Number(subtotalElement.value);
+}
 
 const inputField = document.getElementById("checkout-discount-input");
 
@@ -42,6 +49,7 @@ const validateCoupon = async () => {
 
     const couponModel = document.getElementById("couponModel");
     const couponDiscount = document.getElementById("couponDiscount");
+    const couponMessage = document.getElementById('couponMessage')
 
     const subTotalElement = document.getElementById("subTotal");
     const subTotalText = document.getElementById("subTotalText");
@@ -71,15 +79,39 @@ const validateCoupon = async () => {
             confirmButtonText: "OK",
             confirmButtonColor: "#4CAF50",
         });
-    } else {
+    } else if (couponData === "minimum value not met") {
         Swal.fire({
-            icon: "success",
-            title: `"${coupon}" APPLIED SUCCESSFULLY!!\n SAVED ₹ ${couponData.discountAmount}`,
+            icon: "warning",
+            title: "COUPON CAN'T BE APPLIED",
+            text: "We're sorry, the minimum order value to apply the coupon has not been met.",
             showConfirmButton: true,
             confirmButtonText: "OK",
             confirmButtonColor: "#4CAF50",
         });
+    } else {
+        if(couponData.maximum === "maximum" ) {
+            Swal.fire({
+                icon: "success",
+                title: `"${coupon}" APPLIED SUCCESSFULLY!!`,
+                html:`<strong>Maximum discount </strong>for this coupon is <strong style="color: green;" >₹ ${couponData.discountAmount}</strong>, and you have reached the maximum discount limit!`,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#4CAF50",
+            });
+        }else{
+            Swal.fire({
+                icon: "success",
+                title: `"${coupon}" APPLIED SUCCESSFULLY!!`,
+                html: `You have received a discount of <strong style="color: green;" >₹ ${couponData.discountAmount}</strong>.<br>Enjoy your savings!`,
+                showConfirmButton: true,
+                confirmButtonText: "OK",
+                confirmButtonColor: "#4CAF50",
+            });
+        }
 
+        if(couponData.maximum === "maximum" ){
+            couponMessage.innerHTML = "Maximum Coupon Discount:"
+        }
         couponModel.style.display = "table-row";
         couponDiscount.innerHTML = `₹ ${couponData.discountAmount}`;
 
@@ -87,9 +119,53 @@ const validateCoupon = async () => {
         subTotalText.innerHTML = "Total After Coupon Discount:";
         document.getElementById('subTotalValue').value = couponData.newTotal
 
-    }
-};
+        $('#couponIcon').removeClass('icon-long-arrow-right').addClass('fa-regular fa-trash-can p-1');
 
+        $('#couponButton').attr('onclick', 'couponDelete()');
+    };
+}
+
+couponDelete = async () => {
+
+    const result = await Swal.fire({
+        title: `Do you want to remove the coupon "${coupon}"?`,
+        html:`By doing so, you will lose the discount amount <strong style="color: green;" >₹ ${couponData.discountAmount}</strong> associated with the coupon. Please confirm your decision`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33", 
+        confirmButtonText: 'Yes, Remove',
+        cancelButtonText: 'DISMISS'
+        
+    });
+
+    if(result.value){
+
+        const couponModel = document.getElementById("couponModel");
+        const subTotalText = document.getElementById("subTotalText");
+        const subTotalElement = document.getElementById("subTotal");
+        const subTotalValue = document.getElementById("subTotalValue");
+
+        couponModel.style.display = "none";
+        subTotalText.innerHTML = "Grand Total:";
+        subTotalElement.innerHTML = `₹ ${couponDeleteSubtotal}`;
+        subTotalValue.value = couponDeleteSubtotal;
+
+        $("#couponIcon").removeClass("fa-regular fa-trash-can p-1").addClass("icon-long-arrow-right");
+
+        $("#couponButton").attr("onclick", "validateCoupon()");
+
+        Swal.fire({
+            icon: "success",
+            title: `"${coupon}" REMOVED SUCCESSFULLY!!`,
+            html: `The applied coupon has been successfully removed. The discount associated with the coupon has been removed as well`,
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+            confirmButtonColor: "#4CAF50",
+        });
+    }
+    
+}
 
 
 /////////// Shipping selection ///////////
@@ -464,6 +540,10 @@ const updateOrder = async (orderId, orderStatus)=>{
 
                 console.log(data.refund)
 
+                const expectedDate = document.getElementById('expectedDate')
+                expectedDate.classList.add("d-none")
+
+
                 orderStatusBtn.innerHTML= `<p class="disabled btn-product btn-cart icon-info-circle"><span>Order Cancelled</span></p>`
                 
                     if(data.refund === "Refund"){
@@ -487,6 +567,9 @@ const updateOrder = async (orderId, orderStatus)=>{
 
             if(result.value){
 
+                const expectedDate = document.getElementById('expectedDate')
+                expectedDate.classList.add("d-none")
+
                 orderStatusBtn.innerHTML=`<p  class="disabled btn-product btn-cart icon-info-circle"><span>Order Returned</span></p>`
 
                 if(data.refund === "Refund"){
@@ -499,6 +582,33 @@ const updateOrder = async (orderId, orderStatus)=>{
             }
 
         }
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+
+const downloadInvoice = async (orderId)=>{
+    try {
+
+        const response = await fetch(`/downloadInvoice?orderId=${orderId}`,{
+            method:'GET',
+            headers:{
+                'Content-Type': 'application/pdf'
+            }
+        })
+
+        const blobData = await response.blob()
+        const url = URL.createObjectURL(blobData)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = "Order-Invoive.pdf"
+        link.click()
+        
+        URL.revokeObjectURL(url)
         
     } catch (error) {
         console.log(error.message);

@@ -6,7 +6,7 @@ const orderController = require('../controllers/orderController')
 const auth = require("../middleware/userAuth")
 const express = require("express");
 const user_route = express();
-const { isLogout, isLogin, blockCheck } = auth
+const { isLogout, isLogin, isCheckout, blockCheck } = auth
 user_route.set("views", "./views/users");
 
 
@@ -69,7 +69,7 @@ user_route.get('/addToCart',cartController.addToCart)
 user_route.post('/cartUpdation',cartController.updateCart)
 user_route.get('/removeCart',cartController.removeCart)
 user_route.get('/checkStock', cartController.checkStock)
-user_route.get('/checkout', isLogin, blockCheck, cartController.loadCheckout)
+user_route.get('/checkout', isCheckout, isLogin, blockCheck, cartController.loadCheckout)
 user_route.post('/validateCoupon', cartController.validateCoupon)
 
 
@@ -79,7 +79,8 @@ user_route.get('/myOrders', orderController.myOrders)
 user_route.get('/orderDetails',orderController.orderDetails)
 user_route.get('/orderFilter', orderController.filterOrder)
 user_route.post('/updateOrder', orderController.updateOrder)
-
+user_route.get('/invoice', orderController.invoice)
+user_route.get('/downloadInvoice', orderController.downloadInvoice)
 
 
 module.exports = user_route;

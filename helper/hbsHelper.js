@@ -2,6 +2,7 @@ const hbs = require('hbs');
 const path = require('path');
 const handlebars = require('handlebars')
 const handlebarsHelpers = require('handlebars-helpers')()
+const moment = require('moment');
 
 
 const partialsPath = path.join(__dirname, '../views/partials');
@@ -11,6 +12,18 @@ hbs.registerPartials(path.join(partialsPath, 'home'));
 hbs.registerPartials(path.join(partialsPath, 'dashboard'));
 hbs.registerPartials(path.join(partialsPath, 'signup'));
 
+
+hbs.registerHelper('compareDates', function(dateString) {
+
+  const returnEndDate = new Date(dateString);
+  const currentDate = new Date();
+  return returnEndDate <= currentDate;
+  
+});
+
+hbs.registerHelper('formatDate', function(date) {
+  return moment(date).format('MMMM D, YYYY');
+});
 
 hbs.registerHelper('and', function () {
   const values = Array.prototype.slice.call(arguments);
@@ -85,6 +98,9 @@ hbs.registerHelper('subtract', function (a, b) {
 hbs.registerHelper('add', function (a, b) {
   return a + b;
 });
+
+
+
 
 
 module.exports = hbs;

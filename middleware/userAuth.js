@@ -24,12 +24,20 @@ const isLogout = async(req,res,next)=>{
         }else{
             next()
         }
-      
-
     } catch (error) {
         console.log(error.message);
     }
+}
 
+const isCheckout = async(req,res,next)=>{
+    try {
+        if(!req.session.checkout){
+            return res.redirect('/myOrders')
+        }
+        next()       
+    } catch (error) {
+        
+    }
 }
 
 
@@ -63,5 +71,6 @@ const blockCheck = async ( req, res, next ) => {
 module.exports ={
     isLogin,
     isLogout,
-    blockCheck
+    blockCheck,
+    isCheckout
 }

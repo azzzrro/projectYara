@@ -7,7 +7,9 @@ const Brand = require("../models/brandModel");
 const Coupon = require("../models/couponModel");
 const Order = require("../models/orderModel");
 const Addres = require("../models/addressModel");
+
 const moment = require("moment");
+const cloudinary = require('../config/cloudinary')
 require("dotenv").config();
 
 ////////////////////Admin credentials/////////////////////////////
@@ -129,7 +131,39 @@ const updateOrder = async (req, res) => {
         const status = req.body.status;
         console.log(orderId, status);
 
-        const order = await Order.findByIdAndUpdate(orderId, { $set: { status: status } }, { new: true });
+
+        if (status === "Delivered") {
+
+            const returnEndDate = new Date()
+            returnEndDate.setDate(returnEndDate.getDate() + 7)
+
+            await Order.findByIdAndUpdate(orderId, 
+                { $set: { 
+                    status: status, 
+                    deliveredDate: new Date(), 
+                    returnEndDate: returnEndDate,                    
+                },
+                $unset: { ExpectedDeliveryDate: "" }
+            }, 
+                { new: true });
+        }else if (status === "Cancelled") {
+
+            await Order.findByIdAndUpdate(orderId, 
+                { $set: { 
+                    status: status,                   
+                },
+                $unset: { ExpectedDeliveryDate: "" }
+            }, 
+                { new: true });
+        }
+        
+        
+        else {
+            await Order.findByIdAndUpdate(orderId, 
+                { $set: { 
+                    status: status } }, 
+                { new: true });
+        }
 
         res.json({
             messaage: "Success",
@@ -208,11 +242,19 @@ const addNewCategory = async (req, res) => {
     const lowerCategoryName = categoryName.toLowerCase();
 
     try {
+
+        const result = await cloudinary.uploader.upload(image.path,{
+            folder: "Categories"
+        })
+
         const categoryExist = await Category.findOne({ category: lowerCategoryName });
         if (!categoryExist) {
             const category = new Category({
                 category: lowerCategoryName,
-                imageUrl: image.filename,
+                imageUrl: {
+                    public_id: result.public_id,
+                    url: result.secure_url
+                },
                 description: categoryDescription,
             });
 
@@ -247,24 +289,36 @@ const updateCategory = async (req, res) => {
         const categoryDescription = req.body.categoryDescription;
         const newImage = req.file;
 
+        
         const categoryData = await Category.findById(categoryId);
-        const categoryImage = categoryData.imageUrl;
+        const categoryImage = categoryData.imageUrl.url;
         let updatedImage;
+
         if (newImage) {
-            updatedImage = newImage.filename;
+            const result = await cloudinary.uploader.upload(updatedImage,{
+                folder: "Categories"
+            })
         } else {
             updatedImage = categoryImage;
         }
 
         const catExist = await Category.findOne({ category: categoryName });
-        const imageExist = await Category.findOne({ imageUrl: updatedImage });
+        const imageExist = await Category.findOne({ 'imageUrl.url': updatedImage });
 
         if (!catExist || !imageExist) {
+
+            const result = await cloudinary.uploader.upload(updatedImage,{
+                folder: "Categories"
+            })
+
             await Category.findByIdAndUpdate(
                 categoryId,
                 {
                     category: req.body.name,
-                    imageUrl: updatedImage,
+                    imageUrl: {
+                        public_id: result.public_id,
+                        url: result.secure_url
+                    },
                     description: categoryDescription,
                 },
                 { new: true }
@@ -872,7 +926,7 @@ const loadAddCoupon = async (req, res) => {
 
 const addCoupon = async (req, res) => {
     try {
-        const { couponCode, couponDiscount, couponDate } = req.body;
+        const { couponCode, couponDiscount, couponDate, minDiscount, maxDiscount } = req.body;
 
         const couponCodeUpperCase = couponCode.toUpperCase();
 
@@ -883,6 +937,8 @@ const addCoupon = async (req, res) => {
                 code: couponCodeUpperCase,
                 discount: couponDiscount,
                 expiryDate: couponDate,
+                minDiscount: minDiscount,
+                maxDiscount: maxDiscount
             });
 
             await coupon.save();
