@@ -152,6 +152,12 @@ input:focus {
 }
 
 
+@media (max-width: 900px) {
+    .wrapper{
+        margin-left: -3rem;
+    }
+}
+
 @media (max-width: 576px){
     .col-md-6.signupBackImage {
         order: 1;

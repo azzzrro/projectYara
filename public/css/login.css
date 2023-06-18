@@ -42,6 +42,16 @@ body {
     padding-top: 25%;
 }
 
+.adminBackImage{
+  background-image: url(/image/Antipodes\ New\ Zealand\ Design\ Concept.png);
+  background-size: cover;
+  border-radius: 0 10px 10px 0;
+}
+
+.adminPage{
+  margin-top: 40%;   
+}
+
 h1 {
     font-size: 2rem;
     color: black;
@@ -147,6 +157,12 @@ input:focus {
     top: 10px;
 }
 
+@media (max-width: 900px) {
+  .wrapper{
+      margin-left: -3rem;
+  }
+}
+
 /* Styles for smaller screens */
 @media (max-width: 576px) {
     .wrapper {
@@ -171,6 +187,24 @@ input:focus {
       border-radius: 10px 10px 0 0;
       background-position: 11%;
     }
+
+    .adminPage{
+      padding-top: 0%;
+      
+  }
+  .adminBackImage {
+    display: block;
+    width: 100%;
+    height: 200px; /* Adjust the height as needed */
+    border-radius: 10px 10px 0 0;
+    background-position: 11%;
+  }
+
+  .adminPage {
+    margin-top: 7%;
+}
+
+
     
     .col-md-6 {
       padding: 1rem;
@@ -199,7 +233,7 @@ input:focus {
     
     .recover {
       font-size: 0.7rem;
-      margin: 0.3rem 0 1rem;
+      margin: 0.3rem 1.5rem 1rem;
     }
     
   
@@ -244,6 +278,14 @@ input:focus {
     
     .loginBackImage {
       height: 150px; /* Adjust the height as needed */
+    }
+
+    .adminBackImage {
+      height: 150px; /* Adjust the height as needed */
+    }
+
+    #admin{
+      padding-bottom: 20px;
     }
     
     .col-md-6 {

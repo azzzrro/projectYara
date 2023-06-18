@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const Category = require("../models/categoryModel");
 const SubCategory = require("../models/subCategoryModel");
 const Address = require("../models/addressModel");
+const Products = require("../models/productModel");
 const Banner = require("../models/bannerModel")
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
@@ -157,7 +158,7 @@ const verifyLogin = async (req, res) => {
 const loadForgotPassword = async (req, res) => {
     try {
         if (req.session.forgotEmailNotExist) {
-            res.render("verifyEmail", { emailNotExist: "Entered email not exist!!" });
+            res.render("verifyEmail", { emailNotExist: "Sorry, email does not exist! Please register now!" });
             req.session.forgotEmailNotExist = false;
         } else {
             res.render("verifyEmail");
@@ -282,18 +283,53 @@ const homeload = async (req, res) => {
     try {
         const categoryData = await Category.find({ is_blocked: false });
         const subCategoryData = await SubCategory.find({ is_blocked: false });
-        const bannerData = await Banner.find({ active: true })
+        const bannerData = await Banner.find({ active: true });
         const userData = req.session.user;
+        console.log("userData:", userData)
+        const offerProducts = await Products.aggregate([
+            { $match: { offerlabel: { $ne: [] } } },
+            { $sample: { size: 4 } },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "category",
+                },
+            },{
+                $unwind: "$category",
+            },
+            {
+                $lookup: {
+                    from: "subcategories",
+                    localField: "subCategory",
+                    foreignField: "_id",
+                    as: "subCategory",
+                },
+            },
+            {
+                $unwind: "$subCategory",
+            }
+        ]);
 
         if (userData) {
-            res.render("home", { userData, categoryData, bannerData, subCategoryData });
+            const userId = userData._id;
+            let cartId = null;
+            const user = await User.findOne({ _id: userId }).populate("cart.product").lean();
+            console.log("user:", user);
+            if (user.cart && user.cart.length > 0) {
+                cartId = user.cart[0]._id;
+            }
+
+            res.render("home", { userData, cartId, categoryData, bannerData, subCategoryData, offerProducts });
         } else {
-            res.render("home", { categoryData, subCategoryData, bannerData });
+            res.render("home", { categoryData, subCategoryData, bannerData, offerProducts });
         }
     } catch (error) {
         console.log(error.message);
     }
 };
+
 
 const loadProfile = async (req, res) => {
     try {

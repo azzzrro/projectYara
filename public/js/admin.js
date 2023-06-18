@@ -443,5 +443,244 @@ $(document).ready(function () {
   }
 
 
+  /////////////// DASHBOARD DATA ////////////////////
+
+  let months
+  let ordersByMonth
+  let revenueByMonth
+  let orderData
 
 
+  /////////////// Graph data ////////////////////
+
+
+  
+  if (window.location.pathname === '/admin/dashboard') {
+  // Move the Chart rendering code inside the window.onload event listener
+window.onload = function() {
+  // Place your existing JavaScript code here
+  // ...
+
+  const getChartData = async()=>{
+    const response = await fetch('/admin/chartData',{
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const data = await response.json()
+
+    console.log(data);
+
+    months = data.months
+    ordersByMonth = data.ordersByMonth
+    revenueByMonth = data.revenueByMonth
+
+    salesGraph(months, ordersByMonth)
+    revenue(months, data.revenueByMonth)
+  }
+
+
+  function salesGraph(months, ordersByMonth) {
+    const ctx = document.getElementById('myChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: months,
+        datasets: [{
+          label: '# of sales',
+          data: ordersByMonth,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  function revenue(months, revenueByMonth) {
+    const ctx1 = document.getElementById('myChart1');
+    new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: months,
+        datasets: [{
+          label: '# Revenue',
+          data: revenueByMonth,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  // Call the getChartData function after the DOM has fully loaded
+  getChartData();
+};
+}
+
+
+/////////////// Sales report ////////////////////
+
+
+const startDateInput = document.getElementById("start-date");
+const endDateInput = document.getElementById("end-date");
+
+const today = new Date().toISOString().split('T')[0];
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate());
+const maxDate = tomorrow.toISOString().split('T')[0];
+
+if(startDateInput && endDateInput){
+startDateInput.setAttribute("max", maxDate);
+endDateInput.setAttribute("min", startDateInput.value);
+endDateInput.setAttribute("max", maxDate);
+}
+
+var startDateField = document.getElementById("start-date");
+var endDateField = document.getElementById("end-date");
+
+if(startDateField && endDateField){
+startDateField.addEventListener("change", function () {
+  endDateField.setAttribute("min", startDateField.value);
+});
+
+endDateField.addEventListener("change", function () {
+  startDateField.setAttribute("max", endDateField.value);
+});
+
+}
+
+let startDate
+let endDate
+
+
+const getSalesData = async() => {
+    startDate = document.getElementById("start-date").value;
+    endDate = document.getElementById("end-date").value;
+    console.log(startDate, endDate);
+
+    Handlebars.registerHelper("for", function (from, to, incr, block) {
+        var accum = "";
+        for (var i = from; i < to; i += incr) accum += block.fn(i);
+        return accum;
+    });
+
+    const salesReportTemplate = `
+<div class="col-xl-12">
+  <!-- Account details card-->
+  <div class="card mb-4">
+    <div class="card-header">Sales Report 
+
+    </div>
+
+    <div class="card-body ml-3 p-5">
+      <ul>   
+        <table id="my-table" class="my-table table table-hover" style="border-top: 1px solid black;">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Order id</th>
+              <th scope="col">Payment Method</th>
+              <th scope="col">Product Details</th>
+              <th scope="col">Total</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {{#each data.orders}}
+            <tr>
+              <td>{{this.date}}</td>
+              <td>{{this.orderId}}</td>
+              <td>{{this.paymentMethod}}</td> 
+              <td>
+                 {{#each this.productName}}
+                 <p>Name: {{this.name}}</p>
+                 <p>Quantity: {{this.quantity}}</p>
+                 <p>Price: <span>₹</span>{{this.price}}</p>
+                 {{/each}}
+                 </td> 
+            
+              <td><span>₹</span>{{this.total}}</td> 
+            </tr>
+            {{/each}} 
+          </tbody>
+        </table>
+                
+        <h5>Total Revenue: ₹<strong class="ml-auto">{{data.grandTotal}}</strong>  </h5>
+       
+      </ul>
+    </div>
+  </div>
+</div>
+<div>
+    <button onclick="downloadSalesReport()" class="btn btn-primary" >DOWNLOAD REPORT</button>
+    </div>
+`;
+
+    function renderSalesReport(orderData) {
+        const compiledTemplate = Handlebars.compile(salesReportTemplate);
+        const salesReportHTML = compiledTemplate({ data: orderData });
+        document.getElementById("table").innerHTML = salesReportHTML;
+
+        jQuery(document).ready(function ($) {
+            $("#my-table").DataTable({
+                dom: "Bfrtip",
+                buttons: ["excelHtml5", "pdfHtml5"],
+            });
+        });
+    }
+
+
+    ///////////sales report fetch///////////
+
+    const response = await fetch(`/admin/getSales?startDate=${startDate}&endDate=${endDate}`, {
+        headers: { "Content-Type": "application/json" },
+    });
+
+    orderData = await response.json();
+    if (orderData) {
+        renderSalesReport(orderData);
+    }
+}
+ 
+
+const downloadSalesReport = async () => {
+  try {
+    const response = await fetch(`/admin/downloadSalesReport?startDate=${startDate}&endDate=${endDate}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderData: orderData,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Download failed with status ${response.status}`);
+    }
+
+    const blobData = await response.blob();
+    const url = URL.createObjectURL(blobData);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "SalesReport.pdf";
+    link.click();
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.log(error.message);
+  }
+};

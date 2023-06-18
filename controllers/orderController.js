@@ -49,7 +49,7 @@ const placeOrder = async (req, res) => {
                 price: item.product.price,
                 oldPrice: item.product.oldPrice,
                 quantity: item.quantity,
-                image: item.product.imageUrl[0],
+                image: item.product.imageUrl[0].url,
             };
         });
 

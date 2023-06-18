@@ -202,6 +202,15 @@ hr {
     text-transform: uppercase
 }
 
+.intro-subtitle-2 {
+    color: #eea287;
+    font-weight: 700;
+    font-size: 4rem;
+    letter-spacing: .1em;
+    margin-bottom: .4rem;
+    text-transform: uppercase
+}
+
 .intro-title {
     font-size: 12rem;
     letter-spacing: -.05em;
@@ -654,6 +663,10 @@ hr {
     .intro-text {
         font-size: 3.6rem
     }
+
+    
+
+    
 }
 
 @media screen and (min-width: 768px) {
@@ -671,6 +684,10 @@ hr {
         font-size: 1.6rem
     }
 
+    .intro-subtitle-2 {
+        font-size: 1.6rem
+    }
+
     .intro-content.text-left {
         padding-left: 13rem
     }
@@ -680,7 +697,7 @@ hr {
     }
 
     .intro-title strong {
-        font-size: 18rem;
+        font-size: 15rem;
         color: #eea287
     }
 
@@ -802,13 +819,82 @@ hr {
     }
 
     .intro-title strong {
-        font-size: 15rem;
+        font-size: 12rem;
         color: #eea287
+    }
+
+    .intro-subtitle-2{
+        font-size: 3rem;
     }
 
     .intro-content .btn {
         margin-top: 1rem
     }
+}
+
+
+@media screen and (max-width: 650px) {
+    .header.header-6 .header-center {
+        margin-left: 1rem
+    }
+    .intro-title {
+        font-size: 8rem
+    }
+
+    .intro-title strong {
+        font-size: 12rem;
+        color: #eea287
+    }
+
+    .intro-subtitle-2{
+        font-size: 3rem;
+    }
+}
+
+
+@media screen and (max-width: 570px) {
+    .header.header-6 .header-center {
+        margin-left: 1rem
+    }
+    .intro-title {
+        font-size: 5rem
+        
+    }
+
+    .intro-title strong {
+        font-size: 11rem;
+        color: #eea287
+    }
+
+    .intro-subtitle-2{
+        font-size: 3rem;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .header.header-6 .header-center {
+        margin-left: 1rem
+    }
+    .intro-title {
+        font-size: 5rem
+        
+    }
+
+    .intro-title strong {
+        font-size: 7rem;
+        color: #eea287
+    }
+
+    .intro-subtitle-2{
+        font-size: 3rem;
+    }
+    .intro-subtitle{
+        margin: 0;
+        font-size: 1.5rem;
+        position: relative;
+        top: 10px;
+    }
+
 }
 
 @media screen and (max-width: 1400px) {
@@ -835,6 +921,23 @@ hr {
 
     .intro-content.container .intro-title {
         line-height: 1.2em
+    }
+}
+
+
+
+
+@media screen and (max-width: 570px) {
+    
+    .intro-content.container .intro-title {
+        line-height: 1.3em
+    }
+}
+
+@media screen and (max-width: 400px) {
+    
+    .intro-content.container .intro-title {
+        line-height: 1.1em
     }
 }
 

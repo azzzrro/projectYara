@@ -36,10 +36,16 @@ const produtSchema = new mongoose.Schema({
         required: true
     },
 
-    imageUrl: {
-        type: Array,
-        required: true
-    },
+    imageUrl:[{
+        public_id:{
+            type: String,
+            required: true
+        },
+        url:{
+            type: String,
+            required:true
+        }
+    }],
     
     stock:{
         type:Number,

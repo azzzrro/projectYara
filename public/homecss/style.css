@@ -661,7 +661,7 @@ blockquote.text-white cite span {
 }
 
 .header-center {
-    margin-left: auto;
+    margin-left: 19rem;
     margin-right: auto
 }
 
@@ -1894,7 +1894,7 @@ blockquote.text-white cite span {
 
     .compare-dropdown,
     .wishlist-link {
-        display: none
+        display: none !important;
     }
 
     .cart-dropdown {

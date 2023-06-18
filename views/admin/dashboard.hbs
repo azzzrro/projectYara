@@ -4,24 +4,58 @@
     .nav-1 h2 a{
         color: black;
     }
+
+    .form-control,
+    .dataTable-input {
+        display: block;
+        width: 100%;
+        padding: 0.875rem 1.125rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1;
+        color: #69707a;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #c5ccd6;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0.35rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .card {
+        box-shadow: 0 0.15rem 1.75rem 0 rgb(33 40 50 / 15%);
+    }
+
+    .card .card-header {
+        font-weight: 500;
+    }
+
+    .card-header:first-child {
+        border-radius: 0.35rem 0.35rem 0 0;
+    }
+
+    .card-header {
+        padding: 1rem 1.35rem;
+        margin-bottom: 0;
+        background-color: rgba(33, 40, 50, 0.03);
+        border-bottom: 1px solid rgba(33, 40, 50, 0.125);
+    }
+
 </style>
 
 
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12" id="user_search">
-
-
                         <div class="col-6" id="catMsg">
                             <h5 style="color: #4CAF50;">{{productUpdated}}</h5>
                             <h5 id="noResultsFound">no results found!!</h5>
-
                         </div>
 
                         <div class="col-6" id="search">
                             <input type="search" placeholder="Search" aria-label="Search" />
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -29,7 +63,136 @@
     </div>
 
 
-    <h2 style="text-align: center; position: relative; top: 5rem;">welcome to yara dashboard</h2>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+    
+    
+    
+            <div class="col py-3" style="text-align: center;">
+                <div class="container-xl px-4" style="margin-top: 10px;">    
+                    <div class="row">
+    
+                        <div class="col-xl-3 mb-5 mt-5">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">This Month Revenue</div>
+                                <div class="card-body ml-3 p-5">
+                                    <h2>₹{{thisMonthSales}}</h2>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-xl-3 mt-5">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">This Month sales</div>
+                                <div class="card-body ml-3 p-5">
+                                    <h2>{{thisMonthOrder}}</h2>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-xl-3 mt-5">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">Total Revenue</div>
+                                <div class="card-body ml-3 p-5">
+                                    <h2>₹{{totalRevenue}}</h2>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-xl-3 mt-5">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">Total sales</div>
+                                <div class="card-body ml-3 p-5">
+                                    <h2>{{totalSales}}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">Monthly Sales </div>
+                                <div class="card-body ml-3 p-5">
+                                    <canvas id="myChart"></canvas>
+    
+                                </div>
+                            </div>
+                        </div>
+    
+    
+                        <div class="col-xl-6">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">Monthly Revenue</div>
+                                <div class="card-body ml-3 p-5">
+                                    <canvas id="myChart1"></canvas>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="container-xl px-4" style="margin-bottom: 80px;">
+    
+                    <nav class="navbar navbar-light bg-light mb-4 p-10">
+
+                        
+    
+                        <div class="heading m-4">
+                            
+                            <h3> Get Sales Report </h3>
+                        
+                        </div>
+
+
+                        
+                        <div class="form-inline d-flex align-items-center me-3">
+                            <div class="form-group p-2">
+                                <label for="start-date">Start Date:</label>
+                                <input type="date" class="form-control" id="start-date" min="" max="">
+                            </div>
+                            <div class="form-group p-2">
+                                <label for="end-date">End Date:</label>
+                                <input type="date" class="form-control" id="end-date" min="" max="">
+                            </div>
+                            <div class="form-group p-2 mt-4">
+                                <button onclick="getSalesData()" type="button" class="btn btn-primary">Submit</button>
+                            </div>
+                            <input id="revenue" type="hidden" value="{{revenueByMonth}}">
+    
+                        </div>
+    
+                        
+    
+    
+                        {{!-- <div class="form-inline" style="margin-right: 2%;">
+                            <button class="btn btn-outline-secondary" type="button">This Year </button>
+                            <button onclick="getThisMOnthOrders()" class="btn btn-outline-secondary" type="button">This
+                                Month</button>
+                            <a href="/admin/current_month_orders" class="btn btn-outline-secondary" type="button">This
+                                Week</a>
+    
+                        </div> --}}
+                    </nav>
+    
+                    <div class="row" id="table">
+    
+                    </div>
+    
+                </div>
+            </div>
+    
+    
+        </div>
+    </div>
 
 
 </div>

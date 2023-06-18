@@ -1,4 +1,5 @@
 const adminController = require("../controllers/adminController");
+const adminDashboard = require('../controllers/adminDashboard')
 const express = require("express");
 const adminAuth= require('../middleware/adminAuth');
 const store = require("../middleware/multer");
@@ -15,7 +16,12 @@ admin_route.post('/login',adminController.verifyLogin)
 admin_route.get('/logout',adminController.adminLogout)
 
 
-admin_route.get("/dashboard", adminAuth.isLogin, adminController.loadDashboard);
+admin_route.get("/dashboard", adminAuth.isLogin, adminDashboard.loadDashboard);
+admin_route.get('/chartData', adminDashboard.chartData)
+admin_route.get('/getSales', adminDashboard.getSales)
+admin_route.post('/downloadSalesReport', adminDashboard.downloadSalesReport)
+admin_route.get('/renderSalesReport', adminDashboard.renderSalesReport)
+
 
 admin_route.get("/users", adminAuth.isLogin, adminController.loadUsers)
 admin_route.get("/blockUser/:id", adminAuth.isLogin, adminController.blockUser);

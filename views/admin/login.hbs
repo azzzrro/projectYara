@@ -1,4 +1,4 @@
-{{>signupheader}}
+{{>loginheader}}
 
 <!-- Preloader -->
 <div class="spinner-wrapper">
@@ -14,7 +14,15 @@
     <div class="container">
         <div class="d-flex wrapper justify-content-center">
             <div class="row w-100">
-                <div class="col-md-6 ">
+
+                <div class="col-md-6 col-lg-6 col-12  adminBackImage">
+
+
+
+                </div>
+                
+                  
+                <div class="col-md-6 col-lg-6 col-12">
 
                     <div class="adminPage">
                         <h1>Admin login🔐</h1>
@@ -29,17 +37,13 @@
                             <div class="invalid_alert" role="alert">
                                 {{invalid}}
                             </div>
-                            <button type="submit" id="auth_button" value="login">Log in</button>
+                            <button type="submit" class="adminLoginBtn" id="auth_button" value="login">Log in</button>
                         </form>
 
                     </div>
 
                 </div>
-                <div class="col-md-6 adminBackImage">
-
-
-
-                </div>
+                
             </div>
         </div>
     </div>

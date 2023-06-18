@@ -195,8 +195,14 @@
     
                         <input type="text" placeholder="Product Name" value="{{productData.name}}" id="name" name="name"
                             required>
+
+                        {{#if productData.oldPrice}}
+                        <input type="number" placeholder="Price" value="{{productData.oldPrice}}" id="Price" name="price"
+                            required>
+                        {{else}}
                         <input type="number" placeholder="Price" value="{{productData.price}}" id="Price" name="price"
                             required>
+                        {{/if}}
                         <input type="number" placeholder="Quantity" value="{{productData.stock}}" id="quantity"
                             name="quantity">
     
@@ -255,7 +261,11 @@
                             <label class="ps-4">
                                 <h5>Enter Offer Price(If Offer):</h5>
                             </label>
-                        <input type="number" value="{{productData.offerPrice}}" placeholder="Offer Price" id="offerPrice" name="offerPrice">
+                            {{#if productData.oldPrice}}
+                        <input type="number" value="{{productData.price}}" placeholder="Offer Price" id="offerPrice" name="offerPrice">
+                        {{else}}
+                        <input type="number" value="" placeholder="Offer Price" id="offerPrice" name="offerPrice">
+                        {{/if}}
                     </div>
                 </div>
     
@@ -297,7 +307,7 @@
     
                             <p onclick="deleteProImg()" class="close-button" data-image-index="{{@index}}"
                                 style="text-decoration: none;">×</p>
-                            <img src="/uploads/{{this}}" alt="images" style="width: 100px; height: 100px;"
+                            <img src="{{this.url}}" alt="images" style="width: 100px; height: 100px;"
                                 class="m-2 pro-image" data-image-index="{{@index}}">
     
                         </div>
@@ -339,8 +349,9 @@
         //For deleting Image
 
         const deleteImage = async (productId, imageIndex) => {
+            console.log(imageIndex)
             try {
-                const response = await fetch(`/admin/product_img_delete?id=${productId}&?image=${imageIndex}`, {
+                const response = await fetch(`/admin/product_img_delete?id=${productId}&image=${imageIndex}`, {
                     method: 'DELETE'
                 });
 

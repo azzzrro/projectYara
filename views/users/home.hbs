@@ -1,13 +1,6 @@
 {{>userheader}}
 
 
-<style>
-    .intro-subtitle-2{
-        color: #eea287;
-        font-weight: 700;
-        font-size: 4rem;
-    }
-</style>
 
     
 
@@ -25,11 +18,11 @@
                     }
                 }'>
                 {{#each bannerData}}
-                <div class="intro-slide" style="background-image: url(/uploads/{{this.image}});">
+                <div class="intro-slide" style="background-image: url({{this.image.url}});">
                     <div class="container intro-content text-left">
                         <h3 class="intro-subtitle">Limited time only *</h3><!-- End .h3 intro-subtitle -->
                         <h1 class="intro-title mt-2"><strong style="color: white;">{{this.title}}</strong></h1><!-- End .intro-title -->
-                        <h3 class="intro-subtitle intro-subtitle-2">{{this.subtitle}}</h3><!-- End .h3 intro-subtitle -->
+                        <h3 class="intro-subtitle-2">{{this.subtitle}}</h3><!-- End .h3 intro-subtitle -->
 
                         <a href="/offerProducts?label={{this.label}}" class="btn">
                             <span>SHOP NOW</span>
@@ -65,7 +58,7 @@
                     <div class="row">
                         
                         {{#each categoryData}}
-                        <div class="col-sm-6 col-lg-4">
+                        <div class="col-sm-6 col-lg-3">
                             <div class="banner banner-overlay">
                                 <a href="#">
                                     <img src="{{this.imageUrl.url}}" alt="Banner">
@@ -147,22 +140,82 @@
 
         <div class="mb-3 mb-xl-2"></div><!-- End .mb-3 -->
 
-        <div class="trending">
-            <a href="#">
-                <img src="/assets/images/demos/demo-8/banners/banner-4.jpg" alt="Banner">
-            </a>
-            <div class="banner banner-big d-md-block">
-                <div class="banner-content text-center">
-                    <h4 class="banner-subtitle text-white">quality assured</h4><!-- End .banner-subtitle -->
-                    <h3 class="banner-title text-white">Hot products</h3><!-- End .banner-title -->
-                    <p class="d-none d-lg-block text-white">Power of nature and science combined in our innovative 
-                        skincare products that harness the latest breakthroughs in skincare technology </p>
+        <div class="container recent-arrivals">
+            <div class="heading heading-flex align-items-center mb-3">
+                <h2 class="title title-lg">HOT PRODUCTS</h2><!-- End .title -->
+            </div>
+        
+            <div class="tab-content">
+                <div class="tab-pane p-0 fade show active" id="recent-all-tab" role="tabpanel"
+                    aria-labelledby="recent-all-link">
+                    <div class="products">
+                        <div class="row justify-content-center">
+        
+        
+                            {{#each offerProducts}}
+                            <div class="col-6 col-md-4 col-lg-3">
+                                <div class="product product-2 text-center">
+                                    <figure class="product-media">
 
-                    <a href="category.html" class="btn btn-primary-white"><span>Shop Now</span><i
-                            class="icon-long-arrow-right"></i></a>
-                </div><!-- End .banner-content -->
-            </div><!-- End .banner -->
+                                        {{#if (eq this.stock 0)}}
+                                        <span class="product-label label-out">Out of Stock</span>
+                                        {{else}}
+                                        <span class="product-label label-sale">Sale</span>
+                                        {{/if}}
+
+                                        <a href="/productView?id={{this._id}}">
+                                            <img src="{{this.imageUrl.[0].url}}" alt="Product image"
+                                                class="product-image">
+                                            <img src="{{this.imageUrl.[1].url}}" alt="Product image"
+                                                class="product-image-hover">
+                                        </a>
+        
+                                        {{!-- <div class="product-action-vertical">
+                                            {{#if userData}}
+                                            <a onclick="addToWishlist('{{this._id}}','{{cartId}}')" class="btn-product-icon btn-wishlist btn-expandable"><span>add to
+                                                    wishlist</span></a>
+                                                    {{else}}
+                                                <a href="/login" class="btn-product-icon btn-wishlist btn-expandable"><span>add to
+                                                    wishlist</span></a>
+                                                    {{/if}}
+                                        </div><!-- End .product-action-vertical --> --}}
+        
+                                        <div class="product-action">
+                                            {{#if (eq this.stock 0)}}
+                                            <a  class="disabled btn-product btn-cart"><span>out of stock</span></a>
+                                            {{else}}
+                                            
+                                            <a href="/productView?id={{this._id}}" class="btn-product btn-cart"><span>more details</span></a>
+                                            
+                                            {{/if}}
+                                        </div><!-- End .product-action -->
+                                    </figure><!-- End .product-media -->
+        
+                                    <div class="product-body">
+                                        <div class="product-cat">
+                                            <a href="#">{{this.category.category}} - {{this.subCategory.subCategory}}</a>
+                                        </div><!-- End .product-cat -->
+                                        <h3 class="product-title"><a href="product.html">{{this.name}}</a></h3>
+                                        <!-- End .product-title -->
+                                        <div class="product-price">
+                                            {{#if this.oldPrice }}
+                                            <span class="new-price">₹ {{this.price}}</span>
+                                            <span class="old-price">₹ {{this.oldPrice}}</span>
+                                            {{/if}}
+                                        </div><!-- End .product-price -->
+                                    </div><!-- End .product-body -->
+                                </div><!-- End .product -->
+                            </div><!-- End .col-sm-6 col-md-4 col-lg-3 -->
+                            {{/each}}
+        
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
         <div class="container new-arrivals mt-5">
             <div class="row">
 
@@ -170,7 +223,7 @@
                 <div class="col-md-4">
                     <div class="banner banner-overlay">
                         <a href="#">
-                            <img src="/uploads/{{this.imageUrl}}" alt="Banner">
+                            <img src="{{this.imageUrl.url}}" alt="Banner">
                         </a>
 
                         <div class="banner-content">

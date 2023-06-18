@@ -57,15 +57,7 @@ const verifyLogin = async (req, res) => {
     }
 };
 
-////////////////////DASHBOARD/////////////////////////////
 
-const loadDashboard = async (req, res) => {
-    try {
-        res.render("dashboard", { user: req.session.admin });
-    } catch (error) {
-        console.log(error.message);
-    }
-};
 
 ////////////////////USERS/////////////////////////////
 
@@ -291,30 +283,33 @@ const updateCategory = async (req, res) => {
 
         
         const categoryData = await Category.findById(categoryId);
-        const categoryImage = categoryData.imageUrl.url;
-        let updatedImage;
+        const categoryImageUrl = categoryData.imageUrl.url;
+        
+        let result;
 
         if (newImage) {
-            const result = await cloudinary.uploader.upload(updatedImage,{
+            if (categoryImageUrl) {
+                await cloudinary.uploader.destroy(categoryData.imageUrl.public_id);
+            }
+            result = await cloudinary.uploader.upload(newImage.path, {
                 folder: "Categories"
-            })
+            });
         } else {
-            updatedImage = categoryImage;
+            result = {
+                public_id: categoryData.imageUrl.public_id,
+                secure_url: categoryImageUrl
+            };
         }
 
         const catExist = await Category.findOne({ category: categoryName });
-        const imageExist = await Category.findOne({ 'imageUrl.url': updatedImage });
+        const imageExist = await Category.findOne({ 'imageUrl.url': result.secure_url });
 
         if (!catExist || !imageExist) {
-
-            const result = await cloudinary.uploader.upload(updatedImage,{
-                folder: "Categories"
-            })
 
             await Category.findByIdAndUpdate(
                 categoryId,
                 {
-                    category: req.body.name,
+                    category: categoryName,
                     imageUrl: {
                         public_id: result.public_id,
                         url: result.secure_url
@@ -396,11 +391,19 @@ const addNewSubCategory = async (req, res) => {
     const lowerSubCategoryName = subCategoryName.toLowerCase();
 
     try {
+
+        const result = await cloudinary.uploader.upload(image.path,{
+            folder: "SubCategories"
+        })
+
         const subCategoryExist = await SubCategory.findOne({ subCategory: lowerSubCategoryName });
         if (!subCategoryExist) {
             const subCategory = new SubCategory({
                 subCategory: lowerSubCategoryName,
-                imageUrl: image.filename,
+                imageUrl: {
+                    public_id: result.public_id,
+                    url: result.secure_url
+                },
                 description: subCategoryDescription,
             });
 
@@ -436,23 +439,37 @@ const updateSubCategory = async (req, res) => {
         const newImage = req.file;
 
         const subCategoryData = await SubCategory.findById(subCategoryId);
-        const subCategoryImage = subCategoryData.imageUrl;
-        let updatedImage;
+        const subCategoryImageUrl = subCategoryData.imageUrl.url;
+
+        let result;
+
         if (newImage) {
-            updatedImage = newImage.filename;
+            if (subCategoryImageUrl) {
+                await cloudinary.uploader.destroy(subCategoryData.imageUrl.public_id);
+            }
+            result = await cloudinary.uploader.upload(newImage.path, {
+                folder: "SubCategories"
+            });
         } else {
-            updatedImage = subCategoryImage;
+            result = {
+                public_id: subCategoryData.imageUrl.public_id,
+                secure_url: subCategoryImageUrl
+            };
         }
 
         const subCatExist = await SubCategory.findOne({ subCategory: subCategoryName });
-        const imageExist = await SubCategory.findOne({ imageUrl: updatedImage });
+        const description = await SubCategory.findOne({ description: subCategoryDescription});
+        const imageExist = await SubCategory.findOne({ 'imageUrl.url': result.secure_url });
 
-        if (!subCatExist || !imageExist) {
+        if (!subCatExist || !imageExist || !description) {
             await SubCategory.findByIdAndUpdate(
                 subCategoryId,
                 {
                     subCategory: subCategoryName,
-                    imageUrl: updatedImage,
+                    imageUrl: {
+                        public_id: result.public_id,
+                        url: result.secure_url
+                    },
                     description: subCategoryDescription,
                 },
                 { new: true }
@@ -545,26 +562,31 @@ const addNewBanner = async (req,res)=>{
     try {
 
         const { title, label, bannerSubtitle } = req.body
-        const imageName = req.file.filename
+        const image = req.file
 
         const existing = await Banner.findOne({ title: title })
-        if(existing){
+        if (existing) {
             req.session.bannerExist = true;
-            res.redirect('/admin/banners')
-        }else{
-        
-        const banner = new Banner({
-            title: title,
-            subtitle: bannerSubtitle,
-            label: label,
-            image: imageName
-        })
+            res.redirect("/admin/banners");
+        } else {
+            const result = await cloudinary.uploader.upload(image.path, {
+                folder: "Banners",
+            });
 
-        await banner.save()
-        req.session.bannerSave = true
-        res.redirect('/admin/banners')
+            const banner = new Banner({
+                title: title,
+                subtitle: bannerSubtitle,
+                label: label,
+                image: {
+                    public_id: result.public_id,
+                    url: result.secure_url
+                }
+            });
 
-    }
+            await banner.save();
+            req.session.bannerSave = true;
+            res.redirect("/admin/banners");
+        }
         
     } catch (error) {
         console.log(error.messaage);
@@ -593,16 +615,25 @@ const updateBanner = async (req, res) => {
         const newImage = req.file;
 
         const banner = await Banner.findById(bannerId);
-        const bannerImage = banner.image;
-        let updatedImage;
+        const bannerImageUrl = banner.image.url;
+        
+        let result;
         if (newImage) {
-            updatedImage = newImage.filename;
+            if(bannerImageUrl){
+                await cloudinary.uploader.destroy(banner.image.public_id);
+            }
+            result = await cloudinary.uploader.upload(newImage.path, {
+                folder: "Banners"
+            });
         } else {
-            updatedImage = bannerImage;
+            result = {
+                public_id: banner.imageUrl.public_id,
+                secure_url: bannerImageUrl
+            };
         }
 
         const bannerExist = await Banner.findOne({ title: title });
-        const imageExist = await Banner.findOne({ image: updatedImage });
+        const imageExist = await Banner.findOne({ 'image.url': result.secure_url });
 
         if (!bannerExist || !imageExist) {
             await Banner.findByIdAndUpdate(
@@ -611,7 +642,10 @@ const updateBanner = async (req, res) => {
                     title: title,
                     subtitle: bannerSubtitle,
                     label: label,
-                    image: updatedImage,
+                    image: {
+                        public_id: result.public_id,
+                        url: result.secure_url
+                    },
                 },
                 { new: true }
             );
@@ -752,10 +786,18 @@ const addNewProduct = async (req, res) => {
         const files = req.files;
         const productImages = [];
 
-        files.forEach((file) => {
-            const image = file.filename;
+        for (const file of files) {
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: "Products"
+            });
+
+            const image = {
+                public_id: result.public_id,
+                url: result.secure_url
+            };
+
             productImages.push(image);
-        });
+        }
 
         const { name, price, quantity, description, category, subCategory, brand, newBrand, offerLabel, offerPrice } = req.body;
 
@@ -772,9 +814,18 @@ const addNewProduct = async (req, res) => {
             brandId = brand;
         }
 
+        let updatedPrice
+        let oldPrice
+        if(offerPrice){
+            updatedPrice = offerPrice
+            oldPrice = price
+        }else{
+            updatedPrice = price
+        }
+
         const product = new Product({
             name: name,
-            price: price,
+            price: updatedPrice,
             stock: quantity,
             description: description,
             category: category,
@@ -782,7 +833,7 @@ const addNewProduct = async (req, res) => {
             brand: brandId,
             imageUrl: productImages,
             offerlabel: offerLabel,
-            offerPrice: offerPrice
+            oldPrice: oldPrice
         });
         await product.save();
         req.session.productSave = true;
@@ -811,7 +862,11 @@ const updateProduct = async (req, res) => {
 const deleteProductImage = async (req, res) => {
     try {
         const { id, image } = req.query;
+        console.log(id, image);
         const product = await Product.findById(id);
+        const imageUrl = product.imageUrl[image];
+
+        await cloudinary.uploader.destroy(imageUrl.public_id);
 
         product.imageUrl.splice(image, 1);
 
@@ -832,8 +887,20 @@ const updateNewProduct = async (req, res) => {
         let updImages = [];
 
         if (files && files.length > 0) {
-            const newImages = req.files.map((file) => file.filename);
-            updImages = [...exImage, ...newImages];
+            for (const file of files) {
+                const result = await cloudinary.uploader.upload(file.path, {
+                    folder: "Products"
+                });
+
+                const image = {
+                    public_id: result.public_id,
+                    url: result.secure_url
+                };
+
+                updImages.push(image);
+            }
+
+            updImages = [...exImage, ...updImages];
             product.imageUrl = updImages;
         } else {
             updImages = exImage;
@@ -874,7 +941,7 @@ const updateNewProduct = async (req, res) => {
                 subCategory: subCategory,
                 brand: brandId,
                 imageUrl: updImages,
-                offerlabel: offerLabel,
+                offerlabel: offerLabel && offerLabel.length > 0 ? offerLabel : [],
                 oldPrice: oldPrice
             },
             { new: true }
@@ -982,7 +1049,6 @@ module.exports = {
     verifyLogin,
     adminLogout,
 
-    loadDashboard,
     loadUsers,
     blockUser,
 

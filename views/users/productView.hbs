@@ -56,8 +56,8 @@
                                     {{#notEmpty productData.offerlabel}}
                                         <span class="product-label label-sale">Sale</span>
                                     {{/notEmpty}}
-                                    <img id="product-zoom" src="/uploads/{{productData.imageUrl.[0]}}"
-                                        data-zoom-image="/uploads/{{productData.imageUrl.[0]}}" alt="product image">
+                                    <img id="product-zoom" src="{{productData.imageUrl.[0].url}}"
+                                        data-zoom-image="{{productData.imageUrl.[0].url}}" alt="product image">
 
                                     <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                         <i class="icon-arrows"></i>
@@ -66,27 +66,27 @@
 
                                 <div id="product-zoom-gallery" class="product-image-gallery">
                                     <a class="product-gallery-item active" href="#"
-                                        data-image="/uploads/{{productData.imageUrl.[0]}}"
-                                        data-zoom-image="/uploads/{{productData.imageUrl.[0]}}">
-                                        <img src="/uploads/{{productData.imageUrl.[0]}}" alt="product">
+                                        data-image="{{productData.imageUrl.[0].url}}"
+                                        data-zoom-image="{{productData.imageUrl.[0].url}}">
+                                        <img src="{{productData.imageUrl.[0].url}}" alt="product">
                                     </a>
 
                                     <a class="product-gallery-item" href="#"
-                                        data-image="/uploads/{{productData.imageUrl.[1]}}"
-                                        data-zoom-image="/uploads/{{productData.imageUrl.[1]}}">
-                                        <img src="/uploads/{{productData.imageUrl.[1]}}" alt="product">
+                                        data-image="{{productData.imageUrl.[1].url}}"
+                                        data-zoom-image="{{productData.imageUrl.[1].url}}">
+                                        <img src="{{productData.imageUrl.[1].url}}" alt="product">
                                     </a>
 
                                     <a class="product-gallery-item" href="#"
-                                        data-image="/uploads/{{productData.imageUrl.[2]}}"
-                                        data-zoom-image="/uploads/{{productData.imageUrl.[2]}}">
-                                        <img src="/uploads/{{productData.imageUrl.[2]}}" alt="product">
+                                        data-image="{{productData.imageUrl.[2].url}}"
+                                        data-zoom-image="{{productData.imageUrl.[2].url}}">
+                                        <img src="{{productData.imageUrl.[2].url}}" alt="product">
                                     </a>
 
                                     <a class="product-gallery-item" href="#"
-                                        data-image="/uploads/{{productData.imageUrl.[3]}}"
-                                        data-zoom-image="/uploads/{{productData.imageUrl.[3]}}">
-                                        <img src="/uploads/{{productData.imageUrl.[3]}}" alt="product">
+                                        data-image="{{productData.imageUrl.[3].url}}"
+                                        data-zoom-image="{{productData.imageUrl.[3].url}}">
+                                        <img src="{{productData.imageUrl.[3].url}}" alt="product">
                                     </a>
                                 </div><!-- End .product-image-gallery -->
                             </div><!-- End .row -->

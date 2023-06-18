@@ -50,7 +50,7 @@ const addToCart = async (req, res) => {
         if (existed) {
             await User.findOneAndUpdate(
                 { _id: userId, "cart.product": productId },
-                { $inc: { "cart.$.quantity": quantity } },
+                { $inc: { "cart.$.quantity": quantity ? quantity : 1 } },
                 { new: true }
             );
 
@@ -63,7 +63,7 @@ const addToCart = async (req, res) => {
                     $push: {
                         cart: {
                             product: product._id,
-                            quantity: quantity,
+                            quantity: quantity ? quantity : 1,
                         },
                     },
                 },

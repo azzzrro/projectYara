@@ -107,9 +107,9 @@
                 
                 
                         <label for="image">Banner Image :</label>
-                        <input type="file" id="image" name="image" accept="image/*" required>
+                        <input type="file" id="image" name="image" accept="image/*">
                 
-                        <img id="preview" src="/uploads/{{bannerData.image}}" alt="Image Preview">
+                        <img id="preview" src="{{bannerData.image.url}}" alt="Image Preview">
                 
                         <input type="submit" value="Update Banner">
                     </form>

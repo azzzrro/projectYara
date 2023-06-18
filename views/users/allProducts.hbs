@@ -11,7 +11,7 @@
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
-            <h1 class="page-title">{{#if offerHeading}} {{offerHeading}} {{else}}Shop products{{/if}}</h1>
+            <h1 class="page-title">{{#if offerHeading}} {{offerHeading}} {{else}}All products{{/if}}</h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
@@ -84,7 +84,7 @@
                             
                                         <a href="/productView?id={{this._id}}">
                             
-                                            <img src="/uploads/{{this.imageUrl.[0]}}" alt="Product image" class="product-image">
+                                            <img src="{{this.imageUrl.[0].url}}" alt="Product image" class="product-image">
                                         </a>
                            
                                         <div class="product-action-vertical">

@@ -13,6 +13,7 @@ hbs.registerPartials(path.join(partialsPath, 'dashboard'));
 hbs.registerPartials(path.join(partialsPath, 'signup'));
 
 
+
 hbs.registerHelper('compareDates', function(dateString) {
 
   const returnEndDate = new Date(dateString);
@@ -100,6 +101,9 @@ hbs.registerHelper('add', function (a, b) {
 });
 
 
+hbs.registerHelper("json", function (context) {
+  return JSON.stringify(context)
+})
 
 
 

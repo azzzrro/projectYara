@@ -145,15 +145,15 @@ $(document).ready(function () {
     // });
 
 
-    $("#otpEnter").submit(function (e) {
-        const otp = $.trim($("#otp").val());
-        if (otp.length < 6 || otp === "") {
-            e.preventDefault();
-            $("#fillout2").show();
-        } else {
-            $("#fillout2").hide();
-        }
-    });
+    // $("#otpEnter").submit(function (e) {
+    //     const otp = $.trim($("#otp").val());
+    //     if (otp.length < 6 || otp === "") {
+    //         e.preventDefault();
+    //         $("#fillout2").show();
+    //     } else {
+    //         $("#fillout2").hide();
+    //     }
+    // });
 
 
     $('#newPass').validate({
@@ -171,14 +171,48 @@ $(document).ready(function () {
         },
         messages:{
             password:{
-                required:"Please enter the password",
-                pwcheck:"One lower-case character & one digit",
+                required:"Please enter new password",
+                pwcheck:"One Upper-case character & one digit",
                 minlength:"Atleast 8 characters"
             },
             new_password:{
-                required:"Please enter the password",
-                pwcheck:"One lower-case character & one digit",
+                required:"Please Re-enter new password",
+                pwcheck:"One Upper-case character & one digit",
                 minlength:"Atleast 8 characters"
+            }
+        }
+    })
+
+
+    $('#emailEnter').validate({
+        rules:{
+            email:{
+                required:true,
+                email:true
+            }
+        },
+        messages:{
+            email:{
+                required:"Please enter the email",
+                email:"Please enter valid email"
+            }
+        }
+    })
+
+
+    $('#otpEnter').validate({
+        rules:{
+            otp:{
+                required:true,
+                minlength:6,
+                maxlength:6
+            }
+        },
+        messages:{
+            otp:{
+                required:"Please enter the OTP",
+                minlength:"Please enter valid OTP",
+                maxlength:"Please enter valid OTP",
             }
         }
     })
@@ -412,7 +446,7 @@ $(document).ready(function () {
     });
 
     $.validator.addMethod("productNameCheck", function (value) {
-        return /^[a-zA-Z0-9& -]{3,60}$/.test(value);
+        return /^[a-zA-Z0-9&@#$+\-\s]{3,60}$/.test(value);
     });
 
     $.validator.addMethod("productPriceCheck", function (value) {
