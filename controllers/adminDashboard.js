@@ -137,17 +137,23 @@ const loadDashboard = async (req, res) => {
 
   const downloadSalesReport = async (req, res) => {
     try {
+      console.log("downnnnnnnn");
       const orderData = req.body.orderData;
       const { startDate, endDate } = req.query;
   
       const browser = await puppeteer.launch({ headless: false });
       const page = await browser.newPage();
   
-      const queryParams = new URLSearchParams({ orderData: JSON.stringify(orderData) });
-      await page.goto(`${req.protocol}://${req.get('host')}/admin/renderSalesReport?${queryParams.toString()}&startDate=${startDate}&endDate=${endDate}`, {
-        waitUntil: "networkidle2"
-      });
+      await page.goto(
+        `${req.protocol}://${req.get('host')}` +
+          `/admin/renderSalesReport?orderData=${encodeURIComponent(JSON.stringify(orderData))}&startDate=${startDate}&endDate=${endDate}`,
+        {
+          waitUntil: "networkidle2",
+        }
+      );
   
+      
+      
       const pdfBuffer = await page.pdf({
         format: 'A4',
         printBackground: true,
@@ -160,36 +166,36 @@ const loadDashboard = async (req, res) => {
   
       // Set the Content-Disposition header once with the desired filename
       res.set({
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename=${sdate}_${edate}_SalesReport.pdf`,
+        'Content-Type': 'application/json',
+        'Content-Disposition': `attachment; filename=SalesReport.pdf`,
       });
   
       res.send(pdfBuffer);
+      console.log("pdfffffffffff");
   
     } catch (error) {
       console.log(error.message);
     }
   };
   
-  
-
-
-  const renderSalesReport = async(req,res)=>{
+  const renderSalesReport = async (req, res) => {
     try {
-
-        const orderData = JSON.parse(req.query.orderData);
-
-        const startDate = moment(new Date(req.query.startDate)).format('MMMM D, YYYY')
-        const endDate = moment(new Date(req.query.endDate)).format('MMMM D, YYYY')
- 
-        const salesReportDate = moment(new Date()).format('MMMM D, YYYY')
-
-        res.render('salesReprot',{ orderData, salesReportDate , startDate, endDate})
-        
+      console.log("salesssssssss");
+      const orderData = JSON.parse(decodeURIComponent(req.query.orderData)); // Parse the orderData string into an object
+  
+      const startDate = moment(new Date(req.query.startDate)).format('MMMM D, YYYY');
+      const endDate = moment(new Date(req.query.endDate)).format('MMMM D, YYYY');
+  
+      const salesReportDate = moment(new Date()).format('MMMM D, YYYY');
+  
+      res.render('salesReport', { orderData, salesReportDate, startDate, endDate });
+      console.log("reprttttttttt");
+  
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
-  }
+  };
+  
 
 
 module.exports = {

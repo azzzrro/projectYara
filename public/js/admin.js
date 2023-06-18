@@ -668,15 +668,12 @@ const downloadSalesReport = async () => {
       }),
     });
 
-    if (!response.ok) {
-      throw new Error(`Download failed with status ${response.status}`);
-    }
-
     const blobData = await response.blob();
+    console.log("blobbbbbb")
     const url = URL.createObjectURL(blobData);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "SalesReport.pdf";
+    link.download = `SalesReport.pdf`;
     link.click();
 
     URL.revokeObjectURL(url);
