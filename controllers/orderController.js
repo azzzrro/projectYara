@@ -157,7 +157,7 @@ const placeOrder = async (req, res) => {
                     
                     const transaction = {
                         date: new Date(),
-                        orderId: orderId,
+                        details: `Confirmed Order - ${orderId}`,
                         amount: subTotal,
                         status: "Debit",
                     };
@@ -285,23 +285,26 @@ const updateOrder = async (req, res) => {
         const updatedBalance = req.body.wallet;
         const total = req.body.total
 
+        const order = await Order.findOne({ _id: orderId })
+        const orderIdValue = order.orderId
+
         if (paymentMethod !== "Cash On Delivery") {
             await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": updatedBalance } }, { new: true });
-
-            const order = await Order.findOne({ _id: orderId })
-            const orderIdValue = order.orderId
-            
-            const transaction = {
-                date: moment(new Date()).format('MMMM D, YYYY'),
-                orderId: orderIdValue,
-                amount: total,
-                status: "Credit",
-            };
-            
-            await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
+        
 
             if (status === "Returned") {
                 await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
+
+                const transaction = {
+                    date: new Date(),
+                    details: `Returned Order - ${orderIdValue}`,
+                    amount: total,
+                    status: "Credit",
+                };
+                
+                await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
+
+
                 res.json({
                     message: "Returned",
                     refund: "Refund",
@@ -309,6 +312,17 @@ const updateOrder = async (req, res) => {
             }
             if (status === "Cancelled") {
                 await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
+
+                const transaction = {
+                    date: new Date(),
+                    details: `Cancelled Order - ${orderIdValue}`,
+                    amount: total,
+                    status: "Credit",
+                };
+                
+                await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
+
+
                 res.json({
                     message: "Cancelled",
                     refund: "Refund",
@@ -318,13 +332,10 @@ const updateOrder = async (req, res) => {
             
             await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": updatedBalance } }, { new: true });
 
-            const order = await Order.findOne({ _id: orderId })
-            const orderIdValue = order.orderId
-            
             
             const transaction = {
                 date: new Date(),
-                orderId: orderIdValue,
+                details: `Returned Order - ${orderIdValue}`,
                 amount: total,
                 status: "Credit",
             };

@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema({
                 date: {
                     type: Date,
                 },
-                orderId: {
+                details: {
                   type: String,
                 },
                 amount: {
@@ -68,6 +68,11 @@ const userSchema = new mongoose.Schema({
             },
         ],
     },
+
+    referralCode:{
+      type:String,
+      required:true
+    }
 });
 
 module.exports = mongoose.model("User", userSchema);

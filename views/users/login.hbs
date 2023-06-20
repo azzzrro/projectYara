@@ -56,18 +56,24 @@
                             <div class="logout_alert" role="alert">
                                 {{logout}}
                             </div>
-                            {{else if success}}
+                            {{/if}}
+                            {{#if success}}
                             <div class="logout_alert" role="alert">
                                 {{success}}
                             </div>
-                            {{else if blocked}}
+                            {{/if}}
+                            {{#if referral}}
+                            <div class="logout_alert" role="alert">
+                                {{referral}}
+                            </div>
+                            {{/if}}
+                            {{#if blocked}}
                             <div class="invalid_alert" role="alert">
-
                                 {{blocked}}
                             </div>
-                            {{else if invalid}}
+                            {{/if}}
+                            {{#if invalid}}
                             <div class="invalid_alert" role="alert">
-
                                 {{invalid}}
                             </div>
                             {{/if}}

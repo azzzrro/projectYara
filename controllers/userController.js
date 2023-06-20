@@ -50,19 +50,40 @@ let email;
 let mobile;
 let password;
 let forgotPasswordOtp;
+let referredCode
 
 const sendOtp = async (req, res) => {
     try {
         const emailExist = await User.findOne({ email: req.body.email });
         if (!emailExist) {
-            const generatedOtp = generateOTP();
-            saveOtp = generatedOtp;
-            name = req.body.name;
-            email = req.body.signupEmail;
-            mobile = req.body.mobile;
-            password = req.body.password_signup;
-            sendOtpMail(email, generatedOtp);
-            res.redirect("/showOtp");
+            if (req.body.referralCode) {
+                const referralExists = await User.findOne({ referralCode: req.body.referralCode });
+                if (!referralExists) {
+                    res.render("signup", { alreadyUser: "Invalid referral code" });
+                } else {
+                    const generatedOtp = generateOTP();
+                    saveOtp = generatedOtp;
+                    name = req.body.name;
+                    email = req.body.signupEmail;
+                    mobile = req.body.mobile;
+                    password = req.body.password_signup;
+                    referredCode = req.body.referralCode;
+
+                    sendOtpMail(email, generatedOtp);
+                    res.redirect("/showOtp");
+                }
+            } else {
+                const generatedOtp = generateOTP();
+                saveOtp = generatedOtp;
+                name = req.body.name;
+                email = req.body.signupEmail;
+                mobile = req.body.mobile;
+                password = req.body.password_signup;
+
+                sendOtpMail(email, generatedOtp);
+                res.redirect("/showOtp");
+            }
+                        
         } else {
             res.render("signup", { alreadyUser: "user already exist" });
         }
@@ -112,16 +133,69 @@ async function sendOtpMail(email, otp) {
 const verifyOtp = async (req, res) => {
     const EnteredOtp = req.body.otp;
     if (EnteredOtp === saveOtp) {
+        let referredUser = null
+        if (referredCode) {
+            try {
+                referredUser = await User.findOne({ referralCode: referredCode });
+                if (referredUser) {
+                    referredUser.wallet.balance += 1000;
+                    const transaction = {
+                        date: new Date(),
+                        details: "Referral Bonus",
+                        amount: 1000,
+                        status: "Credit",
+                    };
+                    referredUser.wallet.transactions.push(transaction);
+                    await referredUser.save();
+                    console.log("Added 1000 to the referred user's wallet balance");
+                }
+            } catch (error) {
+                console.error("Error finding or updating referred user:", error);
+            }
+        }
+
         const securedPassword = await securePassword(password);
+
+        const result = Math.random().toString(36).substring(2, 7);
+        const id = Math.floor(100000 + Math.random() * 900000);
+        const referralCode = result.toUpperCase() + id.toString().substring(0, 5);
+
         const newUser = new User({
             name: name,
             email: email,
             mobile: mobile,
             is_blocked: false,
             password: securedPassword,
+            referralCode: referralCode
         });
-        await newUser.save();
-        res.render("login", { success: "successfully registered!!" });
+
+        if (referredUser) {
+            newUser.wallet.balance += 500;
+            const transaction = {
+                date: new Date(),
+                details: "Referral Bonus",
+                amount: 500,
+                status: "Credit",
+            };
+            newUser.wallet.transactions.push(transaction);
+            
+        }
+
+        try {
+            await newUser.save();
+            console.log("New user saved");
+            if (referredUser) {
+                res.render("login", { 
+                    success: "Successfully registered!", 
+                    referral: "Referral success! Your bonus will be credited." });
+            } else {
+                res.render("login", { success: "Successfully registered!" });
+            }
+        } catch (error) {
+            console.error("Error saving new user:", error);
+            res.render("enterOtp", { invalidOtp: "Error registering new user" });
+        }
+
     } else {
         res.render("enterOtp", { invalidOtp: "wrong OTP" });
     }

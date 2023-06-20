@@ -105,7 +105,7 @@
                                     <thead>
                                         <tr>
                                             <th>Date</th>
-                                            <th>Order-Id</th>
+                                            <th>Details</th>
                                             <th>Amount</th>
                                             <th>Status</th>
                                         </tr>
@@ -117,7 +117,7 @@
                                         {{#each newTransactions}}
                                         <tr>
                                             <td>{{this.date}}</td>
-                                            <td>{{this.orderId}}</td>
+                                            <td>{{this.details}}</td>
                                             <td>₹ {{this.amount}}</td>
 
                                             {{#if (eq this.status "Debit")}}
@@ -375,6 +375,14 @@
                                             <input type="password" class="form-control mb-2"
                                                 name="userConfirmNewPassword">
 
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>Referral Code</label>
+                                            <input disabled value="{{userData.referralCode}}" class="form-control" name="userNewPassword">
                                         </div>
 
                                     </div>
