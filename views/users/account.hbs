@@ -58,10 +58,10 @@
                                 <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab"
                                     aria-controls="tab-orders" aria-selected="false">Orders</a>
                             </li>
-                            {{!-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads"
-                                    role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
-                            </li> --}}
+                                    role="tab" aria-controls="tab-downloads" aria-selected="false">Wallet History</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address"
                                     role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
@@ -96,12 +96,52 @@
                                         class="icon-long-arrow-right"></i></a>
                             </div><!-- .End .tab-pane -->
 
-                            {{!-- <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
+                            <div class="tab-pane fade" id="tab-downloads" role="tabpanel"
                                 aria-labelledby="tab-downloads-link">
-                                <p>No downloads available yet.</p>
-                                <a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div><!-- .End .tab-pane --> --}}
+                                
+
+                                <table class="table table-wishlist table-mobile">
+                                
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Order-Id</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                
+                                    <tbody>
+                                
+                                        {{#if newTransactions.length}}
+                                        {{#each newTransactions}}
+                                        <tr>
+                                            <td>{{this.date}}</td>
+                                            <td>{{this.orderId}}</td>
+                                            <td>₹ {{this.amount}}</td>
+
+                                            {{#if (eq this.status "Debit")}}
+                                            <td style="color: red; font-weight: 600;">{{this.status}}</td>
+                                            {{else if (eq this.status "Credit")}}
+                                            <td style="color: green; font-weight: 600;">{{this.status}}</td>
+                                            {{/if}}
+                                        </tr>
+                                        {{/each}}
+                                        {{else}}
+                                        <tr>
+                                            <td colspan="4">No transactions yet</td>
+                                        </tr>
+                                        {{/if}}
+                                
+                                    </tbody>
+                                </table><!-- End .table table-wishlist -->
+
+
+
+                                <a href="category.html" class="btn btn-outline-primary-2"><span>Available Balance : ₹ {{userData.wallet.balance}}</span>
+                                {{!-- <i class="icon-long-arrow-right"></i> --}}
+                                </a>
+                            </div><!-- .End .tab-pane -->
 
                             <div class="tab-pane fade" id="tab-address" role="tabpanel"
                                 aria-labelledby="tab-address-link">

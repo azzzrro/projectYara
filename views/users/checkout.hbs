@@ -192,7 +192,7 @@
 
                                 {{#each addressData}}
 
-                                <div class="col-lg-5 p-0 ml-3">
+                                <div class="col-lg-5">
 
                                     <div class="card card-dashboard">
 
@@ -407,6 +407,50 @@
 
 
                                     <div class="card">
+                                        <div class="card-header" id="heading-4">
+                                            <h2 class="card-title">
+                                                <label>
+                                                    <input data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" 
+                                                        aria-controls="collapseExample" class="payment-radio" type="radio" name="payment"
+                                                            value="Wallet" onchange="handleAddressSelection()"> 
+                                                        
+                                                    Wallet
+                                                </label>
+                                            </h2>
+                                        </div>
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="card card-body">
+                                                <p>
+                                                    Available Balance : ₹ {{userData.wallet.balance}}
+                                                </p>
+                                                <input type="hidden" id="userWallet" value="{{userData.wallet.balance}}" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mt-1">
+                                        <div class="card-header" id="heading-2">
+                                            <h2 class="card-title">
+                                                <label>
+                                                    <input class="payment-radio" type="radio" name="payment"
+                                                        value="Razorpay" onchange="handleAddressSelection()"> 
+                                                        
+                                                    Razorpay
+                                                </label>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        
+                                        {{!-- <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
+                                            data-parent="#accordion-payment">
+                                            <div class="card-body">
+                                                Experience hassle-free and seamless Payments with Razorpay!
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse --> --}}
+                                    
+                                    </div><!-- End .card -->
+
+
+                                    <div class="card mt-1">
                                         <div class="card-header" id="heading-3">
                                             <h2 class="card-title">
                                                 <label>
@@ -448,49 +492,9 @@
                                     
                                     </div><!-- End .card -->
 
-                                    <div class="card mt-1">
-                                        <div class="card-header" id="heading-2">
-                                            <h2 class="card-title">
-                                                <label>
-                                                    <input class="payment-radio" type="radio" name="payment"
-                                                        value="Razorpay" onchange="handleAddressSelection()"> 
-                                                        
-                                                    Razorpay
-                                                </label>
-                                            </h2>
-                                        </div><!-- End .card-header -->
-                                        
-                                        {{!-- <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Experience hassle-free and seamless Payments with Razorpay!
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse --> --}}
                                     
-                                    </div><!-- End .card -->
 
-                                    <div class="card mt-1">
-                                        <div class="card-header" id="heading-4">
-                                            <h2 class="card-title">
-                                                <label>
-                                                    <input data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" 
-                                                        aria-controls="collapseExample" class="payment-radio" type="radio" name="payment"
-                                                            value="Wallet" onchange="handleAddressSelection()"> 
-                                                        
-                                                    Wallet
-                                                </label>
-                                            </h2>
-                                        </div>
-                                        <div class="collapse" id="collapseExample">
-                                            <div class="card card-body">
-                                                <p>
-                                                    Available Balance : ₹ {{userData.wallet}}
-                                                </p>
-                                                <input type="hidden" id="userWallet" value="{{userData.wallet}}" >
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    
                                     <div class="card ml-5 mt-2">
                                         <div class="card-header" id="heading-5">
 

@@ -62,24 +62,15 @@
                             </tr>
                         </thead>
             
-            <tbody id="ordersTable">
-                    
+                <tbody id="ordersTable">
 
-                   
-                   
-                    
-                    
                     {{#each myOrders}}
-
                     <tr>
                         <td>{{this.date}}</td>
                         <td>{{this.orderId}}</td>
                         <td>{{this.paymentMethod}}</td>
                         <td class="price-col">₹ {{this.total}}</td>
-                        
-                        
-
-                        
+                       
                         {{#if (eq this.status "Pending")}}
                         <td style="color: orange; font-weight: 600;">{{this.status}}</td>
                         {{else if (eq this.status "Shipped")}}
@@ -91,24 +82,13 @@
                         {{else if (eq this.status "Returned")}}
                         <td style="color: purple; font-weight: 600;">{{this.status}}</td>
                         {{/if}}
-
-                       
-
                  
-                        <td>
-                            
+                        <td>                            
                             <a style="font-weight: 500;" href="/orderDetails?orderId={{this._id}}" class="btn btn-link"><span>More Details</span><i class="icon-long-arrow-right"></i></a>
-
-                            <input type="hidden" name="orderId" value="{{this._id}}">
-                            
-
-                                
+                            <input type="hidden" name="orderId" value="{{this._id}}">                                
                         </td>
                     </tr>
                     {{/each}}
-
-                    
-            
 
                 </tbody>
             </table><!-- End .table table-wishlist -->

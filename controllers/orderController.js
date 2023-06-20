@@ -153,7 +153,17 @@ const placeOrder = async (req, res) => {
                 try {
                     const walletBalance = req.body.walletBalance;
 
-                    await User.findByIdAndUpdate(userId, { $set: { wallet: walletBalance } }, { new: true });
+                    await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": walletBalance } }, { new: true });
+                    
+                    const transaction = {
+                        date: new Date(),
+                        orderId: orderId,
+                        amount: subTotal,
+                        status: "Debit",
+                    };
+
+                    await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
+
                     saveOrder();
                     req.session.checkout =false
 
@@ -273,9 +283,22 @@ const updateOrder = async (req, res) => {
         const status = req.body.orderStatus;
         const paymentMethod = req.body.paymentMethod;
         const updatedBalance = req.body.wallet;
+        const total = req.body.total
 
         if (paymentMethod !== "Cash On Delivery") {
-            await User.findByIdAndUpdate(userId, { $set: { wallet: updatedBalance } }, { new: true });
+            await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": updatedBalance } }, { new: true });
+
+            const order = await Order.findOne({ _id: orderId })
+            const orderIdValue = order.orderId
+            
+            const transaction = {
+                date: moment(new Date()).format('MMMM D, YYYY'),
+                orderId: orderIdValue,
+                amount: total,
+                status: "Credit",
+            };
+            
+            await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
 
             if (status === "Returned") {
                 await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
@@ -292,7 +315,21 @@ const updateOrder = async (req, res) => {
                 });
             }
         } else if (paymentMethod == "Cash On Delivery" && status === "Returned") {
-            await User.findByIdAndUpdate(userId, { $set: { wallet: updatedBalance } }, { new: true });
+            
+            await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": updatedBalance } }, { new: true });
+
+            const order = await Order.findOne({ _id: orderId })
+            const orderIdValue = order.orderId
+            
+            
+            const transaction = {
+                date: new Date(),
+                orderId: orderIdValue,
+                amount: total,
+                status: "Credit",
+            };
+            
+            await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
 
             await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
             res.json({

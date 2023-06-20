@@ -6,6 +6,7 @@ const Products = require("../models/productModel");
 const Banner = require("../models/bannerModel")
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const moment = require('moment')
 
 ////////////////////User Controllers/////////////////////////////
 
@@ -338,7 +339,15 @@ const loadProfile = async (req, res) => {
         const categoryData = await Category.find({ is_blocked: false });
         const addressData = await Address.find({ userId: userId });
 
-        res.render("account", { userData, categoryData, addressData });
+        const user = await User.findById(userId);
+        const transactions = user.wallet.transactions.sort((a, b) => b.date - a.date);
+
+        const newTransactions = transactions.map((transactions) => {
+            const formattedDate = moment(transactions.date).format("MMMM D, YYYY");
+            return { ...transactions.toObject(), date: formattedDate };
+        });
+
+        res.render("account", { userData, categoryData, addressData, newTransactions });
     } catch (error) {
         console.log(error.message);
     }

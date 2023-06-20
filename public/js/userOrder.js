@@ -518,7 +518,8 @@ const updateOrder = async (orderId, orderStatus)=>{
             body:JSON.stringify({
                 orderStatus: orderStatus,
                 paymentMethod: paymentMethod,
-                wallet: updatedBalance
+                wallet: updatedBalance,
+                total: grandTotal
             })
         })
 

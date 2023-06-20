@@ -584,7 +584,7 @@ const filteredData = (data) => {
               <figure class="product-media">
                 ${product.stock ?
                   `<a href="/productView?id=${product._id}">
-                    <img src="/uploads/${product.imageUrl[0]}" alt="Product image" class="product-image">
+                    <img src="${product.imageUrl[0].url}" alt="Product image" class="product-image">
                   </a>
                   <div class="product-action-vertical">
                     <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
@@ -605,7 +605,7 @@ const filteredData = (data) => {
   
                   `<span class="product-label label-out">Out of Stock</span>
                   <a href="/productView?id=${product._id}">
-                    <img src="/uploads/${product.imageUrl[0]}" alt="Product image" class="product-image">
+                    <img src="${product.imageUrl[0].url}" alt="Product image" class="product-image">
                   </a>
                   <div class="product-action-vertical">
                     <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>

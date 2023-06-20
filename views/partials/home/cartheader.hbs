@@ -275,7 +275,7 @@
 
                     {{#if userData}}
 
-                    <div class="dropdown compare-dropdown">
+                    <div class="dropdown compare-dropdown d-flex align-items-center">
                         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             data-display="static" title="Compare Products" aria-label="Compare Products">
                             <i class="fa-regular fa-credit-card fa-sm"></i>
@@ -290,8 +290,8 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-6 d-flex justify-content-center">
-                                        <p style="font-size: 2.4rem; font-weight: 500;">₹ {{userData.wallet}}</p>
-                                        <input type="hidden" id="userWallet" value="{{userData.wallet}}">
+                                        <p style="font-size: 2.4rem; font-weight: 500;">₹ {{userData.wallet.balance}}</p>
+                                        <input type="hidden" id="userWallet" value="{{userData.wallet.balance}}">
                                     </div>
                                     <div class="col-lg-6 d-flex justify-content-start align-items-center p-0">
                                         <div class="addFund">
