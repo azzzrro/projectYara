@@ -120,7 +120,7 @@ async function sendOtpMail(email, otp) {
             from: "helloazzzrro@gmail.com",
             to: email,
             subject: "Your OTP for user verification",
-            text: `Your OTP is ${otp}. Please enter this code to verify your account.`,
+            text: `ഇന്നാ പിടിച്ചോ നിങ്ങളെ ഒ.ടി.പി <strong>${otp}</strong>.<br>അടിപൊളി സൈറ്റ് ആണ് നല്ലോണോ സാനോ വാങ്ങിക്കോ😋❤️‍🔥🔥🚒.`,
         };
 
         const result = await transporter.sendMail(mailOptions);
