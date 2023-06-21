@@ -130,6 +130,25 @@ async function sendOtpMail(email, otp) {
     }
 }
 
+
+const generateRandomString = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const digits = '0123456789';
+    let randomString = '';
+  
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      randomString += characters[randomIndex];
+    }
+  
+    for (let i = 0; i < 2; i++) {
+      const randomIndex = Math.floor(Math.random() * digits.length);
+      randomString += digits[randomIndex];
+    }
+
+    return randomString;
+  };
+
 const verifyOtp = async (req, res) => {
     const EnteredOtp = req.body.otp;
     if (EnteredOtp === saveOtp) {
@@ -153,11 +172,7 @@ const verifyOtp = async (req, res) => {
             }
         }
 
-        const securedPassword = await securePassword(password);
-
-        const result = Math.random().toString(36).substring(2, 7);
-        const id = Math.floor(100000 + Math.random() * 900000);
-        const referralCode = result.toUpperCase() + id.toString().substring(0, 5);
+        const securedPassword = await securePassword(password);        
 
         const newUser = new User({
             name: name,
@@ -165,7 +180,7 @@ const verifyOtp = async (req, res) => {
             mobile: mobile,
             is_blocked: false,
             password: securedPassword,
-            referralCode: referralCode
+            referralCode: generateRandomString()
         });
 
         if (referredUser) {
