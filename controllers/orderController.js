@@ -7,6 +7,7 @@ const Order = require("../models/orderModel");
 const moment = require("moment");
 const path = require('path')
 const puppeteer = require('puppeteer')
+const xvfb = require('xvfb');
 const Razorpay = require("razorpay");
 
 require("dotenv").config();
@@ -366,10 +367,20 @@ const downloadInvoice = async(req,res)=>{
 
         const orderId = req.query.orderId
         const orderData = await Order.findById(orderId)
-        const browser = await puppeteer.launch({ 
+
+        const xvfbOptions = {
+            silent: true
+        };
+
+        const browser = await puppeteer.launch({
             headless: true,
+            executablePath: '/usr/bin/google-chrome',
             args: ['--no-sandbox', '--disable-setuid-sandbox']
-        })
+        });
+
+        const xvfbInstance = new xvfb(xvfbOptions);
+        xvfbInstance.startSync();
+
         const page = await browser.newPage()
 
         await page.goto(`https://www.yaraskin.shop/invoice?orderId=${orderId}`, {
@@ -391,7 +402,7 @@ const downloadInvoice = async(req,res)=>{
           });
 
         res.send(pdfBuffer);
-
+        xvfbInstance.stopSync();
         
     } catch (error) {
         console.log(error.message);

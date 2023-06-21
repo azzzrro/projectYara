@@ -35,7 +35,8 @@
     "puppeteer": "^20.7.1",
     "razorpay": "^2.8.6",
     "sweetalert2": "^11.4.8",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xvfb": "^0.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
