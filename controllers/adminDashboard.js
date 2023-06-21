@@ -137,7 +137,6 @@ const loadDashboard = async (req, res) => {
 
   const downloadSalesReport = async (req, res) => {
     try {
-      console.log("downnnnnnnn");
       const orderData = req.body.orderData;
       const { startDate, endDate } = req.query;
   
@@ -145,11 +144,10 @@ const loadDashboard = async (req, res) => {
       const page = await browser.newPage();
   
       await page.goto(
-        `${req.protocol}://${req.get('host')}` +
-          `/admin/renderSalesReport?orderData=${encodeURIComponent(JSON.stringify(orderData))}&startDate=${startDate}&endDate=${endDate}`,
-        {
-          waitUntil: "networkidle2",
-        }
+          `https://www.yaraskin.shop/admin/renderSalesReport?orderData=${encodeURIComponent(JSON.stringify(orderData))}
+              &startDate=${startDate}&endDate=${endDate}`,{
+              waitUntil: "networkidle2",
+          }
       );
   
       

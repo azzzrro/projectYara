@@ -369,9 +369,9 @@ const downloadInvoice = async(req,res)=>{
         const browser = await puppeteer.launch({ headless:false })
         const page = await browser.newPage()
 
-        await page.goto(`${req.protocol}://${req.get('host')}`+ `/invoice?orderId=${orderId}`,{
-            waitUntil:"networkidle2"
-        })
+        await page.goto(`https://www.yaraskin.shop/invoice?orderId=${orderId}`, {
+            waitUntil: "networkidle2",
+        });
 
         const todayDate = new Date()
 
