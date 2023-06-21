@@ -147,10 +147,9 @@ const verifyOtp = async (req, res) => {
                     };
                     referredUser.wallet.transactions.push(transaction);
                     await referredUser.save();
-                    console.log("Added 1000 to the referred user's wallet balance");
                 }
             } catch (error) {
-                console.error("Error finding or updating referred user:", error);
+                console.log(error)
             }
         }
 
@@ -183,7 +182,6 @@ const verifyOtp = async (req, res) => {
 
         try {
             await newUser.save();
-            console.log("New user saved");
             if (referredUser) {
                 res.render("login", { 
                     success: "Successfully registered!", 
@@ -192,7 +190,7 @@ const verifyOtp = async (req, res) => {
                 res.render("login", { success: "Successfully registered!" });
             }
         } catch (error) {
-            console.error("Error saving new user:", error);
+            console.log(error);
             res.render("enterOtp", { invalidOtp: "Error registering new user" });
         }
 
