@@ -50,6 +50,7 @@ let email;
 let mobile;
 let password;
 let forgotPasswordOtp;
+
 let referredCode
 
 const sendOtp = async (req, res) => {
@@ -120,7 +121,7 @@ async function sendOtpMail(email, otp) {
             from: "helloazzzrro@gmail.com",
             to: email,
             subject: "Your OTP for user verification",
-            text: `ഇന്നാ പിടിച്ചോ നിങ്ങളെ ഒ.ടി.പി ${otp} 😋❤️‍🔥🔥🚒.`,
+            text: `Your OTP is ${otp} 😋❤️‍🔥🔥🚒. Please enter this code to verify your account`,
         };
 
         const result = await transporter.sendMail(mailOptions);
@@ -153,14 +154,16 @@ const verifyOtp = async (req, res) => {
     const EnteredOtp = req.body.otp;
     if (EnteredOtp === saveOtp) {
         let referredUser = null
+        let referredUserName = null
         if (referredCode) {
             try {
                 referredUser = await User.findOne({ referralCode: referredCode });
+                referredUserName = referredUser.name
                 if (referredUser) {
                     referredUser.wallet.balance += 1000;
                     const transaction = {
                         date: new Date(),
-                        details: "Referral Bonus",
+                        details: `Referral Bonus from ${name}`,
                         amount: 1000,
                         status: "Credit",
                     };
@@ -187,7 +190,7 @@ const verifyOtp = async (req, res) => {
             newUser.wallet.balance += 500;
             const transaction = {
                 date: new Date(),
-                details: "Referral Bonus",
+                details: `Referral Bonus from ${referredUserName}`,
                 amount: 500,
                 status: "Credit",
             };
