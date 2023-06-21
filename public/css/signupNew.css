@@ -11,9 +11,16 @@ body {
     background-color: #30433D;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .wrapper h1 {
     font-weight: 700;
 }
+
 
 .wrapper {
     width: 50rem;
