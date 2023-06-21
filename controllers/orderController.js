@@ -362,52 +362,54 @@ const updateOrder = async (req, res) => {
 
 
 
-const downloadInvoice = async(req,res)=>{
+const downloadInvoice = async (req, res) => {
     try {
+        const orderId = req.query.orderId;
+        const orderData = await Order.findById(orderId);
 
-        const orderId = req.query.orderId
-        const orderData = await Order.findById(orderId)
-
+        const xvfb = require('xvfb');
         const xvfbOptions = {
             silent: true
         };
 
+        const puppeteer = require('puppeteer');
+
         const browser = await puppeteer.launch({
             headless: true,
-            executablePath: '/usr/bin/google-chrome',
+            executablePath: '/usr/bin/google-chrome-stable',
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
 
         const xvfbInstance = new xvfb(xvfbOptions);
         xvfbInstance.startSync();
 
-        const page = await browser.newPage()
+        const page = await browser.newPage();
 
         await page.goto(`https://www.yaraskin.shop/invoice?orderId=${orderId}`, {
-            waitUntil: "networkidle2",
+            waitUntil: 'networkidle2'
         });
 
-        const todayDate = new Date()
+        const todayDate = new Date();
 
         const pdfBuffer = await page.pdf({
             format: 'A4',
-            printBackground: true,
-          });
+            printBackground: true
+        });
 
-        await browser.close()
+        await browser.close();
+        xvfbInstance.stopSync();
 
         res.set({
             'Content-Type': 'application/pdf',
-            'Content-Disposition': `attachment; filename=${orderData.orderId}Invoice.pdf`,
-          });
+            'Content-Disposition': `attachment; filename=${orderData.orderId}Invoice.pdf`
+        });
 
         res.send(pdfBuffer);
-        xvfbInstance.stopSync();
-        
     } catch (error) {
         console.log(error.message);
     }
-}
+};
+
 
 const invoice = async(req,res)=>{
     try {
