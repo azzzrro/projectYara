@@ -2,6 +2,8 @@ const moment = require('moment');
 const Sale = require('../models/orderModel')
 const Order = require('../models/orderModel')
 const puppeteer = require('puppeteer')
+const xvfb = require('xvfb');
+
 
 
 let months        = []
@@ -139,8 +141,20 @@ const loadDashboard = async (req, res) => {
     try {
       const orderData = req.body.orderData;
       const { startDate, endDate } = req.query;
+
+        const xvfbOptions = {
+            silent: true
+        };
   
-      const browser = await puppeteer.launch({ headless: false });
+        const browser = await puppeteer.launch({
+          headless: true,
+          executablePath: '/usr/bin/google-chrome-stable',
+          args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+
+      const xvfbInstance = new xvfb(xvfbOptions);
+      xvfbInstance.startSync();
+
       const page = await browser.newPage();
   
       await page.goto(
@@ -151,16 +165,13 @@ const loadDashboard = async (req, res) => {
       );
   
       
-      
       const pdfBuffer = await page.pdf({
         format: 'A4',
         printBackground: true,
       });
   
       await browser.close();
-  
-      const sdate = moment(new Date(startDate)).format('MMMM D, YYYY');
-      const edate = moment(new Date(endDate)).format('MMMM D, YYYY');
+      xvfbInstance.stopSync();
   
       // Set the Content-Disposition header once with the desired filename
       res.set({
@@ -169,7 +180,6 @@ const loadDashboard = async (req, res) => {
       });
   
       res.send(pdfBuffer);
-      console.log("pdfffffffffff");
   
     } catch (error) {
       console.log(error.message);

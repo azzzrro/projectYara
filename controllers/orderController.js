@@ -367,12 +367,9 @@ const downloadInvoice = async (req, res) => {
         const orderId = req.query.orderId;
         const orderData = await Order.findById(orderId);
 
-        const xvfb = require('xvfb');
         const xvfbOptions = {
             silent: true
         };
-
-        const puppeteer = require('puppeteer');
 
         const browser = await puppeteer.launch({
             headless: true,
