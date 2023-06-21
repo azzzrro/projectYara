@@ -366,7 +366,10 @@ const downloadInvoice = async(req,res)=>{
 
         const orderId = req.query.orderId
         const orderData = await Order.findById(orderId)
-        const browser = await puppeteer.launch({ headless:false })
+        const browser = await puppeteer.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        })
         const page = await browser.newPage()
 
         await page.goto(`https://www.yaraskin.shop/invoice?orderId=${orderId}`, {
