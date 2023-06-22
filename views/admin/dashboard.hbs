@@ -29,6 +29,7 @@
 
     .card .card-header {
         font-weight: 500;
+        color: white;
     }
 
     .card-header:first-child {
@@ -38,7 +39,7 @@
     .card-header {
         padding: 1rem 1.35rem;
         margin-bottom: 0;
-        background-color: rgba(33, 40, 50, 0.03);
+
         border-bottom: 1px solid rgba(33, 40, 50, 0.125);
     }
 
@@ -77,7 +78,7 @@
                             <!-- Account details card-->
                             <div class="card mb-4">
                                 <div class="card-header">This Month Revenue</div>
-                                <div class="card-body ml-3 p-5">
+                                <div class="card-body small-card ml-3 p-5">
                                     <h2>₹{{thisMonthSales}}</h2>
                                 </div>
                             </div>
@@ -87,7 +88,7 @@
                             <!-- Account details card-->
                             <div class="card mb-4">
                                 <div class="card-header">This Month sales</div>
-                                <div class="card-body ml-3 p-5">
+                                <div class="card-body small-card ml-3 p-5">
                                     <h2>{{thisMonthOrder}}</h2>
                                 </div>
                             </div>
@@ -97,7 +98,7 @@
                             <!-- Account details card-->
                             <div class="card mb-4">
                                 <div class="card-header">Total Revenue</div>
-                                <div class="card-body ml-3 p-5">
+                                <div class="card-body small-card ml-3 p-5">
                                     <h2>₹{{totalRevenue}}</h2>
                                 </div>
                             </div>
@@ -107,7 +108,7 @@
                             <!-- Account details card-->
                             <div class="card mb-4">
                                 <div class="card-header">Total sales</div>
-                                <div class="card-body ml-3 p-5">
+                                <div class="card-body small-card ml-3 p-5">
                                     <h2>{{totalSales}}</h2>
                                 </div>
                             </div>
@@ -142,7 +143,7 @@
     
                 <div class="container-xl px-4" style="margin-bottom: 80px;">
     
-                    <nav class="navbar navbar-light bg-light mb-4 p-10">
+                    <nav class="navbar sales-report navbar-light bg-light mb-4 p-10">
 
                         
     

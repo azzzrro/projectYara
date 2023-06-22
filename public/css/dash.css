@@ -35,6 +35,16 @@ tbody{
   cursor: pointer;
 }
 
+.card-header{
+  background-color: #ef7367;
+}
+
+.small-card:hover{
+  background-color: #fee2df;
+  cursor: pointer;
+}
+
+
 #logoutBtn{
   margin-top: 6px;
 }
