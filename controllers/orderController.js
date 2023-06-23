@@ -5,9 +5,9 @@ const Address = require("../models/addressModel");
 const Coupon = require("../models/couponModel");
 const Order = require("../models/orderModel");
 const moment = require("moment");
-const path = require('path')
-const puppeteer = require('puppeteer')
-const xvfb = require('xvfb');
+const path = require("path");
+const puppeteer = require("puppeteer");
+const xvfb = require("xvfb");
 const Razorpay = require("razorpay");
 
 require("dotenv").config();
@@ -27,7 +27,7 @@ const placeOrder = async (req, res) => {
         const userCart = user.cart;
 
         let subTotal = 0;
-        let offerDiscount = 0
+        let offerDiscount = 0;
 
         userCart.forEach((item) => {
             item.total = item.product.price * item.quantity;
@@ -35,9 +35,9 @@ const placeOrder = async (req, res) => {
         });
 
         userCart.forEach((item) => {
-            if(item.product.oldPrice > 0){
-            item.offerDiscount = (item.product.oldPrice - item.product.price) * item.quantity
-            offerDiscount += item.offerDiscount;
+            if (item.product.oldPrice > 0) {
+                item.offerDiscount = (item.product.oldPrice - item.product.price) * item.quantity;
+                offerDiscount += item.offerDiscount;
             }
         });
 
@@ -59,9 +59,8 @@ const placeOrder = async (req, res) => {
         const orderId = result + id;
 
         let saveOrder = async () => {
-
-            const ExpectedDeliveryDate = new Date()
-            ExpectedDeliveryDate.setDate(ExpectedDeliveryDate.getDate() + 3 )
+            const ExpectedDeliveryDate = new Date();
+            ExpectedDeliveryDate.setDate(ExpectedDeliveryDate.getDate() + 3);
 
             if (couponData) {
                 const order = new Order({
@@ -80,10 +79,8 @@ const placeOrder = async (req, res) => {
 
                 await order.save();
 
-                const couponCode = couponData.couponName
-                await Coupon.updateOne({ code: couponCode }, { $push: { usedBy: userId } })
-
-                
+                const couponCode = couponData.couponName;
+                await Coupon.updateOne({ code: couponCode }, { $push: { usedBy: userId } });
             } else {
                 const order = new Order({
                     userId: userId,
@@ -96,7 +93,7 @@ const placeOrder = async (req, res) => {
                     paymentMethod: paymentMethod,
                 });
 
-                const orderSuccess = await order.save();
+                await order.save();
             }
 
             let userDetails = await User.findById(userId);
@@ -123,14 +120,12 @@ const placeOrder = async (req, res) => {
 
         if (addressId) {
             if (paymentMethod === "Cash On Delivery") {
+                saveOrder();
+                req.session.checkout = false;
 
-                saveOrder();               
-                req.session.checkout =false
-                
                 res.json({
                     order: "Success",
                 });
-                
             } else if (paymentMethod === "Razorpay") {
                 var instance = new Razorpay({
                     key_id: process.env.RAZORPAY_KEY_ID,
@@ -144,18 +139,17 @@ const placeOrder = async (req, res) => {
                 });
 
                 saveOrder();
-                req.session.checkout =false
+                req.session.checkout = false;
 
                 res.json({
                     order: "Success",
                 });
-                
             } else if (paymentMethod === "Wallet") {
                 try {
                     const walletBalance = req.body.walletBalance;
 
                     await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": walletBalance } }, { new: true });
-                    
+
                     const transaction = {
                         date: new Date(),
                         details: `Confirmed Order - ${orderId}`,
@@ -163,10 +157,10 @@ const placeOrder = async (req, res) => {
                         status: "Debit",
                     };
 
-                    await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
+                    await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true });
 
                     saveOrder();
-                    req.session.checkout =false
+                    req.session.checkout = false;
 
                     res.json({
                         order: "Success",
@@ -284,17 +278,16 @@ const updateOrder = async (req, res) => {
         const status = req.body.orderStatus;
         const paymentMethod = req.body.paymentMethod;
         const updatedBalance = req.body.wallet;
-        const total = req.body.total
+        const total = req.body.total;
 
-        const order = await Order.findOne({ _id: orderId })
-        const orderIdValue = order.orderId
+        const order = await Order.findOne({ _id: orderId });
+        const orderIdValue = order.orderId;
 
         if (paymentMethod !== "Cash On Delivery") {
             await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": updatedBalance } }, { new: true });
-        
 
             if (status === "Returned") {
-                await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
+                await Order.findByIdAndUpdate(orderId, { $set: { status: status }, $unset: { ExpectedDeliveryDate: "" } });
 
                 const transaction = {
                     date: new Date(),
@@ -302,9 +295,8 @@ const updateOrder = async (req, res) => {
                     amount: total,
                     status: "Credit",
                 };
-                
-                await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
 
+                await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true });
 
                 res.json({
                     message: "Returned",
@@ -312,7 +304,7 @@ const updateOrder = async (req, res) => {
                 });
             }
             if (status === "Cancelled") {
-                await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
+                await Order.findByIdAndUpdate(orderId, { $set: { status: status }, $unset: { ExpectedDeliveryDate: "" } });
 
                 const transaction = {
                     date: new Date(),
@@ -320,9 +312,8 @@ const updateOrder = async (req, res) => {
                     amount: total,
                     status: "Credit",
                 };
-                
-                await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
 
+                await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true });
 
                 res.json({
                     message: "Cancelled",
@@ -330,26 +321,24 @@ const updateOrder = async (req, res) => {
                 });
             }
         } else if (paymentMethod == "Cash On Delivery" && status === "Returned") {
-            
             await User.findByIdAndUpdate(userId, { $set: { "wallet.balance": updatedBalance } }, { new: true });
 
-            
             const transaction = {
                 date: new Date(),
                 details: `Returned Order - ${orderIdValue}`,
                 amount: total,
                 status: "Credit",
             };
-            
-            await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true })
 
-            await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
+            await User.findByIdAndUpdate(userId, { $push: { "wallet.transactions": transaction } }, { new: true });
+
+            await Order.findByIdAndUpdate(orderId, { $set: { status: status }, $unset: { ExpectedDeliveryDate: "" } });
             res.json({
                 message: "Returned",
                 refund: "Refund",
             });
         } else if (paymentMethod == "Cash On Delivery" && status === "Cancelled") {
-            await Order.findByIdAndUpdate(orderId, { $set: { status: status, }, $unset: { ExpectedDeliveryDate: "" } });
+            await Order.findByIdAndUpdate(orderId, { $set: { status: status }, $unset: { ExpectedDeliveryDate: "" } });
             res.json({
                 message: "Cancelled",
                 refund: "No Refund",
@@ -360,21 +349,19 @@ const updateOrder = async (req, res) => {
     }
 };
 
-
-
 const downloadInvoice = async (req, res) => {
     try {
         const orderId = req.query.orderId;
         const orderData = await Order.findById(orderId);
 
         const xvfbOptions = {
-            silent: true
+            silent: true,
         };
 
         const browser = await puppeteer.launch({
             headless: true,
-            executablePath: '/usr/bin/google-chrome-stable',
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            executablePath: "/usr/bin/google-chrome-stable",
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
         });
 
         const xvfbInstance = new xvfb(xvfbOptions);
@@ -383,22 +370,20 @@ const downloadInvoice = async (req, res) => {
         const page = await browser.newPage();
 
         await page.goto(`https://www.yaraskin.shop/invoice?orderId=${orderId}`, {
-            waitUntil: 'networkidle2'
+            waitUntil: "networkidle2",
         });
 
-        const todayDate = new Date();
-
         const pdfBuffer = await page.pdf({
-            format: 'A4',
-            printBackground: true
+            format: "A4",
+            printBackground: true,
         });
 
         await browser.close();
         xvfbInstance.stopSync();
 
         res.set({
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': `attachment; filename=${orderData.orderId}Invoice.pdf`
+            "Content-Type": "application/pdf",
+            "Content-Disposition": `attachment; filename=${orderData.orderId}Invoice.pdf`,
         });
 
         res.send(pdfBuffer);
@@ -407,52 +392,40 @@ const downloadInvoice = async (req, res) => {
     }
 };
 
-
-const invoice = async(req,res)=>{
+const invoice = async (req, res) => {
     try {
-
-        const orderId = req.query.orderId
-        const orderData = await Order.findById(orderId)
+        const orderId = req.query.orderId;
+        const orderData = await Order.findById(orderId);
 
         const { userId, address: addressId } = orderData;
-        
-        const [userData, addressData] = await Promise.all([
-            User.findById(userId),
-            Address.findById(addressId),
-        ]);
 
-        
+        const [userData, addressData] = await Promise.all([User.findById(userId), Address.findById(addressId)]);
+
         const productData = orderData.product.map((product) => {
             const totalPrice = product.oldPrice ? product.quantity * product.oldPrice : product.quantity * product.price;
-          
+
             return {
-              quantity: product.quantity.toString(),
-              name: product.name,
-              price: product.price,
-              oldPrice: product.oldPrice,
-              totalPrice: totalPrice,
+                quantity: product.quantity.toString(),
+                name: product.name,
+                price: product.price,
+                oldPrice: product.oldPrice,
+                totalPrice: totalPrice,
             };
-          });
-          
+        });
 
-
-          const subTotal = orderData.product.reduce((total, product) => {
+        const subTotal = orderData.product.reduce((total, product) => {
             const price = product.oldPrice ? product.oldPrice : product.price;
             return total + price * product.quantity;
-          }, 0);
-          
+        }, 0);
 
-        const orderDate = moment(orderData.date).format('MMMM D, YYYY')
-        const invoiceDate = moment(new Date()).format('MMMM D, YYYY')
+        const orderDate = moment(orderData.date).format("MMMM D, YYYY");
+        const invoiceDate = moment(new Date()).format("MMMM D, YYYY");
 
-        res.render('invoice',{userData, orderData, productData, subTotal, addressData, orderDate, invoiceDate })
-
-
+        res.render("invoice", { userData, orderData, productData, subTotal, addressData, orderDate, invoiceDate });
     } catch (error) {
         console.log(error.message);
     }
-}
-
+};
 
 module.exports = {
     orderSuccess,
@@ -462,5 +435,5 @@ module.exports = {
     filterOrder,
     updateOrder,
     downloadInvoice,
-    invoice
+    invoice,
 };

@@ -3,10 +3,11 @@ const Category = require("../models/categoryModel");
 const SubCategory = require("../models/subCategoryModel");
 const Address = require("../models/addressModel");
 const Products = require("../models/productModel");
-const Banner = require("../models/bannerModel")
+const Banner = require("../models/bannerModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const moment = require('moment')
+const moment = require("moment");
+require("dotenv").config();
 
 ////////////////////User Controllers/////////////////////////////
 
@@ -51,7 +52,7 @@ let mobile;
 let password;
 let forgotPasswordOtp;
 
-let referredCode
+let referredCode;
 
 const sendOtp = async (req, res) => {
     try {
@@ -84,7 +85,6 @@ const sendOtp = async (req, res) => {
                 sendOtpMail(email, generatedOtp);
                 res.redirect("/showOtp");
             }
-                        
         } else {
             res.render("signup", { alreadyUser: "user already exist" });
         }
@@ -112,16 +112,16 @@ async function sendOtpMail(email, otp) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "helloazzzrro@gmail.com",
-                pass: "zlvmevlxhpndvduw",
+                user: process.env.NODEMAILER_USER,
+                pass: process.env.NODEMAILER_PASS,
             },
         });
 
         const mailOptions = {
-            from: "helloazzzrro@gmail.com",
+            from: process.env.NODEMAILER_USER,
             to: email,
             subject: "Your OTP for user verification",
-            text: `Your OTP is ${otp} 😋❤️‍🔥🔥🚒. Please enter this code to verify your account`,
+            text: `Your OTP is ${otp} 🔥. Please enter this code to verify your account`,
         };
 
         const result = await transporter.sendMail(mailOptions);
@@ -131,34 +131,33 @@ async function sendOtpMail(email, otp) {
     }
 }
 
-
 const generateRandomString = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const digits = '0123456789';
-    let randomString = '';
-  
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const digits = "0123456789";
+    let randomString = "";
+
     for (let i = 0; i < 3; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      randomString += characters[randomIndex];
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        randomString += characters[randomIndex];
     }
-  
+
     for (let i = 0; i < 2; i++) {
-      const randomIndex = Math.floor(Math.random() * digits.length);
-      randomString += digits[randomIndex];
+        const randomIndex = Math.floor(Math.random() * digits.length);
+        randomString += digits[randomIndex];
     }
 
     return randomString;
-  };
+};
 
 const verifyOtp = async (req, res) => {
     const EnteredOtp = req.body.otp;
     if (EnteredOtp === saveOtp) {
-        let referredUser = null
-        let referredUserName = null
+        let referredUser = null;
+        let referredUserName = null;
         if (referredCode) {
             try {
                 referredUser = await User.findOne({ referralCode: referredCode });
-                referredUserName = referredUser.name
+                referredUserName = referredUser.name;
                 if (referredUser) {
                     referredUser.wallet.balance += 1000;
                     const transaction = {
@@ -171,11 +170,11 @@ const verifyOtp = async (req, res) => {
                     await referredUser.save();
                 }
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
 
-        const securedPassword = await securePassword(password);        
+        const securedPassword = await securePassword(password);
 
         const newUser = new User({
             name: name,
@@ -183,7 +182,7 @@ const verifyOtp = async (req, res) => {
             mobile: mobile,
             is_blocked: false,
             password: securedPassword,
-            referralCode: generateRandomString()
+            referralCode: generateRandomString(),
         });
 
         if (referredUser) {
@@ -195,15 +194,15 @@ const verifyOtp = async (req, res) => {
                 status: "Credit",
             };
             newUser.wallet.transactions.push(transaction);
-            
         }
 
         try {
             await newUser.save();
             if (referredUser) {
-                res.render("login", { 
-                    success: "Successfully registered!", 
-                    referral: "Referral success! Your bonus will be credited." });
+                res.render("login", {
+                    success: "Successfully registered!",
+                    referral: "Referral success! Your bonus will be credited.",
+                });
             } else {
                 res.render("login", { success: "Successfully registered!" });
             }
@@ -211,7 +210,6 @@ const verifyOtp = async (req, res) => {
             console.log(error);
             res.render("enterOtp", { invalidOtp: "Error registering new user" });
         }
-
     } else {
         res.render("enterOtp", { invalidOtp: "wrong OTP" });
     }
@@ -376,7 +374,7 @@ const homeload = async (req, res) => {
         const subCategoryData = await SubCategory.find({ is_blocked: false });
         const bannerData = await Banner.find({ active: true });
         const userData = req.session.user;
-        console.log("userData:", userData)
+        console.log("userData:", userData);
         const offerProducts = await Products.aggregate([
             { $match: { offerlabel: { $ne: [] } } },
             { $sample: { size: 4 } },
@@ -387,7 +385,8 @@ const homeload = async (req, res) => {
                     foreignField: "_id",
                     as: "category",
                 },
-            },{
+            },
+            {
                 $unwind: "$category",
             },
             {
@@ -400,7 +399,7 @@ const homeload = async (req, res) => {
             },
             {
                 $unwind: "$subCategory",
-            }
+            },
         ]);
 
         if (userData) {
@@ -420,7 +419,6 @@ const homeload = async (req, res) => {
         console.log(error.message);
     }
 };
-
 
 const loadProfile = async (req, res) => {
     try {

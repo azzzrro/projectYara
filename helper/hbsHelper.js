@@ -1,7 +1,5 @@
 const hbs = require('hbs');
 const path = require('path');
-const handlebars = require('handlebars')
-const handlebarsHelpers = require('handlebars-helpers')()
 const moment = require('moment');
 
 

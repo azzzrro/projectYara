@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const Category = require("../models/categoryModel");
 const SubCategory = require("../models/subCategoryModel");
-const Banner = require('../models/bannerModel')
+const Banner = require("../models/bannerModel");
 const Product = require("../models/productModel");
 const Brand = require("../models/brandModel");
 const Coupon = require("../models/couponModel");
@@ -9,7 +9,7 @@ const Order = require("../models/orderModel");
 const Addres = require("../models/addressModel");
 
 const moment = require("moment");
-const cloudinary = require('../config/cloudinary')
+const cloudinary = require("../config/cloudinary");
 require("dotenv").config();
 
 ////////////////////Admin credentials/////////////////////////////
@@ -56,8 +56,6 @@ const verifyLogin = async (req, res) => {
         console.log(error.messaage);
     }
 };
-
-
 
 ////////////////////USERS/////////////////////////////
 
@@ -123,38 +121,43 @@ const updateOrder = async (req, res) => {
         const status = req.body.status;
         console.log(orderId, status);
 
-
         if (status === "Delivered") {
+            const returnEndDate = new Date();
+            returnEndDate.setDate(returnEndDate.getDate() + 7);
 
-            const returnEndDate = new Date()
-            returnEndDate.setDate(returnEndDate.getDate() + 7)
-
-            await Order.findByIdAndUpdate(orderId, 
-                { $set: { 
-                    status: status, 
-                    deliveredDate: new Date(), 
-                    returnEndDate: returnEndDate,                    
+            await Order.findByIdAndUpdate(
+                orderId,
+                {
+                    $set: {
+                        status: status,
+                        deliveredDate: new Date(),
+                        returnEndDate: returnEndDate,
+                    },
+                    $unset: { ExpectedDeliveryDate: "" },
                 },
-                $unset: { ExpectedDeliveryDate: "" }
-            }, 
-                { new: true });
-        }else if (status === "Cancelled") {
-
-            await Order.findByIdAndUpdate(orderId, 
-                { $set: { 
-                    status: status,                   
+                { new: true }
+            );
+        } else if (status === "Cancelled") {
+            await Order.findByIdAndUpdate(
+                orderId,
+                {
+                    $set: {
+                        status: status,
+                    },
+                    $unset: { ExpectedDeliveryDate: "" },
                 },
-                $unset: { ExpectedDeliveryDate: "" }
-            }, 
-                { new: true });
-        }
-        
-        
-        else {
-            await Order.findByIdAndUpdate(orderId, 
-                { $set: { 
-                    status: status } }, 
-                { new: true });
+                { new: true }
+            );
+        } else {
+            await Order.findByIdAndUpdate(
+                orderId,
+                {
+                    $set: {
+                        status: status,
+                    },
+                },
+                { new: true }
+            );
         }
 
         res.json({
@@ -168,8 +171,8 @@ const updateOrder = async (req, res) => {
 const orderDetails = async (req, res) => {
     try {
         const orderId = req.query.orderId;
-
         const orderDetails = await Order.findById(orderId);
+        
         const orderProductData = orderDetails.product;
         const addressId = orderDetails.address;
 
@@ -234,10 +237,9 @@ const addNewCategory = async (req, res) => {
     const lowerCategoryName = categoryName.toLowerCase();
 
     try {
-
-        const result = await cloudinary.uploader.upload(image.path,{
-            folder: "Categories"
-        })
+        const result = await cloudinary.uploader.upload(image.path, {
+            folder: "Categories",
+        });
 
         const categoryExist = await Category.findOne({ category: lowerCategoryName });
         if (!categoryExist) {
@@ -245,7 +247,7 @@ const addNewCategory = async (req, res) => {
                 category: lowerCategoryName,
                 imageUrl: {
                     public_id: result.public_id,
-                    url: result.secure_url
+                    url: result.secure_url,
                 },
                 description: categoryDescription,
             });
@@ -281,10 +283,9 @@ const updateCategory = async (req, res) => {
         const categoryDescription = req.body.categoryDescription;
         const newImage = req.file;
 
-        
         const categoryData = await Category.findById(categoryId);
         const categoryImageUrl = categoryData.imageUrl.url;
-        
+
         let result;
 
         if (newImage) {
@@ -292,27 +293,26 @@ const updateCategory = async (req, res) => {
                 await cloudinary.uploader.destroy(categoryData.imageUrl.public_id);
             }
             result = await cloudinary.uploader.upload(newImage.path, {
-                folder: "Categories"
+                folder: "Categories",
             });
         } else {
             result = {
                 public_id: categoryData.imageUrl.public_id,
-                secure_url: categoryImageUrl
+                secure_url: categoryImageUrl,
             };
         }
 
         const catExist = await Category.findOne({ category: categoryName });
-        const imageExist = await Category.findOne({ 'imageUrl.url': result.secure_url });
+        const imageExist = await Category.findOne({ "imageUrl.url": result.secure_url });
 
         if (!catExist || !imageExist) {
-
             await Category.findByIdAndUpdate(
                 categoryId,
                 {
                     category: categoryName,
                     imageUrl: {
                         public_id: result.public_id,
-                        url: result.secure_url
+                        url: result.secure_url,
                     },
                     description: categoryDescription,
                 },
@@ -332,7 +332,6 @@ const updateCategory = async (req, res) => {
 const unlistCategory = async (req, res) => {
     try {
         const categoryId = req.params.id;
-
         const unlistCategory = await Category.findById(categoryId);
 
         await Category.findByIdAndUpdate(categoryId, { $set: { is_blocked: !unlistCategory.is_blocked } }, { new: true });
@@ -391,10 +390,9 @@ const addNewSubCategory = async (req, res) => {
     const lowerSubCategoryName = subCategoryName.toLowerCase();
 
     try {
-
-        const result = await cloudinary.uploader.upload(image.path,{
-            folder: "SubCategories"
-        })
+        const result = await cloudinary.uploader.upload(image.path, {
+            folder: "SubCategories",
+        });
 
         const subCategoryExist = await SubCategory.findOne({ subCategory: lowerSubCategoryName });
         if (!subCategoryExist) {
@@ -402,7 +400,7 @@ const addNewSubCategory = async (req, res) => {
                 subCategory: lowerSubCategoryName,
                 imageUrl: {
                     public_id: result.public_id,
-                    url: result.secure_url
+                    url: result.secure_url,
                 },
                 description: subCategoryDescription,
             });
@@ -448,18 +446,18 @@ const updateSubCategory = async (req, res) => {
                 await cloudinary.uploader.destroy(subCategoryData.imageUrl.public_id);
             }
             result = await cloudinary.uploader.upload(newImage.path, {
-                folder: "SubCategories"
+                folder: "SubCategories",
             });
         } else {
             result = {
                 public_id: subCategoryData.imageUrl.public_id,
-                secure_url: subCategoryImageUrl
+                secure_url: subCategoryImageUrl,
             };
         }
 
         const subCatExist = await SubCategory.findOne({ subCategory: subCategoryName });
-        const description = await SubCategory.findOne({ description: subCategoryDescription});
-        const imageExist = await SubCategory.findOne({ 'imageUrl.url': result.secure_url });
+        const description = await SubCategory.findOne({ description: subCategoryDescription });
+        const imageExist = await SubCategory.findOne({ "imageUrl.url": result.secure_url });
 
         if (!subCatExist || !imageExist || !description) {
             await SubCategory.findByIdAndUpdate(
@@ -468,7 +466,7 @@ const updateSubCategory = async (req, res) => {
                     subCategory: subCategoryName,
                     imageUrl: {
                         public_id: result.public_id,
-                        url: result.secure_url
+                        url: result.secure_url,
                     },
                     description: subCategoryDescription,
                 },
@@ -503,9 +501,7 @@ const unlistSubCategory = async (req, res) => {
     }
 };
 
-
 ////////////////////BANNERS/////////////////////////////
-
 
 const loadBanners = async (req, res) => {
     try {
@@ -532,22 +528,20 @@ const loadBanners = async (req, res) => {
                 user: req.session.admin,
             });
             req.session.bannerUpdate = false;
-        }else if (req.session.bannerDelete) {
+        } else if (req.session.bannerDelete) {
             res.render("banners", {
                 bannerData,
                 bannerDelete: "Banner deleted successfully!",
                 user: req.session.admin,
             });
             req.session.bannerDelete = false;
-        }
-        else {
+        } else {
             res.render("banners", { bannerData, user: req.session.admin });
         }
     } catch (error) {
         console.log(error.message);
     }
 };
-
 
 const addBanner = async (req, res) => {
     try {
@@ -557,14 +551,12 @@ const addBanner = async (req, res) => {
     }
 };
 
-
-const addNewBanner = async (req,res)=>{
+const addNewBanner = async (req, res) => {
     try {
+        const { title, label, bannerSubtitle } = req.body;
+        const image = req.file;
 
-        const { title, label, bannerSubtitle } = req.body
-        const image = req.file
-
-        const existing = await Banner.findOne({ title: title })
+        const existing = await Banner.findOne({ title: title });
         if (existing) {
             req.session.bannerExist = true;
             res.redirect("/admin/banners");
@@ -579,24 +571,21 @@ const addNewBanner = async (req,res)=>{
                 label: label,
                 image: {
                     public_id: result.public_id,
-                    url: result.secure_url
-                }
+                    url: result.secure_url,
+                },
             });
 
             await banner.save();
             req.session.bannerSave = true;
             res.redirect("/admin/banners");
         }
-        
     } catch (error) {
         console.log(error.messaage);
     }
-}
+};
 
 const editBanner = async (req, res) => {
-    
     try {
-
         const bannerId = req.params.id;
         const bannerData = await Banner.findById({ _id: bannerId });
 
@@ -606,34 +595,31 @@ const editBanner = async (req, res) => {
     }
 };
 
-
 const updateBanner = async (req, res) => {
     try {
-
-        const { title, label, bannerSubtitle } = req.body
+        const { title, label, bannerSubtitle } = req.body;
         const bannerId = req.params.id;
         const newImage = req.file;
-
         const banner = await Banner.findById(bannerId);
         const bannerImageUrl = banner.image.url;
-        
+
         let result;
         if (newImage) {
-            if(bannerImageUrl){
+            if (bannerImageUrl) {
                 await cloudinary.uploader.destroy(banner.image.public_id);
             }
             result = await cloudinary.uploader.upload(newImage.path, {
-                folder: "Banners"
+                folder: "Banners",
             });
         } else {
             result = {
                 public_id: banner.imageUrl.public_id,
-                secure_url: bannerImageUrl
+                secure_url: bannerImageUrl,
             };
         }
 
         const bannerExist = await Banner.findOne({ title: title });
-        const imageExist = await Banner.findOne({ 'image.url': result.secure_url });
+        const imageExist = await Banner.findOne({ "image.url": result.secure_url });
 
         if (!bannerExist || !imageExist) {
             await Banner.findByIdAndUpdate(
@@ -644,7 +630,7 @@ const updateBanner = async (req, res) => {
                     label: label,
                     image: {
                         public_id: result.public_id,
-                        url: result.secure_url
+                        url: result.secure_url,
                     },
                 },
                 { new: true }
@@ -660,25 +646,17 @@ const updateBanner = async (req, res) => {
     }
 };
 
-
 const bannerStatus = async (req, res) => {
     try {
         const bannerId = req.params.id;
-
         const unlistBanner = await Banner.findById(bannerId);
+        await Banner.findByIdAndUpdate(bannerId, { $set: { active: !unlistBanner.active } }, { new: true });
 
-        await Banner.findByIdAndUpdate(
-            bannerId,
-            { $set: { active: !unlistBanner.active } },
-            { new: true }
-        );
-
-        res.redirect('/admin/banners')
+        res.redirect("/admin/banners");
     } catch (error) {
         console.log(error.message);
     }
 };
-
 
 ////////////////////PRODUCTS/////////////////////////////
 
@@ -767,14 +745,14 @@ const addProduct = async (req, res) => {
         const categoryData = await Category.find();
         const subCategoryData = await SubCategory.find();
         const brands = await Brand.find();
-        const banners = await Banner.find()
+        const banners = await Banner.find();
 
-        res.render("addProduct", { 
-            categoryData, 
-            subCategoryData, 
+        res.render("addProduct", {
+            categoryData,
+            subCategoryData,
             brands,
-            banners, 
-            user: req.session.admin 
+            banners,
+            user: req.session.admin,
         });
     } catch (error) {
         console.log(error.message);
@@ -788,18 +766,19 @@ const addNewProduct = async (req, res) => {
 
         for (const file of files) {
             const result = await cloudinary.uploader.upload(file.path, {
-                folder: "Products"
+                folder: "Products",
             });
 
             const image = {
                 public_id: result.public_id,
-                url: result.secure_url
+                url: result.secure_url,
             };
 
             productImages.push(image);
         }
 
-        const { name, price, quantity, description, category, subCategory, brand, newBrand, offerLabel, offerPrice } = req.body;
+        const { name, price, quantity, description, category, subCategory, brand, newBrand, offerLabel, offerPrice } =
+            req.body;
 
         let brandId;
 
@@ -814,13 +793,13 @@ const addNewProduct = async (req, res) => {
             brandId = brand;
         }
 
-        let updatedPrice
-        let oldPrice
-        if(offerPrice){
-            updatedPrice = offerPrice
-            oldPrice = price
-        }else{
-            updatedPrice = price
+        let updatedPrice;
+        let oldPrice;
+        if (offerPrice) {
+            updatedPrice = offerPrice;
+            oldPrice = price;
+        } else {
+            updatedPrice = price;
         }
 
         const product = new Product({
@@ -833,7 +812,7 @@ const addNewProduct = async (req, res) => {
             brand: brandId,
             imageUrl: productImages,
             offerlabel: offerLabel,
-            oldPrice: oldPrice
+            oldPrice: oldPrice,
         });
         await product.save();
         req.session.productSave = true;
@@ -851,7 +830,7 @@ const updateProduct = async (req, res) => {
         const categories = await Category.find();
         const subCategories = await SubCategory.find();
         const brands = await Brand.find();
-        const banners = await Banner.find()
+        const banners = await Banner.find();
 
         res.render("editProduct", { productData, categories, subCategories, brands, banners, user: req.session.admin });
     } catch (error) {
@@ -889,12 +868,12 @@ const updateNewProduct = async (req, res) => {
         if (files && files.length > 0) {
             for (const file of files) {
                 const result = await cloudinary.uploader.upload(file.path, {
-                    folder: "Products"
+                    folder: "Products",
                 });
 
                 const image = {
                     public_id: result.public_id,
-                    url: result.secure_url
+                    url: result.secure_url,
                 };
 
                 updImages.push(image);
@@ -906,15 +885,16 @@ const updateNewProduct = async (req, res) => {
             updImages = exImage;
         }
 
-        const { name, price, quantity, description, category, subCategory, brand, newBrand, offerLabel, offerPrice } = req.body;
+        const { name, price, quantity, description, category, subCategory, brand, newBrand, offerLabel, offerPrice } =
+            req.body;
 
-        let updatedPrice
-        let oldPrice
-        if(offerPrice){
-            updatedPrice = offerPrice
-            oldPrice = price
-        }else{
-            updatedPrice = price
+        let updatedPrice;
+        let oldPrice;
+        if (offerPrice) {
+            updatedPrice = offerPrice;
+            oldPrice = price;
+        } else {
+            updatedPrice = price;
         }
 
         let brandId;
@@ -942,7 +922,7 @@ const updateNewProduct = async (req, res) => {
                 brand: brandId,
                 imageUrl: updImages,
                 offerlabel: offerLabel && offerLabel.length > 0 ? offerLabel : [],
-                oldPrice: oldPrice
+                oldPrice: oldPrice,
             },
             { new: true }
         );
@@ -967,7 +947,6 @@ const deleteProduct = async (req, res) => {
 const loadCoupons = async (req, res) => {
     try {
         const coupon = await Coupon.find();
-
         const couponData = coupon.map((element) => {
             const formattedDate = moment(element.expiryDate).format("MMMM D, YYYY");
 
@@ -994,9 +973,7 @@ const loadAddCoupon = async (req, res) => {
 const addCoupon = async (req, res) => {
     try {
         const { couponCode, couponDiscount, couponDate, minDiscount, maxDiscount } = req.body;
-
         const couponCodeUpperCase = couponCode.toUpperCase();
-
         const couponExist = await Coupon.findOne({ code: couponCodeUpperCase });
 
         if (!couponExist) {
@@ -1005,7 +982,7 @@ const addCoupon = async (req, res) => {
                 discount: couponDiscount,
                 expiryDate: couponDate,
                 minDiscount: minDiscount,
-                maxDiscount: maxDiscount
+                maxDiscount: maxDiscount,
             });
 
             await coupon.save();
@@ -1021,9 +998,7 @@ const addCoupon = async (req, res) => {
 const blockCoupon = async (req, res) => {
     try {
         const couponId = req.query.couponId;
-
         const unlistCoupon = await Coupon.findById(couponId);
-
         await Coupon.findByIdAndUpdate(couponId, { $set: { status: !unlistCoupon.status } }, { new: true });
 
         res.json({ message: "success" });
@@ -1035,7 +1010,6 @@ const blockCoupon = async (req, res) => {
 const deleteCoupon = async (req, res) => {
     try {
         const couponId = req.query.couponId;
-
         await Coupon.findByIdAndDelete(couponId);
 
         res.json({ message: "success" });

@@ -1,31 +1,29 @@
-const mongoose = require('../config/mongo')
+const mongoose = require("../config/mongo");
 
 const categorySchema = new mongoose.Schema({
- 
     category: {
         type: String,
-        required: true
+        required: true,
     },
 
-    imageUrl:{
-        public_id:{
+    imageUrl: {
+        public_id: {
             type: String,
-            required: true
+            required: true,
         },
-        url:{
+        url: {
             type: String,
-            required:true
-        }
+            required: true,
+        },
     },
-    description:{
-        type:String,
-        required:true
+    description: {
+        type: String,
+        required: true,
     },
-    is_blocked:{
+    is_blocked: {
         type: Boolean,
-        default: false
-    }
-})
+        default: false,
+    },
+});
 
-
-module.exports = mongoose.model('category', categorySchema )
+module.exports = mongoose.model("category", categorySchema);

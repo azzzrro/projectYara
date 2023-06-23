@@ -8,7 +8,7 @@ const Coupon = require("../models/couponModel");
 
 const loadCart = async (req, res) => {
     try {
-        req.session.checkout = true
+        req.session.checkout = true;
         const userData = req.session.user;
         const userId = req.query.id;
 
@@ -268,7 +268,7 @@ const loadCheckout = async (req, res) => {
         const cart = userCart.cart;
 
         let subTotal = 0;
-        let offerDiscount = 0
+        let offerDiscount = 0;
 
         cart.forEach((element) => {
             element.total = element.product.price * element.quantity;
@@ -276,9 +276,9 @@ const loadCheckout = async (req, res) => {
         });
 
         cart.forEach((element) => {
-            if(element.product.oldPrice > 0){
-            element.offerDiscount = (element.product.oldPrice - element.product.price) * element.quantity;
-            offerDiscount += element.offerDiscount;
+            if (element.product.oldPrice > 0) {
+                element.offerDiscount = (element.product.oldPrice - element.product.price) * element.quantity;
+                offerDiscount += element.offerDiscount;
             }
         });
 
@@ -289,19 +289,15 @@ const loadCheckout = async (req, res) => {
             status: true,
         });
 
-       
-
-        res.render("checkout", { 
-            userData, 
-            categoryData, 
-            addressData, 
-            subTotal, 
-            offerDiscount, 
-            cart, 
+        res.render("checkout", {
+            userData,
+            categoryData,
+            addressData,
+            subTotal,
+            offerDiscount,
+            cart,
             availableCoupons,
-             
         });
-        
     } catch (error) {
         console.log(error.message);
     }
@@ -319,8 +315,8 @@ const validateCoupon = async (req, res) => {
         } else {
             const couponId = couponData._id;
             const discount = couponData.discount;
-            const minDiscount = couponData.minDiscount
-            const maxDiscount = couponData.maxDiscount
+            const minDiscount = couponData.minDiscount;
+            const maxDiscount = couponData.maxDiscount;
             const userId = req.session.user._id;
 
             const couponUsed = await Coupon.findOne({ _id: couponId, usedBy: { $in: [userId] } });
@@ -328,37 +324,32 @@ const validateCoupon = async (req, res) => {
             if (couponUsed) {
                 res.json("already used");
             } else {
-
-                let discountAmount
-                let maximum
+                let discountAmount;
+                let maximum;
 
                 const discountValue = Number(discount);
                 const couponDiscount = (subTotal * discountValue) / 100;
 
-                if(couponDiscount < minDiscount){
-
-                    res.json("minimum value not met")
-
-                }else{
-                    if(couponDiscount > maxDiscount){
-                        discountAmount = maxDiscount
-                        maximum = "maximum"
-                    }else{
-                        discountAmount = couponDiscount
+                if (couponDiscount < minDiscount) {
+                    res.json("minimum value not met");
+                } else {
+                    if (couponDiscount > maxDiscount) {
+                        discountAmount = maxDiscount;
+                        maximum = "maximum";
+                    } else {
+                        discountAmount = couponDiscount;
                     }
-                    
+
                     const newTotal = subTotal - discountAmount;
                     const couponName = coupon;
-    
+
                     res.json({
                         couponName,
                         discountAmount,
                         newTotal,
-                        maximum
+                        maximum,
                     });
                 }
-                
-                
             }
         }
     } catch (error) {

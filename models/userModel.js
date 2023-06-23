@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema({
                     type: Date,
                 },
                 details: {
-                  type: String,
+                    type: String,
                 },
                 amount: {
                     type: Number,
@@ -69,10 +69,10 @@ const userSchema = new mongoose.Schema({
         ],
     },
 
-    referralCode:{
-      type:String,
-      required:true
-    }
+    referralCode: {
+        type: String,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model("User", userSchema);

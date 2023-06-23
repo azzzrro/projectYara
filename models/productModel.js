@@ -1,78 +1,76 @@
-const mongoose = require('../config/mongo')
-
+const mongoose = require("../config/mongo");
 
 const produtSchema = new mongoose.Schema({
- 
     name: {
         type: String,
-        required: true
+        required: true,
     },
 
     price: {
         type: Number,
-        required: true
+        required: true,
     },
 
     description: {
         type: String,
-        required: true
+        required: true,
     },
 
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
-        required: true
+        ref: "Category",
+        required: true,
     },
 
-    subCategory:{
+    subCategory: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'SubCategory',
-        required: true
+        ref: "SubCategory",
+        required: true,
     },
 
     brand: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Brand',
-        required: true
+        ref: "Brand",
+        required: true,
     },
 
-    imageUrl:[{
-        public_id:{
-            type: String,
-            required: true
+    imageUrl: [
+        {
+            public_id: {
+                type: String,
+                required: true,
+            },
+            url: {
+                type: String,
+                required: true,
+            },
         },
-        url:{
-            type: String,
-            required:true
-        }
-    }],
-    
-    stock:{
-        type:Number,
-        required:true
-    },
+    ],
 
-    isOnCart:{
-        type:Boolean,
-        default:false
-    },
-
-    isWishlisted:{
-        type:Boolean,
-        default:false
-    },
-
-    offerlabel:{
-        type: Array,
-        default: []
-    },
-
-    oldPrice:{
+    stock: {
         type: Number,
-        default: 0
-    }
+        required: true,
+    },
 
-})
+    isOnCart: {
+        type: Boolean,
+        default: false,
+    },
 
+    isWishlisted: {
+        type: Boolean,
+        default: false,
+    },
 
-module.exports = mongoose.model('Product', produtSchema)
+    offerlabel: {
+        type: Array,
+        default: [],
+    },
+
+    oldPrice: {
+        type: Number,
+        default: 0,
+    },
+});
+
+module.exports = mongoose.model("Product", produtSchema);

@@ -1,32 +1,31 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const subCategorySchema = new mongoose.Schema({
-
-    subCategory:{
+    subCategory: {
         type: String,
-        required: true
+        required: true,
     },
 
-    imageUrl:{
-        public_id:{
+    imageUrl: {
+        public_id: {
             type: String,
-            required: true
+            required: true,
         },
-        url:{
+        url: {
             type: String,
-            required:true
-        }
+            required: true,
+        },
     },
 
-    description:{
+    description: {
         type: String,
-        required: true
+        required: true,
     },
 
-    is_blocked:{
+    is_blocked: {
         type: Boolean,
-        default: false
-    }
-})
+        default: false,
+    },
+});
 
-module.exports = mongoose.model('SubCategory', subCategorySchema)
+module.exports = mongoose.model("SubCategory", subCategorySchema);

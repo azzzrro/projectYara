@@ -13,7 +13,7 @@ const loadAllProducts = async (req, res) => {
     const subCategoryData = await SubCategory.find();
 
     try {
-        const page = parseInt(req.query.allProductsPage) || 1; // Get the current page number from the query parameter
+        const page = parseInt(req.query.allProductsPage) || 1;
         const productsPerPage = 6;
 
         categoryFilterData.forEach(async (category, index) => {
@@ -144,7 +144,7 @@ const loadProducts = async (req, res) => {
     const subCategoryData = await SubCategory.find();
 
     try {
-        const page = parseInt(req.query.page) || 1; // Get the current page number from the query parameter
+        const page = parseInt(req.query.page) || 1;
         const productsPerPage = 6;
 
         subCategoryData.forEach(async (subCategory, index) => {
@@ -172,27 +172,24 @@ const loadProducts = async (req, res) => {
 
         const id = req.query.id;
         let productData;
-        let totalCount
+        let totalCount;
 
-        
-            const isCategory = await Category.exists({ _id: id });
+        const isCategory = await Category.exists({ _id: id });
 
-            if (isCategory) {
-                productData = await Product.find({ category: id })
-                    .skip((page - 1) * productsPerPage)
-                    .limit(productsPerPage);
-                
-                totalCount = await Product.countDocuments({ category: id });
-            } else {
-                productData = await Product.find({ subCategory: id })
-                    .skip((page - 1) * productsPerPage)
-                    .limit(productsPerPage);
+        if (isCategory) {
+            productData = await Product.find({ category: id })
+                .skip((page - 1) * productsPerPage)
+                .limit(productsPerPage);
 
-                totalCount = await Product.countDocuments({ subCategory: id });
-            }
-        
+            totalCount = await Product.countDocuments({ category: id });
+        } else {
+            productData = await Product.find({ subCategory: id })
+                .skip((page - 1) * productsPerPage)
+                .limit(productsPerPage);
 
-        
+            totalCount = await Product.countDocuments({ subCategory: id });
+        }
+
         const totalPages = Math.ceil(totalCount / productsPerPage);
 
         const userData = req.session.user;
@@ -214,13 +211,12 @@ const loadProducts = async (req, res) => {
     }
 };
 
-
 const offerProducts = async (req, res) => {
     const categoryData = await Category.find({ is_blocked: false });
     const subCategoryData = await SubCategory.find();
 
     try {
-        const page = parseInt(req.query.offerPage) || 1; // Get the current page number from the query parameter
+        const page = parseInt(req.query.offerPage) || 1;
         const productsPerPage = 6;
 
         subCategoryData.forEach(async (subCategory, index) => {
@@ -265,7 +261,7 @@ const offerProducts = async (req, res) => {
             brandData,
             currentPage: page,
             totalPages,
-            offerHeading:`${offerlabel} offer`
+            offerHeading: `${offerlabel} offer`,
         });
     } catch (error) {
         console.log(error.message);
@@ -273,8 +269,6 @@ const offerProducts = async (req, res) => {
         res.render("404", { userData, categoryData });
     }
 };
-
-
 
 const productView = async (req, res) => {
     try {
@@ -317,7 +311,6 @@ module.exports = {
     loadProducts,
     productView,
     offerProducts,
-
 
     categoryFilter,
     subCategoryFilter,
