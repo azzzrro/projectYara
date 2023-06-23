@@ -54,11 +54,10 @@
                                                     {{#if (eq this.product.stock 1)}}
                                                     <sup style="color: red;">ONLY 1 LEFT</sup> 
                                                     {{else if (eq this.product.stock 2)}}
-                                                    <sup style="color: red;">ONLY 2 LEFT</sup> 
-                                                    {{/if}}
-                                                    {{#checkStock this.product.stock}}
+                                                    <sup style="color: red;">ONLY 2 LEFT</sup>                                                     
+                                                    {{else if (checkStock this.product.stock)}}
                                                     <sup style="color: red;">ONLY FEW LEFT</sup>
-                                                    {{/checkStock}}
+                                                    {{/if}}
                                                      </a>
                                             </h3><!-- End .product-title -->
                                         </div><!-- End .product -->
