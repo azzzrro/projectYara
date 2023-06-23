@@ -5,7 +5,7 @@
 <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
-            <h1 class="page-title">Shopping Cart<span>Shop</span></h1>
+            <h1 class="page-title">Shopping Cart</h1>
         </div><!-- End .container -->
     </div><!-- End .page-header -->
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -50,9 +50,14 @@
                                             </figure>
 
                                             <h3 class="product-title">
-                                                <a href="#">{{this.product.name}} 
+                                                <a href="#">{{this.product.name}}
+                                                    {{#if (eq this.product.stock 1)}}
+                                                    <sup style="color: red;">ONLY 1 LEFT</sup> 
+                                                    {{else if (eq this.product.stock 2)}}
+                                                    <sup style="color: red;">ONLY 2 LEFT</sup> 
+                                                    {{/if}}
                                                     {{#checkStock this.product.stock}}
-                                                    <sup style="color: red;">ONLY 5 LEFT</sup>
+                                                    <sup style="color: red;">ONLY FEW LEFT</sup>
                                                     {{/checkStock}}
                                                      </a>
                                             </h3><!-- End .product-title -->

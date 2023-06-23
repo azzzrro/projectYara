@@ -242,7 +242,7 @@ const checkStock = async (req, res) => {
         let stock = [];
 
         cart.forEach((element) => {
-            if (element.product.stock - element.quantity <= 0) {
+            if (element.product.stock - element.quantity <= -1) {
                 stock.push(element.product);
             }
         });
