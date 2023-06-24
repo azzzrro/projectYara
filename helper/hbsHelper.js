@@ -1,5 +1,7 @@
 const hbs = require('hbs');
 const path = require('path');
+const handlebars = require('handlebars')
+const handlebarsHelpers = require('handlebars-helpers')()
 const moment = require('moment');
 
 
@@ -47,12 +49,8 @@ hbs.registerHelper('slice', function (context, start, end) {
 });
 
 
-hbs.registerHelper('checkStock', function (stock, options) {
-  if (stock <= 5 && stock >=3) {
-    return options.fn(this);
-  } else {
-    return options.inverse(this);
-  }
+hbs.registerHelper('checkStock', function (stock) {
+  return (stock <= 5 && stock >=3)  
 });
 
 
