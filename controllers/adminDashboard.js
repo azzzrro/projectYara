@@ -86,15 +86,6 @@ const chartData = async (req, res) => {
 };
 
 
-const salesReport = async(req,res)=>{
-    try {
-        
-        res.render('sales',{user:req.session.admin})
-
-    } catch (error) {
-        console.log(error.message);
-    }
-}
 
 const getSales = async (req, res) => {
     try {
@@ -209,7 +200,6 @@ const renderSalesReport = async (req, res) => {
 
 module.exports = {
     loadDashboard,
-    salesReport,
     chartData,
     getSales,
     downloadSalesReport,

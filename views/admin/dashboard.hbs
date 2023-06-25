@@ -128,7 +128,33 @@
                     </div>
                 </div>
     
-                
+                <div class="container-xl px-4" style="margin-bottom: 80px;">
+                    <nav class="navbar sales-report navbar-light bg-light mb-4 p-10">
+                        <div class="heading m-4">                            
+                            <h3> Get Sales Report </h3>
+                        </div>
+                        
+                        <div class="form-inline d-flex align-items-center me-3">
+                            <div class="form-group p-2">
+                                <label for="start-date">Start Date:</label>
+                                <input type="date" class="form-control" id="start-date" min="" max="">
+                            </div>
+                            <div class="form-group p-2">
+                                <label for="end-date">End Date:</label>
+                                <input type="date" class="form-control" id="end-date" min="" max="">
+                            </div>
+                            <div class="form-group p-2 mt-4">
+                                <button onclick="getSalesData()" type="button" class="btn btn-primary">Submit</button>
+                            </div>
+                            <input id="revenue" type="hidden" value="{{revenueByMonth}}">   
+                        </div>                          
+                    </nav>
+    
+                    <div class="row" id="table">
+    
+                    </div>
+    
+                </div>
             
             </div>
     
