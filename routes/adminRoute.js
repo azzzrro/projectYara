@@ -13,6 +13,7 @@ admin_route.post("/login", adminController.verifyLogin);
 admin_route.get("/logout", adminController.adminLogout);
 
 admin_route.get("/dashboard", adminAuth.isLogin, adminDashboard.loadDashboard);
+admin_route.get("/sales", adminAuth.isLogin, adminDashboard.salesReport);
 admin_route.get("/chartData", adminDashboard.chartData);
 admin_route.get("/getSales", adminDashboard.getSales);
 admin_route.post("/downloadSalesReport", adminDashboard.downloadSalesReport);
