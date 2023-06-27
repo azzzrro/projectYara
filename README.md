@@ -11,6 +11,7 @@ Welcome to Yara, an online platform that offers a wide range of high-quality ski
 ## Features
 
 - User registration and authentication using OTP
+- Referral programs and Referral bonus
 - Browse and search for skin care products 
 - View detailed product information and pricing
 - Add products to the shopping cart and wishlist
