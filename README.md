@@ -90,7 +90,7 @@ To run Yara locally on your machine, follow these steps:
 
 **Client:** HTML, CSS, JavaScript, Jquery, Bootstrap
 
-**Server:** Node, Express, MongoDB
+**Server:** Node, Express, MongoDB, AWS, Nginix
 
 
 ## Contributing
