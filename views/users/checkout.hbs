@@ -4,6 +4,7 @@
     .swal2-popup {
         font-size: 1.4rem !important;
     }
+
     .btnCoupon {
         display: inline-flex;
         align-items: center;
@@ -54,21 +55,21 @@
 
     }
 
-   
+
 
     .dropdown:hover #coupon-dropdown {
         display: block;
     }
 
-    
+
     #couponMessage,
-    #couponDiscount{
+    #couponDiscount {
         color: green;
         font-weight: 500;
     }
 
     #subTotalText,
-    #subTotal{
+    #subTotal {
         font-weight: 600;
     }
 
@@ -79,32 +80,36 @@
     #city-error,
     #state-error,
     #pincode-error,
-    #mobile-error{
+    #mobile-error {
         font-size: 9pt;
         color: #c96;
         ;
         position: relative;
     }
+
     .accordion-summary .card-body {
-    padding: 7px 7px 0px 16px;
+        padding: 7px 7px 0px 16px;
     }
-    .card p{
+
+    .card p {
         color: #c96;
         font-weight: 500;
     }
+
     .sticky-alert {
-    position: sticky;
-    top: 61px;
-    z-index: 9999;
+        position: sticky;
+        top: 61px;
+        z-index: 9999;
     }
-    .card-dashboard .card-body, label{
+
+    .card-dashboard .card-body,
+    label {
         cursor: pointer;
     }
 
-    .header .compare-dropdown:hover .dropdown-toggle{
+    .header .compare-dropdown:hover .dropdown-toggle {
         color: #c96;
     }
-
 </style>
 
 
@@ -143,32 +148,35 @@
                     </symbol>
                 </svg>
 
-                
+
                 <div class="col-lg-12 d-flex justify-content-end sticky-alert p-0">
 
-                <div class="col-lg-4">
-                    <div class="row ">
+                    <div class="col-lg-4">
+                        <div class="row ">
 
-                
 
-                <div id="insufficientBalanceAlert" class="alert alert-danger d-none align-items-center alert-dismissible" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
-                        <use xlink:href="#exclamation-triangle-fill" />
-                    </svg>
-                    <div style="margin-left: 7px;">
-                        Insufficient balance in your wallet <br> Please choose another payment method
+
+                            <div id="insufficientBalanceAlert"
+                                class="alert alert-danger d-none align-items-center alert-dismissible" role="alert">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"
+                                    aria-label="Warning:">
+                                    <use xlink:href="#exclamation-triangle-fill" />
+                                </svg>
+                                <div style="margin-left: 7px;">
+                                    Insufficient balance in your wallet <br> Please choose another payment method
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+
+
+
+                        </div>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                
-                
-
-                    </div>
-                </div>
 
                 </div>
-                
-                
+
+
 
 
 
@@ -313,13 +321,14 @@
 
                                         {{#each cart}}
                                         <tr>
-                                            <td style="color: #c96; font-weight: 500;"><a href="#">{{this.product.name}}</a></td>
+                                            <td style="color: #c96; font-weight: 500;"><a
+                                                    href="#">{{this.product.name}}</a></td>
                                             <td style="color: #c96; font-weight: 500">₹ {{this.total}}</td>
                                         </tr>
                                         {{/each}}
 
 
-                                         {{#if offerDiscount}}
+                                        {{#if offerDiscount}}
                                         <tr class="summary-subtotal">
                                             <td style="color: green; font-weight: 500;">Offer Discount :</td>
                                             <td style="color: green; font-weight: 500;">₹ {{offerDiscount}}</td>
@@ -327,75 +336,60 @@
                                         {{/if}}
                                         <tr id="couponModel" style="display: none;" class="summary-total">
                                             <td id="couponMessage">Coupon Discount:</td>
-                                            <td id="couponDiscount" ></td>
+                                            <td id="couponDiscount"></td>
                                         </tr>
 
-                                        {{!-- <tr class="summary-subtotal">
-                                            <td style="font-weight: 500;" >Subtotal:</td>
-                                            <td>₹ {{subTotal}}</td>
-                                        </tr><!-- End .summary-subtotal --> --}}
-                                       
+
                                         <tr>
                                             <td>Shipping:</td>
                                             <td>Free shipping</td>
                                         </tr>
                                         <tr>
-                                            {{!-- <div class="cart-bottom">
-                                                <div class="cart-discount">
-                                                    <form action="#">
-                                                        <div class="input-group"> --}}
-
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <input style="width: 110%;" type="text"
-                                                                        class="form-control"
-                                                                        id="checkout-discount-input"
-                                                                        placeholder="Coupon code">
-                                                                    <ul id="coupon-dropdown" class="dropdown-menu">
-                                                                        {{#if availableCoupons}}
-                                                                        {{#each availableCoupons}}
-                                                                        <li onclick="selectCoupon('{{this.code}}')">
-                                                                            {{this.code}} <small> get {{this.discount}}%
-                                                                            discount </small> </li>
-                                                                        {{/each}}
-                                                                        {{else}}
-                                                                        <li>No coupons available</li>
-                                                                        {{/if}}
-                                                                    </ul>
-                                                                </div>
-
-                                                            </td>
-
-                                                            {{!-- <div class="input-group-append"> --}}
-                                                                <td>
-                                                                    <button id="couponButton" onclick="validateCoupon()" class="btn btnCoupon btn-outline-primary-2"
-                                                                        type="submit"><i id="couponIcon" class="icon-long-arrow-right"></i></button>
-                                                                </td>
 
 
+                                            <td>
+                                                <div class="dropdown">
+                                                    <input style="width: 110%;" type="text" class="form-control"
+                                                        id="checkout-discount-input" placeholder="Coupon code">
+                                                    <ul id="coupon-dropdown" class="dropdown-menu">
+                                                        {{#if availableCoupons}}
+                                                        {{#each availableCoupons}}
+                                                        <li onclick="selectCoupon('{{this.code}}')">
+                                                            {{this.code}} <small> get {{this.discount}}%
+                                                                discount </small> </li>
+                                                        {{/each}}
+                                                        {{else}}
+                                                        <li>No coupons available</li>
+                                                        {{/if}}
+                                                    </ul>
+                                                </div>
 
-                                                                {{!--
-                                                            </div><!-- .End .input-group-append -->
-                                                        </div><!-- End .input-group -->
-                                                    </form>
-                                                </div><!-- End .cart-discount --> --}}
+                                            </td>
+
+                                            <td>
+                                                <button id="couponButton" onclick="validateCoupon()"
+                                                    class="btn btnCoupon btn-outline-primary-2" type="submit"><i
+                                                        id="couponIcon" class="icon-long-arrow-right"></i></button>
+                                            </td>
+
+
                                         </tr>
 
-                                        
+
 
                                         <input type="hidden" id="subTotalValue" value="{{subTotal}}">
 
-                                        
+
 
                                         <!-- End .summary-total -->
-                                        
+
                                         <tr class="summary-total">
                                             <td id="subTotalText">Grand Total:</td>
-                                            <td id="subTotal" >₹ {{subTotal}}</td>
+                                            <td id="subTotal">₹ {{subTotal}}</td>
                                         </tr><!-- End .summary-total -->
 
-                                        
-                                        
+
+
                                     </tbody>
                                 </table><!-- End .table table-summary -->
 
@@ -410,10 +404,12 @@
                                         <div class="card-header" id="heading-4">
                                             <h2 class="card-title">
                                                 <label>
-                                                    <input data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" 
-                                                        aria-controls="collapseExample" class="payment-radio" type="radio" name="payment"
-                                                            value="Wallet" onchange="handleAddressSelection()"> 
-                                                        
+                                                    <input data-bs-toggle="collapse" href="#collapseExample"
+                                                        role="button" aria-expanded="false"
+                                                        aria-controls="collapseExample" class="payment-radio"
+                                                        type="radio" name="payment" value="Wallet"
+                                                        onchange="handleAddressSelection()">
+
                                                     Wallet
                                                 </label>
                                             </h2>
@@ -423,7 +419,8 @@
                                                 <p>
                                                     Available Balance : ₹ {{userData.wallet.balance}}
                                                 </p>
-                                                <input type="hidden" id="userWallet" value="{{userData.wallet.balance}}" >
+                                                <input type="hidden" id="userWallet"
+                                                    value="{{userData.wallet.balance}}">
                                             </div>
                                         </div>
                                     </div>
@@ -433,20 +430,13 @@
                                             <h2 class="card-title">
                                                 <label>
                                                     <input class="payment-radio" type="radio" name="payment"
-                                                        value="Razorpay" onchange="handleAddressSelection()"> 
-                                                        
+                                                        value="Razorpay" onchange="handleAddressSelection()">
+
                                                     Razorpay
                                                 </label>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        
-                                        {{!-- <div id="collapse-2" class="collapse" aria-labelledby="heading-2"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Experience hassle-free and seamless Payments with Razorpay!
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse --> --}}
-                                    
+
                                     </div><!-- End .card -->
 
 
@@ -455,20 +445,14 @@
                                             <h2 class="card-title">
                                                 <label>
                                                     <input class="payment-radio" type="radio" name="payment"
-                                                        value="Cash On Delivery" onchange="handleAddressSelection()"> 
-                                                        
+                                                        value="Cash On Delivery" onchange="handleAddressSelection()">
+
                                                     Cash On Delivery
                                                 </label>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        
-                                        {{!-- <div id="collapse-3" class="collapse" aria-labelledby="heading-3"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body">Secure and Hassle-Free.
-                                                Pay when your order arrives at your doorstep!
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse --> --}}
-                                    
+
+                                
                                     </div><!-- End .card -->
 
                                     <div class="card mt-1">
@@ -476,25 +460,19 @@
                                             <h2 class="card-title">
                                                 <label>
                                                     <input class="payment-radio" type="radio" name="payment"
-                                                        value="Paypal" onchange="handleAddressSelection()"> 
-                                                        
+                                                        value="Paypal" onchange="handleAddressSelection()">
+
                                                     Paypal
                                                 </label>
                                             </h2>
                                         </div><!-- End .card-header -->
-                                        
-                                        {{!-- <div id="collapse-4" class="collapse" aria-labelledby="heading-4"
-                                            data-parent="#accordion-payment">
-                                            <div class="card-body">
-                                                Enjoy secure payments with PayPal, the globaly trusted payment platform.
-                                            </div><!-- End .card-body -->
-                                        </div><!-- End .collapse --> --}}
-                                    
+
+
                                     </div><!-- End .card -->
 
-                                    
 
-                                    
+
+
                                     <div class="card ml-5 mt-2">
                                         <div class="card-header" id="heading-5">
 
