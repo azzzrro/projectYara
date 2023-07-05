@@ -288,13 +288,13 @@ async function sendForgotPasswordOtp(email, otp) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "helloazzzrro@gmail.com",
-                pass: "zlvmevlxhpndvduw",
+                user: process.env.NODEMAILER_USER,
+                pass: process.env.NODEMAILER_PASS,
             },
         });
 
         const mailOptions = {
-            from: "helloazzzrro@gmail.com",
+            from: process.env.NODEMAILER_USER,
             to: email,
             subject: "Your OTP for password resetting",
             text: `Your OTP is ${otp}. Please enter this code to reset your password.`,
