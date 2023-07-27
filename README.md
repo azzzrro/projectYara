@@ -1,5 +1,5 @@
 
-![Logo](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687858584/git/Untitled-1_do4zpu.png)
+![Logo](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687858584/git/yara/Untitled-1_do4zpu.png)
 
 
 # Yara skinCare Ecomm
