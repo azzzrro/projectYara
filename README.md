@@ -75,11 +75,11 @@ To run Yara locally on your machine, follow these steps:
 
 ![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687855700/git/Screenshot_2023-06-27_141345_pqzqsh.jpg)
 
-![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687856187/git/Screenshot_2023-06-27_141412_xnhr8w.jpg)
+![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687856187/git/yara/Screenshot_2023-06-27_141412_xnhr8w.jpg)
 
-![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687859057/git/Screenshot_2023-06-27_141437_prfkf3.jpg)
+![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687859057/git/yara/Screenshot_2023-06-27_141437_prfkf3.jpg)
 
-![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687859206/git/Screenshot_2023-06-27_141456_dcuvcm.jpg)
+![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687859206/git/yara/Screenshot_2023-06-27_141456_dcuvcm.jpg)
 
 ![App Screenshot](https://res.cloudinary.com/dmbpxal0o/image/upload/v1687855700/git/Screenshot_2023-06-27_141549_phiptw.jpg)
 
